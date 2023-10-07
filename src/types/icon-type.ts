@@ -1,0 +1,3 @@
+type IconType = {
+    className? : string
+}

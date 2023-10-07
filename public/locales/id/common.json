@@ -1,0 +1,12 @@
+{
+    "home": "Beranda",
+    "tag": "Tag",
+    "author": "Penulis",
+    "allTag": "Semua Tag",
+    "keyword": "kata kunci",
+    "total": "Total",
+    "pageOf" : "Halaman {{page, number}} dari {{totalPage, number}}",
+    "dataIsEmpty": "Data tidak ditemukan",
+    "selectTag": "Pilih Tag",
+    "recentBlogPosts" : "Postingan Blog Terbaru"
+}

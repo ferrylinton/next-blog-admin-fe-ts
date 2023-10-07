@@ -1,0 +1,12 @@
+{
+    "home": "Home",
+    "tag": "Tag",
+    "author": "Author",
+    "allTag": "All Tag",
+    "keyword": "keyword",
+    "total": "Total",
+    "pageOf" : "Page {{page, number}} of {{totalPage, number}}",
+    "dataIsEmpty": "Data is empty",
+    "selectTag": "Select Tag",
+    "recentBlogPosts" : "Recent Blog Posts"
+}

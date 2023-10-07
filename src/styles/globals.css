@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.scroll-bars-hidden {
+  overflow: hidden !important;
+  padding-right: 17px !important;
+}
+
+
+@layer components {
+
+  body{
+    @apply text-stone-700 bg-white
+  }
+
+  svg {
+    @apply w-[12px] h-[12px] fill-current
+  }
+
+  .search-bar {
+    @apply relative sm:flex bg-white sm:p-0 h-[36px] w-[35px] sm:w-[200px] md:w-[300px] border border-stone-300 overflow-hidden
+  } 
+
+  .search-bar {
+    @apply focus-within:ring-2 focus-within:ring-lime-200
+  }
+
+  .search-bar {
+    @apply focus-within:fixed focus-within:flex focus-within:w-[calc(100%-16px)] focus-within:z-[55] focus-within:top-[8px] focus-within:inset-x-[8px] 
+  }
+
+  .search-bar {
+    @apply focus-within:sm:static focus-within:sm:w-[200px] focus-within:md:w-[300px] focus-within:sm:z-auto focus-within:sm:top-auto focus-within:sm:inset-x-auto
+  }
+
+  .search-bar button[type="submit"]{
+    @apply border-none focus:outline-none h-full w-[35px] text-stone-400 hover:text-stone-500
+  }
+
+  .search-bar button[type="submit"] svg{
+    @apply w-[20px] h-[20px] mx-auto
+  }
+
+  .search-bar input[type="text"]{
+    @apply grow h-full border-none text-sm focus:outline-none
+  }
+
+  .search-bar button[type="button"]{
+    @apply border-none h-full w-[35px] text-stone-400 hover:text-stone-500
+  }
+
+  .search-bar button[type="button"] svg{
+    @apply w-[20px] h-[20px] mx-auto
+  }
+
+  .markdown{
+    @apply prose prose-stone bg-white max-w-none prose-a:no-underline hover:prose-a:text-lime-600
+  }
+
+  .markdown{
+    @apply prose-h1:text-2xl prose-h2:text-xl prose-h2:mt-2 prose-h2:mb-1 prose-h3:text-lg
+  }
+
+  .markdown{
+    @apply prose-p:my-1
+  }
+
+  .markdown{
+    @apply prose-img:my-1 prose-img:rounded-lg prose-img:border-2 prose-img:border-slate-200
+  }
+
+  .markdown{
+    @apply prose-pre:border prose-pre:border-[#ddd] prose-pre:my-1 prose-pre:p-0 prose-pre:rounded-none prose-pre:bg-[#f9f9f9] prose-pre:text-[#333]
+  }
+
+  .markdown{
+    @apply prose-code:p-1
+  }
+
+}
