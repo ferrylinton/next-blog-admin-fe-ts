@@ -19,6 +19,7 @@ export default function Layout({ children }: PropsWithChildren) {
                             width={32}
                             height={32}
                             unoptimized
+                            priority={true}
                             alt='author.jpg'
                             className="w-32 h-32 border-2 border-gray-200 object-cover object-center rounded-full shadow-lg antialiased"
                             src="/images/author.jpg" />

@@ -1,7 +1,7 @@
 import CalendarIcon from '@/icons/CalendarIcon';
 import TagIcon from '@/icons/TagIcon';
 import { Post } from '@/types/post-type';
-import { getPostDate } from '@/utils/date-util';
+import { getPostDate } from '@/libs/date-util';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 

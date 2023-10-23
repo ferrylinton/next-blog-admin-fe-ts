@@ -19,39 +19,92 @@
     @apply w-[12px] h-[12px] fill-current
   }
 
-  .search-bar {
-    @apply relative sm:flex bg-white sm:p-0 h-[36px] w-[35px] sm:w-[200px] md:w-[300px] border border-stone-300 overflow-hidden
+  .nav-dropdown-trigger{
+    @apply flex-auto  h-[35px] flex justify-center items-center gap-1 outline-none border border-stone-300 px-2
+  }
+
+  .nav-dropdown-trigger{
+    @apply sm:flex-none sm:gap-2 sm:px-4
+  }
+
+  .nav-dropdown-trigger .caret{
+    @apply w-[10px] h-[10px]
+  }
+
+  .nav-dropdown-trigger[data-state='open'] {
+    @apply ring-2 ring-lime-200
+  }
+
+  .nav-dropdown-trigger[data-state='open'] .caret{
+    @apply rotate-180
+  }
+
+
+  .nav-dropdown-content{
+    @apply z-50 border border-stone-300 min-w-[200px] bg-white p-[5px] shadow-[0px_5px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_5px_20px_-15px_rgba(22,_23,_24,_0.2)] data-[side=bottom]:animate-slideDownAndFade
+  }
+
+  .nav-dropdown-item{
+    @apply relative leading-none flex items-center h-[35px] px-[5px] pl-[25px] select-none outline-none cursor-pointer
+  }
+
+  .nav-dropdown-item{
+    @apply hover:bg-stone-200
+  }
+
+  .nav-dropdown-indicator{
+    @apply absolute left-0 w-[25px] inline-flex items-center justify-center text-green-600
+  }
+
+  .nav-dropdown-indicator-icon{
+    @apply w-[16px] h-[16px]
+  }
+
+  .btn {
+    @apply font-bold py-2 px-4 uppercase border;
+  }
+
+  .btn-default {
+    @apply border-stone-200 text-stone-500 
+  }
+
+  .btn-default:hover {
+    @apply bg-stone-100 border-stone-300 text-stone-600
+  }
+
+  .btn-primary {
+    @apply bg-lime-600 text-white;
+  }
+
+  .btn-primary:hover {
+    @apply bg-lime-700;
+  }
+
+  .filter-form {
+    @apply flex bg-white h-[42px] sm:w-[300px] border border-stone-300 overflow-hidden
   } 
 
-  .search-bar {
+  .filter-form {
     @apply focus-within:ring-2 focus-within:ring-lime-200
   }
 
-  .search-bar {
-    @apply focus-within:fixed focus-within:flex focus-within:w-[calc(100%-16px)] focus-within:z-[55] focus-within:top-[8px] focus-within:inset-x-[8px] 
+  .filter-form button[type="submit"]{
+    @apply border-none focus:outline-none h-full w-[45px] text-stone-400 hover:text-stone-500
   }
 
-  .search-bar {
-    @apply focus-within:sm:static focus-within:sm:w-[200px] focus-within:md:w-[300px] focus-within:sm:z-auto focus-within:sm:top-auto focus-within:sm:inset-x-auto
-  }
-
-  .search-bar button[type="submit"]{
-    @apply border-none focus:outline-none h-full w-[35px] text-stone-400 hover:text-stone-500
-  }
-
-  .search-bar button[type="submit"] svg{
+  .filter-form button[type="submit"] svg{
     @apply w-[20px] h-[20px] mx-auto
   }
 
-  .search-bar input[type="text"]{
-    @apply grow h-full border-none text-sm focus:outline-none
+  .filter-form input[type="text"]{
+    @apply grow h-full border-none text-sm focus:outline-none placeholder-stone-300
   }
 
-  .search-bar button[type="button"]{
+  .filter-form button[type="button"]{
     @apply border-none h-full w-[35px] text-stone-400 hover:text-stone-500
   }
 
-  .search-bar button[type="button"] svg{
+  .filter-form button[type="button"] svg{
     @apply w-[20px] h-[20px] mx-auto
   }
 
@@ -77,6 +130,58 @@
 
   .markdown{
     @apply prose-code:p-1
+  }
+
+  .table-responsive{
+    @apply w-full text-sm border-t border-slate-300
+  }
+
+  .table-responsive thead {
+      @apply hidden sm:table-header-group
+  }
+
+  .table-responsive tr{
+      @apply  border-b border-stone-300 rounded hover:bg-stone-100
+  }
+
+  .table-responsive tr{
+      @apply sm:table-row sm:border-t-0
+  }
+
+  .table-responsive th, .table-responsive td{
+      @apply text-start sm:first:w-[50px] sm:first:ps-3 sm:last:w-[80px] px-1 
+  }
+
+  .table-responsive th{
+      @apply py-3 bg-stone-100 text-stone-600 uppercase font-bold
+  }
+
+  .table-responsive td{
+      @apply py-1 block relative pl-[calc(30%+10px)] hover:bg-stone-100
+  }
+
+  .table-responsive td{
+      @apply sm:table-cell sm:pl-1
+  }
+
+  .table-responsive td::before{
+      @apply content-[attr(data-label)] absolute top-0 left-0 w-[30%] h-full flex justify-end items-center pe-3 text-right font-bold bg-stone-100 text-stone-600 uppercase
+  }
+
+  .table-responsive td::before{
+      @apply sm:hidden
+  }
+
+  .btn-box {
+      @apply flex justify-start items-center gap-1
+  }
+
+  .btn-box .btn-edit {
+      @apply w-[30px] h-[30px] leading-none  rounded-sm text-green-600 hover:text-green-700 hover:bg-green-200
+  }
+
+  .btn-box .btn-delete {
+      @apply w-[30px] h-[30px] leading-none  rounded-sm text-red-600 hover:text-red-700 hover:bg-red-200
   }
 
 }

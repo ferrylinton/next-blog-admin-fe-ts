@@ -19,7 +19,7 @@ export default function PostBySlug({ slug }: Props) {
     const { data: post } = useQuery([POST_BY_SLUG_KEY, slug], () => fetchPostBySlug(slug));
 
     return (
-        <div className='w-full h-full grow flex justify-center items-start px-2 pt-[70px] pb-5'>
+        <div className='w-full h-full grow flex justify-center items-start px-2 pt-[50px] pb-5'>
             <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col'>
                 {post &&
                     <div>

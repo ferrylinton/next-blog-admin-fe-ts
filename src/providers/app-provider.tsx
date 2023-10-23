@@ -1,18 +1,22 @@
 import { PropsWithChildren, useState } from 'react';
 import { AppContext } from './app-context';
+import { Authority } from '@/types/authority-type';
 
 
 
 
 export const AppProvider = ({ children }: PropsWithChildren) => {
 
-    const [loading, setLoading] = useState(false);
+    const [id, setId] = useState<string | null>(null);
 
-    const [hideScrollBar, setHideScrollBar] = useState(false);
+    const [data, setData] = useState<Authority | null>(null);
 
+    const defaultValue = {
+        id, setId, data, setData
+    }
 
     return (
-        <AppContext.Provider value={{ loading, setLoading, hideScrollBar, setHideScrollBar }}>
+        <AppContext.Provider value={defaultValue}>
             {children}
         </AppContext.Provider>
     )

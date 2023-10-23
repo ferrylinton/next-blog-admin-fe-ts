@@ -1,0 +1,3 @@
+export const COOKIE_TOKEN = 'TOKEN';
+export const COOKIE_USERNAME = 'USERNAME';
+export const COOKIE_AUTHORITIES = 'AUTHORITIES';

@@ -3,10 +3,10 @@ import { createContext, useContext } from 'react';
 
 
 export const AppContext = createContext<AppContextProps>({
-    loading: false,
-    hideScrollBar: false,
-    setLoading: () => null,
-    setHideScrollBar: () => null
+    id: null,
+    setId: () => null,
+    data: null,
+    setData: () => null
 });
 
 export const useAppContext = () => useContext(AppContext);

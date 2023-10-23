@@ -8,5 +8,14 @@
     "pageOf" : "Halaman {{page, number}} dari {{totalPage, number}}",
     "dataIsEmpty": "Data tidak ditemukan",
     "selectTag": "Pilih Tag",
-    "recentBlogPosts" : "Postingan Blog Terbaru"
+    "recentBlogPosts" : "Postingan Blog Terbaru",
+    "pageNotFound": "Halaman tidak ditemukan",
+    "invalidUsernameOrPassword": "Nama pengguna atau atau kata sandi tidak valid",
+    "unauthorized": "Tidak punya akses",
+    "forbidden": "Tidak punya akses",
+    "login": "Masuk",
+    "logout": "Keluar",
+    "invalid_type": "Harus diisi",
+    "too_big": "Jumlah maksimal karakter adalah {{maximum, number}}",
+    "too_small": "Jumlah minimal karakter adalah {{minimum, number}}"
 }

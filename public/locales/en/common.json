@@ -8,5 +8,14 @@
     "pageOf" : "Page {{page, number}} of {{totalPage, number}}",
     "dataIsEmpty": "Data is empty",
     "selectTag": "Select Tag",
-    "recentBlogPosts" : "Recent Blog Posts"
+    "recentBlogPosts" : "Recent Blog Posts",
+    "pageNotFound": "Page is not found",
+    "invalidUsernameOrPassword": "Invalid username or password",
+    "unauthorized": "Uauthorized",
+    "forbidden": "Forbidden",
+    "login": "Login",
+    "logout": "Logout",
+    "invalid_type": "Required",
+    "too_big": "The maximum number of characters is {{maximum, number}}",
+    "too_small": "The minimum number of characters is {{minimum, number}}"
 }
