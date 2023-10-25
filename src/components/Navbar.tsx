@@ -13,7 +13,7 @@ const logoFont = Righteous({
 export default function Navbar() {
 
     return (
-        <nav className="fixed top-0 left-0 right-0 z-50 border-b border-stone-200 shadow-[0_0_15px_0_rgba(0,0,0,0.15)]">
+        <nav className="fixed top-0 left-0 right-0 z-50 border-b border-stone-200 shadow-[0_0_15px_0_rgba(106,106,106,0.15)]">
             <div className='bg-white'>
                 <div className="h-[50px] px-2 md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col sm:flex-row gap-1 items-center justify-center mx-auto">
                     <div className='relative w-full flex gap-2 items-center justify-between'>

@@ -7,9 +7,12 @@ export function getHeaders(clientInfo: ClientInfo) {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'x-client-ip': clientInfo.clientIp,
-        'x-access-token': clientInfo.token,
-        'x-accept-language': clientInfo.locale
+        'x-access-token': clientInfo.token
     };
+
+    if (clientInfo.locale) {
+        headers['x-accept-language'] = clientInfo.locale;
+    }
 
     if (typeof window === 'undefined') {
         headers['User-Agent'] = clientInfo.userAgent;

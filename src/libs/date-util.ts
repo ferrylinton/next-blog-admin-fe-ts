@@ -8,3 +8,11 @@ export const getPostDate = ({ createdAt, updatedAt }: Post) => {
         return format(new Date(createdAt), 'MM/dd/yyyy');
     }
 }
+
+export const formatToDate = (str: string) => {
+    return format(new Date(str), 'MM/dd/yyyy');
+}
+
+export const formatToTimestamp = (str: string) => {
+    return format(new Date(str), 'MM/dd/yyyy HH:mm SSS');
+}

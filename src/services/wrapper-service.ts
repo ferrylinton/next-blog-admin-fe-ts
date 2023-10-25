@@ -17,7 +17,7 @@ export function withAuth(gssp: GetServerSideProps) {
             }
 
             const { req, locale } = context;
-            
+
             const clientIp = req.headers["x-real-ip"] || req.headers['x-forwarded-for'] || req.socket.remoteAddress || '';
             const userAgent = req.headers['user-agent'] || '';
             const token = req.cookies[COOKIE_TOKEN];
@@ -25,15 +25,16 @@ export function withAuth(gssp: GetServerSideProps) {
             const gsspData = await gssp(context);
             const props = 'props' in gsspData ? gsspData.props : {};
             const namespaces = 'namespaces' in props ? props.namespaces : [];
-            console.log(namespaces);
-            const ssrConfig = await serverSideTranslations(locale ?? 'id', namespaces);
+            const ssrConfig = await serverSideTranslations(locale ?? 'id', namespaces || ['common']);
 
             return {
                 props: {
-                    locale: locale ?? 'id',
-                    clientIp,
-                    userAgent,
-                    token,
+                    clientInfo: {
+                        locale: locale ?? 'id',
+                        clientIp,
+                        userAgent,
+                        token
+                    },
                     ...('props' in gsspData ? gsspData.props : {}),
                     ...ssrConfig
                 }

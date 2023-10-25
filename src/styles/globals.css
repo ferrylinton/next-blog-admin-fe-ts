@@ -61,23 +61,27 @@
   }
 
   .btn {
-    @apply font-bold py-2 px-4 uppercase border;
+    @apply flex justify-center items-center gap-1 py-2 px-4 border border-stone-300 text-stone-500 shadow-[0_0_15px_0_rgba(106,106,106,0.15)]  ;
   }
 
-  .btn-default {
-    @apply border-stone-200 text-stone-500 
-  }
-
-  .btn-default:hover {
-    @apply bg-stone-100 border-stone-300 text-stone-600
+  .btn:hover {
+    @apply bg-stone-100 border-stone-400 text-stone-600
   }
 
   .btn-primary {
-    @apply bg-lime-600 text-white;
+    @apply border-lime-300 text-lime-500
   }
 
   .btn-primary:hover {
-    @apply bg-lime-700;
+    @apply bg-lime-50 border-lime-400 text-lime-600;
+  }
+
+  .btn-danger{
+    @apply border-red-300 text-red-500
+  }
+
+  .btn-danger:hover {
+    @apply bg-red-50 border-red-400 text-red-600;
   }
 
   .filter-form {
@@ -141,7 +145,7 @@
   }
 
   .table-responsive tr{
-      @apply  border-b border-stone-300 rounded hover:bg-stone-100
+      @apply even:bg-stone-100/60 odd:bg-white border-b border-stone-300 rounded hover:bg-stone-100
   }
 
   .table-responsive tr{
@@ -149,15 +153,15 @@
   }
 
   .table-responsive th, .table-responsive td{
-      @apply text-start sm:first:w-[50px] sm:first:ps-3 sm:last:w-[80px] px-1 
+      @apply text-start sm:first:w-[50px] sm:first:ps-3 px-1 cursor-pointer break-all
   }
 
   .table-responsive th{
-      @apply py-3 bg-stone-100 text-stone-600 uppercase font-bold
+      @apply py-3 text-stone-600 font-bold border-b-2 border-stone-400
   }
 
   .table-responsive td{
-      @apply py-1 block relative pl-[calc(30%+10px)] hover:bg-stone-100
+      @apply sm:py-3 block relative pl-[calc(30%+10px)] hover:bg-stone-100
   }
 
   .table-responsive td{
@@ -165,23 +169,52 @@
   }
 
   .table-responsive td::before{
-      @apply content-[attr(data-label)] absolute top-0 left-0 w-[30%] h-full flex justify-end items-center pe-3 text-right font-bold bg-stone-100 text-stone-600 uppercase
+      @apply content-[attr(data-label)] absolute border-r-2 border-stone-400 pe-2 top-0 left-0 w-[30%] h-full text-right font-bold text-sm text-stone-600
   }
 
   .table-responsive td::before{
       @apply sm:hidden
   }
 
-  .btn-box {
-      @apply flex justify-start items-center gap-1
+
+  .detail{
+    @apply flex flex-col gap-2 items-start w-full sm:border border-stone-200/80 px-2  sm:px-4 py-5
   }
 
-  .btn-box .btn-edit {
-      @apply w-[30px] h-[30px] leading-none  rounded-sm text-green-600 hover:text-green-700 hover:bg-green-200
+  .detail-item {
+    @apply w-full flex border-b border-stone-200/50
   }
 
-  .btn-box .btn-delete {
-      @apply w-[30px] h-[30px] leading-none  rounded-sm text-red-600 hover:text-red-700 hover:bg-red-200
+  .detail-item span:first-child{
+    @apply sm:px-2 py-2 font-bold w-[100px] sm:w-[120px] text-sm sm:text-base
+  }
+
+  .detail-item span:nth-child(2){
+    @apply sm:px-2 py-2 text-sm sm:text-base
+  }
+
+  .detail-item span:nth-child(2)::before{
+    @apply  content-[':'] pe-2 text-stone-400
+  }
+
+  .form{
+    @apply flex flex-col gap-2 items-start w-full sm:w-[500px] sm:border border-stone-200/80 px-2  sm:px-4 py-5
+  }
+
+  .form-group{
+    @apply mb-5
+  }
+
+  .form-label{
+    @apply block mb-[2px] text-xs uppercase text-stone-500
+  }
+
+  .form-error-label{
+    @apply text-xs text-red-500 mt-[2px]
+  }
+
+  .form-input{
+    @apply p-3 text-sm leading-tight border appearance-none focus:outline-none focus:ring-4 focus:ring-lime-200
   }
 
 }

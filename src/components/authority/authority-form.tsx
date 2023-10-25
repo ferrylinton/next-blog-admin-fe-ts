@@ -1,26 +1,20 @@
-import { COOKIE_TOKEN } from '@/configs/constant';
 import BreadcrumbIcon from '@/icons/BredcrumbIcon';
 import HomeIcon from '@/icons/HomeIcon';
 import { translate } from '@/libs/validation-util';
-import { getAuthority, updateAuthority } from '@/services/authority-service';
-import { withAuth } from '@/services/wrapper-service';
-import { Authority } from '@/types/authority-type';
-import { ClientInfo } from '@/types/common-type';
+import { createAuthority, updateAuthority } from '@/services/authority-service';
+import { AuthorityForm, AuthorityProps } from '@/types/authority-type';
 import { MessageError } from '@/types/response-type';
 import { ErrorValidation } from '@/types/validation-type';
-import { CreateAuthority, UpdateAuthoritySchema } from '@/validations/authority-schema';
-import { GetServerSidePropsContext } from 'next';
+import { CreateAuthoritySchema, UpdateAuthoritySchema } from '@/validations/authority-schema';
+import axios, { AxiosError } from 'axios';
 import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
 import { useRouter } from "next/router";
 import { useState } from 'react';
 
-type Props = {
-    authority: Authority
-} & ClientInfo
 
-export default function AuthorityUpdatePage({authority, ...clientInfo}: Props) {
-
+export default function AuthorityForm({ authority, clientInfo }: AuthorityProps) {
+    
     const router = useRouter();
 
     const { t } = useTranslation('common');
@@ -29,7 +23,7 @@ export default function AuthorityUpdatePage({authority, ...clientInfo}: Props) {
 
     const [messageError, setMessageError] = useState<MessageError | null>(null);
 
-    const [data, setData] = useState<Partial<Partial<CreateAuthority>>>({code: authority.code, description: authority.description});
+    const [data, setData] = useState<AuthorityForm>(authority || {});
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setData({ ...data, [event.target.name]: event.target.value });
@@ -38,12 +32,15 @@ export default function AuthorityUpdatePage({authority, ...clientInfo}: Props) {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         try {
             event.preventDefault();
-            const validation = UpdateAuthoritySchema.safeParse(data);
-            
+            const validation = (authority?.id) ? UpdateAuthoritySchema.safeParse(data) : CreateAuthoritySchema.safeParse(data);
+
             if (validation.success) {
-                const response = await updateAuthority(authority.id, validation.data, clientInfo);
-                if (response.status === 200) {
-                    router.push('/data/authority/');
+                const response = (authority?.id) ? (await updateAuthority(authority.id, validation.data, clientInfo)) : (await createAuthority(validation.data, clientInfo));
+
+                if (response.status === 201) {
+                    router.push('/data/authority');
+                } else if (response.status === 200) {
+                    router.push(`/data/authority/${authority?.id}`);
                 } else if (response.status === 400) {
                     setValidationErrors(response.data);
                 } else if (response.status === 409) {
@@ -59,7 +56,17 @@ export default function AuthorityUpdatePage({authority, ...clientInfo}: Props) {
 
 
         } catch (error: any) {
-            setMessageError(error.message);
+            if(axios.isAxiosError(error)){
+                const axiosError = error as AxiosError;
+                if(axiosError.response?.data){
+                    setMessageError(axiosError.response?.data as MessageError);
+                }else{
+                    setMessageError({message: axiosError.message});
+                }
+            }else{
+                setMessageError({message: error.message})
+            }
+            
         }
     };
 
@@ -81,7 +88,7 @@ export default function AuthorityUpdatePage({authority, ...clientInfo}: Props) {
                 </div>
             </div>
             <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col justify-center items-center px-2 py-5'>
-                <div className='flex flex-col justify-center items-center w-full max-w-md sm:border border-stone-300 mx-4 my-8 sm:mx-0 px-5 py-8 '>
+                <div className='form'>
                     {
                         messageError && <div className='w-full border border-red-300 bg-red-50 px-3 py-2 mb-8 text-sm flex flex-col text-red-500'>
                             {messageError.message}
@@ -94,57 +101,48 @@ export default function AuthorityUpdatePage({authority, ...clientInfo}: Props) {
                         noValidate
                         autoComplete='off' >
 
-                        <div className="mb-8">
-                            <label className="block mb-2 text-xs" htmlFor="name">Code</label>
-                            <input
-                                className={`w-full p-3 text-sm leading-tight border ${validationErrors.code ? 'border-red-500' : 'border-slate-400'} rounded appearance-none focus:outline-none focus:ring-4`}
-                                id="code"
-                                name='code'
-                                type="text"
-                                placeholder="CODE"
-                                minLength={5}
-                                maxLength={5}
-                                value={data.code}
-                                onChange={handleChange}
-                            />
-                            {validationErrors.code && (
-                                <p className="text-xs text-red-500 mt-2">
-                                    {validationErrors.code}
-                                </p>
-                            )}
+                        <div className="form-group">
+                            <label className='form-label' htmlFor="code">{t('code')}</label>
+                            <div className='w-full bg-stone-200'>
+                                <input
+                                    className={`w-[80px] form-input ${validationErrors.code ? 'border-red-400' : 'border-stone-300'}`}
+                                    name='code'
+                                    type="text"
+                                    placeholder='xxx'
+                                    maxLength={5}
+                                    value={data.code}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            {validationErrors.code && <div className="form-error-label"> {validationErrors.code} </div>}
                         </div>
 
-                        <div className="mb-8">
-                            <label className="block mb-2 text-sm" htmlFor="name">Description</label>
+                        <div className="form-group">
+                            <label className="form-label" htmlFor="name">{t('description')}</label>
                             <input
-                                className={`w-full p-3 text-sm leading-tight border ${validationErrors.description ? 'border-red-500' : 'border-slate-400'} rounded appearance-none focus:outline-none focus:ring-4`}
-                                id="description"
+                                className={`w-full form-input ${validationErrors.code ? 'border-red-400' : 'border-stone-300'}`}
                                 name='description'
                                 type="text"
-                                placeholder="Description"
+                                placeholder='xxx'
                                 maxLength={50}
                                 value={data.description}
                                 onChange={handleChange}
                             />
-                            {validationErrors.description && (
-                                <p className="text-xs text-red-500 mt-2">
-                                    {validationErrors.description}
-                                </p>
-                            )}
+                            {validationErrors.description && <div className="form-error-label"> {validationErrors.description} </div>}
                         </div>
 
                         <div className="mt-5 text-center flex gap-1">
                             <button
                                 onClick={() => router.push('/data/authority')}
                                 type='button'
-                                className="w-full btn btn-default">
-                                <span className='font-semibold'>Cancel</span>
+                                className="w-full btn">
+                                <span>{t('cancel')}</span>
                             </button>
 
                             <button
                                 type="submit"
                                 className="w-full btn btn-primary">
-                                <span className='font-semibold'>Save</span>
+                                <span>{t('save')}</span>
                             </button>
                         </div>
                     </form>
@@ -154,18 +152,3 @@ export default function AuthorityUpdatePage({authority, ...clientInfo}: Props) {
         </div>
     )
 }
-
-export const getServerSideProps = withAuth(async ({ req, params, locale }: GetServerSidePropsContext) => {
-    const id = params?.id as string;
-    const clientIp = req.headers["x-real-ip"] || req.headers['x-forwarded-for'] || req.socket.remoteAddress || '';
-    const userAgent = req.headers['user-agent'] || '';
-    const token = req.cookies[COOKIE_TOKEN];
-    const { data } = await getAuthority(id, { locale: locale || 'id', clientIp: clientIp as string, userAgent, token: token as string });
-    
-    return {
-        props: {
-            namespaces: ['common', 'authority'],
-            authority: data
-        }
-    }
-})

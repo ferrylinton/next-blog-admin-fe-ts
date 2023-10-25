@@ -1,54 +1,29 @@
-import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
 import FilterForm from '@/components/FilterForm';
 import { COOKIE_TOKEN } from '@/configs/constant';
+import AddIcon from '@/icons/AddIcon';
 import BreadcrumbIcon from '@/icons/BredcrumbIcon';
-import DeleteIcon from '@/icons/DeleteIcon';
-import EditIcon from '@/icons/EditIcon';
 import HomeIcon from '@/icons/HomeIcon';
-import { deleteAuthority, getAuthorities } from '@/services/authority-service';
+import { getAuthorities } from '@/services/authority-service';
 import { withAuth } from '@/services/wrapper-service';
 import { Authority } from '@/types/authority-type';
-import { ClientInfo } from '@/types/common-type';
 import { GetServerSidePropsContext } from 'next';
 import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Link from 'next/link';
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 
 type Props = {
     authorities: Authority[]
-} & ClientInfo
+}
 
-export default function AuthorityListPage({ authorities, ...clientInfo }: Props) {
+export default function AuthorityListPage({ authorities }: Props) {
 
     const router = useRouter();
 
-    const [showConfirm, setShowConfirm] = useState(false);
-
-    const [id, setId] = useState<string | null>(null);
-
     const [filtered, setFiltered] = useState(authorities);
 
-    const { i18n } = useTranslation('common');
-
-    const { t } = i18n;
-
-    const showDeleteConfirmation = (id: string) => {
-        setId(id);
-        setShowConfirm(true);
-    }
-
-    const okHandler = async () => {
-        if (id) {
-            await deleteAuthority(id, clientInfo);
-            setId(null);
-            //window.location.href = '/data/authority';
-            //Router.push('/data/authority');
-            router.reload();
-        }
-    }
+    const { t } = useTranslation('common');
 
     return (
         <div className='w-full h-full grow flex flex-col justify-start items-center pt-[50px]'>
@@ -65,73 +40,52 @@ export default function AuthorityListPage({ authorities, ...clientInfo }: Props)
                     </div>
                 </div>
             </div>
-            <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col justify-center items-center px-2 py-5'>
-                <div className='w-full my-3'>
+            <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col justify-center items-center px-2 py-10'>
+                <div className='w-full flex justify-between items-center mb-3'>
                     <FilterForm authorities={authorities} setFiltered={setFiltered} />
+                    <button
+                        className='btn btn-default'
+                        onClick={() => router.push('/data/authority/add')}>
+                        <AddIcon className='w-[20px] h-[20px]'/>
+                        <span>{t('add')}</span>
+                    </button>
                 </div>
                 <table className='table-responsive w-full'>
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Code</th>
-                            <th>Description</th>
-                            <th className='actions'>Action</th>
+                            <th>{t('code')}</th>
+                            <th>{t('description')}</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
                             (!filtered || filtered.length === 0) ?
                                 <tr>
-                                    <td colSpan={4}>Empty Data</td>
+                                    <td colSpan={3}>Empty Data</td>
                                 </tr> :
                                 (filtered && filtered.map((authority, index) => {
-                                    return <tr key={authority.id}>
+                                    return <tr key={authority.id} onClick={() => router.push(`/data/authority/${authority.id}`)}>
                                         <td data-label="#">{index + 1}</td>
-                                        <td data-label="Code">{authority.code}</td>
-                                        <td data-label="Description">{authority.description}</td>
-                                        <td className='actions'>
-                                            <div className='btn-box'>
-                                                <Link href={`/data/authority/form/${authority.id}`} className='btn-edit'><EditIcon /></Link>
-                                                <button className='btn-delete' onClick={() => showDeleteConfirmation(authority.id)}><DeleteIcon /></button>
-                                            </div>
-                                        </td>
+                                        <td data-label={t('code')}>{authority.code}</td>
+                                        <td data-label={t('description')}>{authority.description}</td>
                                     </tr>
                                 }))
                         }
                     </tbody>
                 </table>
-                <div className='w-full my-2'>
-                    <button
-                        className='btn btn-default'
-                        onClick={() => router.push('/data/authority/form')}>
-                        <span>Add New</span>
-                    </button>
-                </div>
-                <DeleteConfirmDialog
-                    showConfirm={showConfirm}
-                    setShowConfirm={setShowConfirm}
-                    okHandler={okHandler} />
             </div>
         </div>
     )
 }
 
-// export async function getServerSideProps(context: GetServerSidePropsContext) {
-//     const props = await serverSideTranslations(context.locale ?? 'id', ['common'])
-    
-//     return {
-//       props: {
-//         ...props
-//       },
-//     };
-//   }
 
 export const getServerSideProps = withAuth(async ({ req, res, locale }: GetServerSidePropsContext) => {
     const clientIp = req.headers["x-real-ip"] || req.headers['x-forwarded-for'] || req.socket.remoteAddress || '';
     const userAgent = req.headers['user-agent'] || '';
     const token = req.cookies[COOKIE_TOKEN];
 
-    const {data: authorities} = await getAuthorities({ locale: locale ?? 'id', clientIp: clientIp as string, userAgent, token: token as string });
+    const { data: authorities } = await getAuthorities({ locale: locale ?? 'id', clientIp: clientIp as string, userAgent, token: token as string });
     return {
         props: {
             namespaces: ['common', 'authority'],

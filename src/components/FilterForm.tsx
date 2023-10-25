@@ -12,17 +12,11 @@ type Props = {
 
 export default function FilterForm({ authorities, setFiltered }: Props) {
 
-    const [isClient, setIsClient] = useState(false)
-
     const inputRef = useRef<HTMLInputElement>(null);
 
     const router = useRouter();
 
     const [keyword, setKeyword] = useState<string>(typeof router.query?.keyword === "string" ? router.query.keyword : '');
-
-    // useEffect(() => {
-    //     setIsClient(true)
-    // }, [])
 
     const handleFocus = (event: FocusEvent<HTMLButtonElement>) => {
         event.preventDefault();

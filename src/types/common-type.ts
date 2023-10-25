@@ -13,8 +13,15 @@ export type Pageable<T> = {
 }
 
 export type ClientInfo = {
-    locale: string,
+    locale?: string,
     clientIp: string,
     userAgent: string,
     token: string
+}
+
+export type Audit = {
+    createdAt: string,
+    createdBy: string,
+    updatedAt?: string,
+    updatedBy?: string
 }

@@ -1,4 +1,4 @@
-import { object, string, z } from 'zod';
+import { object, string } from 'zod';
 
 export const CreateAuthoritySchema = object({
     code: string()
@@ -9,7 +9,5 @@ export const CreateAuthoritySchema = object({
         .min(10)
         .max(100)
 });
-
-export type CreateAuthority = z.infer<typeof CreateAuthoritySchema>;
 
 export const UpdateAuthoritySchema = CreateAuthoritySchema.partial();
