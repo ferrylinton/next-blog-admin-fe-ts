@@ -11,10 +11,11 @@ import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
 import { useRouter } from "next/router";
 import { useState } from 'react';
+import BreadCrumb from '../BreadCrumb';
 
 
 export default function AuthorityForm({ authority, clientInfo }: AuthorityProps) {
-    
+
     const router = useRouter();
 
     const { t } = useTranslation('common');
@@ -56,17 +57,17 @@ export default function AuthorityForm({ authority, clientInfo }: AuthorityProps)
 
 
         } catch (error: any) {
-            if(axios.isAxiosError(error)){
+            if (axios.isAxiosError(error)) {
                 const axiosError = error as AxiosError;
-                if(axiosError.response?.data){
+                if (axiosError.response?.data) {
                     setMessageError(axiosError.response?.data as MessageError);
-                }else{
-                    setMessageError({message: axiosError.message});
+                } else {
+                    setMessageError({ message: axiosError.message });
                 }
-            }else{
-                setMessageError({message: error.message})
+            } else {
+                setMessageError({ message: error.message })
             }
-            
+
         }
     };
 
@@ -75,17 +76,18 @@ export default function AuthorityForm({ authority, clientInfo }: AuthorityProps)
     return (
         <div className='w-full h-full grow flex flex-col justify-start items-center pt-[50px] pb-5'>
             <div className='w-full bg-stone-100 flex justify-center items-center text-stone-500'>
-                <div className="w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex justify-start  items-center h-[40px] px-2 flex-wrap">
-                    <Link href="/" className="h-full flex items-center px-2">
-                        <HomeIcon className='w-5 h-5' />
-                    </Link>
-                    <div className='h-full flex items-center px-2'>
-                        <BreadcrumbIcon className='w-3 h-3' />
-                    </div>
-                    <div className='h-full flex items-center px-2 uppercase'>
-                        <span className='leading-none'>Authority</span>
-                    </div>
-                </div>
+                {authority ?
+                    <BreadCrumb
+                        items={[
+                            { label: t('authority'), url: `/data/authority/${authority.id}` },
+                            { label: t('modify') }
+                        ]} /> :
+                    <BreadCrumb
+                        items={[
+                            { label: t('authority'), url: `/data/authority` },
+                            { label: t('add') }
+                        ]} />
+                }
             </div>
             <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col justify-center items-center px-2 py-5'>
                 <div className='form'>
@@ -133,7 +135,7 @@ export default function AuthorityForm({ authority, clientInfo }: AuthorityProps)
 
                         <div className="mt-5 text-center flex gap-1">
                             <button
-                                onClick={() => router.push('/data/authority')}
+                                onClick={() => router.push(authority ? `/data/authority/${authority.id}` : '/data/authority')}
                                 type='button'
                                 className="w-full btn">
                                 <span>{t('cancel')}</span>

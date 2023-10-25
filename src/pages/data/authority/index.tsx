@@ -1,3 +1,4 @@
+import BreadCrumb from '@/components/BreadCrumb';
 import FilterForm from '@/components/FilterForm';
 import { COOKIE_TOKEN } from '@/configs/constant';
 import AddIcon from '@/icons/AddIcon';
@@ -28,17 +29,10 @@ export default function AuthorityListPage({ authorities }: Props) {
     return (
         <div className='w-full h-full grow flex flex-col justify-start items-center pt-[50px]'>
             <div className='w-full bg-stone-50 border-b border-stone-100 flex justify-center items-center text-stone-500'>
-                <div className="w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex justify-start  items-center h-[40px] px-2 flex-wrap">
-                    <Link href="/" className="h-full flex items-center px-2">
-                        <HomeIcon className='w-5 h-5' />
-                    </Link>
-                    <div className='h-full flex items-center px-2'>
-                        <BreadcrumbIcon className='w-3 h-3' />
-                    </div>
-                    <div className='h-full flex items-center px-2 uppercase'>
-                        <span className='leading-none'>Authority</span>
-                    </div>
-                </div>
+                <BreadCrumb
+                    items={[
+                        { label: t('authority') }
+                    ]} />
             </div>
             <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col justify-center items-center px-2 py-10'>
                 <div className='w-full flex justify-between items-center mb-3'>
@@ -46,7 +40,7 @@ export default function AuthorityListPage({ authorities }: Props) {
                     <button
                         className='btn btn-default'
                         onClick={() => router.push('/data/authority/add')}>
-                        <AddIcon className='w-[20px] h-[20px]'/>
+                        <AddIcon className='w-[20px] h-[20px]' />
                         <span>{t('add')}</span>
                     </button>
                 </div>

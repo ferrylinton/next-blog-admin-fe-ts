@@ -1,3 +1,4 @@
+import BreadCrumb from '@/components/BreadCrumb';
 import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
 import { COOKIE_TOKEN } from '@/configs/constant';
 import BackIcon from '@/icons/BackIcon';
@@ -41,17 +42,11 @@ export default function AuthorityDetailPage({ authority, clientInfo }: Authority
     return (
         <div className='w-full h-full grow flex flex-col justify-start items-center pt-[50px] pb-5'>
             <div className='w-full bg-stone-100 flex justify-center items-center text-stone-500'>
-                <div className="w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex justify-start  items-center h-[40px] px-2 flex-wrap">
-                    <Link href="/" className="h-full flex items-center px-2">
-                        <HomeIcon className='w-5 h-5' />
-                    </Link>
-                    <div className='h-full flex items-center px-2'>
-                        <BreadcrumbIcon className='w-3 h-3' />
-                    </div>
-                    <div className='h-full flex items-center px-2 uppercase'>
-                        <span className='leading-none'>Authority</span>
-                    </div>
-                </div>
+                <BreadCrumb
+                    items={[
+                        { label: t('authority'), url: `/data/authority` },
+                        { label: t('detail') }
+                    ]} />
             </div>
             {authority && <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col justify-center items-center px-2 py-5'>
                 <div className='detail'>
@@ -114,7 +109,7 @@ export default function AuthorityDetailPage({ authority, clientInfo }: Authority
                 showConfirm={showConfirm}
                 setShowConfirm={setShowConfirm}
                 okHandler={okHandler} />
-            
+
         </div>
     )
 }
