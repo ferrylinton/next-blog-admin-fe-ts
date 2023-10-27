@@ -1,18 +1,21 @@
 import BreadCrumb from '@/components/BreadCrumb';
 import FilterForm from '@/components/FilterForm';
+import ImageWithDimension from '@/components/ImageWithDimension';
 import AddIcon from '@/icons/AddIcon';
 import { getClientInfo } from '@/libs/client-info-util';
 import { getImages } from '@/services/image-service';
 import { withAuth } from '@/services/wrapper-service';
-import { Image } from '@/types/image-type';
+import { Image as ImageType } from '@/types/image-type';
 import { GetServerSidePropsContext } from 'next';
 import { useTranslation } from 'next-i18next';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { getImageSize } from 'react-image-size';
 
 
 type Props = {
-    images: Image[]
+    images: ImageType[]
 }
 
 export default function ImageListPage({ images }: Props) {
@@ -23,13 +26,13 @@ export default function ImageListPage({ images }: Props) {
 
     const [filtered, setFiltered] = useState(images);
 
-    const filter = (keyword? : string) => {
-        if(keyword){
+    const filter = (keyword?: string) => {
+        if (keyword) {
             setFiltered(images.filter(el => el.filename.toLowerCase().includes(keyword.toLowerCase())))
-        }else{
+        } else {
             setFiltered(images);
         }
-        
+
     }
 
     return (
@@ -50,28 +53,20 @@ export default function ImageListPage({ images }: Props) {
                         <span>{t('add')}</span>
                     </button>
                 </div>
-                <table className='table-responsive w-full'>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>{t('filename')}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            (!filtered || filtered.length === 0) ?
-                                <tr>
-                                    <td colSpan={2}>Empty Data</td>
-                                </tr> :
-                                (filtered && filtered.map((image, index) => {
-                                    return <tr key={image.id} onClick={() => router.push(`/data/image/${image.id}`)}>
-                                        <td data-label="#">{index + 1}</td>
-                                        <td data-label={t('filename')}>{image.filename}</td>
-                                    </tr>
-                                }))
-                        }
-                    </tbody>
-                </table>
+                <div className='w-full flex  flex-wrap justify-start items-start gap-2'>
+                    {
+                        (!filtered || filtered.length === 0) ?
+                            <div>Empty Data</div> :
+                            (filtered && filtered.map((image) => {
+                                return (<div key={image.id} className='flex flex-col justify-start items-center w-full sm:w-[calc(50%-5px)] h-[200px] border border-stone-300 p-2 hover:outline outline-2 outline-lime-300 overflow-hidden relative'>
+                                    <ImageWithDimension image={image} />
+                                    <div className='bg-stone-500 bg-opacity-50 p-2 absolute bottom-1 inset-x-1 text-center'>
+                                        <span className='drop-shadow-[0_1px_1px_rgba(0,0,0,1)] text-white'>{image.filename}</span>
+                                    </div>
+                                </div>)
+                            }))
+                    }
+                </div>
             </div>
         </div>
     )
@@ -80,12 +75,12 @@ export default function ImageListPage({ images }: Props) {
 
 export const getServerSideProps = withAuth(async (context: GetServerSidePropsContext) => {
     const clientInfo = getClientInfo(context);
-    const { data: images } = await getImages(clientInfo);
+    const { data } = await getImages(clientInfo);
 
     return {
         props: {
             namespaces: ['common'],
-            images
+            images: data
         }
     }
 })
