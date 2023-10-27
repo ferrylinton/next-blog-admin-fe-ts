@@ -42,5 +42,15 @@
     "authority": "Hak Akses",
     "confirmation": "Konfirmasi",
     "deleteQuestion": "Hapus data ?",
-    "ok": "Ok"
+    "ok": "Ok",
+    "name": "Nama",
+    "username": "Name Pengguna",
+    "password": "Kata Sandi",
+    "passwordConfirm": "Konfirmasi Kata Sandi",
+    "authorities": "Hak Akses",
+    "slug": "Slug",
+    "title": "Judul",
+    "email": "Surel",
+    "image": "Gambar",
+    "user": "Pengguna"
 }

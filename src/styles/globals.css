@@ -137,7 +137,7 @@
   }
 
   .table-responsive{
-    @apply w-full text-sm border-t border-slate-300
+    @apply w-full text-sm border-t border-stone-300
   }
 
   .table-responsive thead {

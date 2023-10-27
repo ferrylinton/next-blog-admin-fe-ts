@@ -42,5 +42,15 @@
     "authority": "Authority",
     "confirmation": "Confirmation",
     "deleteQuestion": "Delete data ?",
-    "ok": "Ok"
+    "ok": "Ok",
+    "name": "Name",
+    "username": "Username",
+    "password": "Password",
+    "passwordConfirm": "Confirm Password",
+    "authorities": "Authorities",
+    "slug": "Slug",
+    "title": "Title",
+    "email": "Email",
+    "image": "Image",
+    "user": "User"
 }

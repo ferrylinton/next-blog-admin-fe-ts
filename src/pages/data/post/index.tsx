@@ -2,9 +2,10 @@ import BreadCrumb from '@/components/BreadCrumb';
 import FilterForm from '@/components/FilterForm';
 import AddIcon from '@/icons/AddIcon';
 import { getClientInfo } from '@/libs/client-info-util';
-import { getAuthorities } from '@/services/authority-service';
+import { getPosts } from '@/services/post-service';
 import { withAuth } from '@/services/wrapper-service';
-import { Authority } from '@/types/authority-type';
+import { Pageable } from '@/types/common-type';
+import { Post } from '@/types/post-type';
 import { GetServerSidePropsContext } from 'next';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
@@ -12,23 +13,23 @@ import { useState } from 'react';
 
 
 type Props = {
-    authorities: Authority[]
+    pageable: Pageable<Post>
 }
 
-export default function AuthorityListPage({ authorities }: Props) {
-
-    const { t } = useTranslation('common');
+export default function PostListPage({ pageable }: Props) {
+  
+    const { i18n, t } = useTranslation('common');
 
     const router = useRouter();
 
-    const [filtered, setFiltered] = useState(authorities);
+    const [filtered, setFiltered] = useState(pageable.data);
 
     const filter = (keyword? : string) => {
         if(keyword){
-            setFiltered(authorities.filter(el => el.code.toLowerCase().includes(keyword.toLowerCase()) ||
-            el.description.toLowerCase().includes(keyword.toLowerCase())))
+            setFiltered(pageable.data.filter(el => el.title.en.toLowerCase().includes(keyword.toLowerCase()) ||
+            el.title.id.toLowerCase().includes(keyword.toLowerCase())))
         }else{
-            setFiltered(authorities);
+            setFiltered(pageable.data);
         }
         
     }
@@ -38,7 +39,7 @@ export default function AuthorityListPage({ authorities }: Props) {
             <div className='w-full bg-stone-50 border-b border-stone-100 flex justify-center items-center text-stone-500'>
                 <BreadCrumb
                     items={[
-                        { label: t('authority') }
+                        { label: t('post') }
                     ]} />
             </div>
             <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col justify-center items-center px-2 py-10'>
@@ -46,7 +47,7 @@ export default function AuthorityListPage({ authorities }: Props) {
                     <FilterForm filter={filter} />
                     <button
                         className='btn btn-default'
-                        onClick={() => router.push('/data/authority/add')}>
+                        onClick={() => router.push('/data/post/add')}>
                         <AddIcon className='w-[20px] h-[20px]' />
                         <span>{t('add')}</span>
                     </button>
@@ -55,8 +56,8 @@ export default function AuthorityListPage({ authorities }: Props) {
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>{t('code')}</th>
-                            <th>{t('description')}</th>
+                            <th>{t('slug')}</th>
+                            <th>{t('title')}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -65,11 +66,11 @@ export default function AuthorityListPage({ authorities }: Props) {
                                 <tr>
                                     <td colSpan={3}>Empty Data</td>
                                 </tr> :
-                                (filtered && filtered.map((authority, index) => {
-                                    return <tr key={authority.id} onClick={() => router.push(`/data/authority/${authority.id}`)}>
+                                (filtered && filtered.map((post, index) => {
+                                    return <tr key={post.id} onClick={() => router.push(`/data/post/${post.id}`)}>
                                         <td data-label="#">{index + 1}</td>
-                                        <td data-label={t('code')}>{authority.code}</td>
-                                        <td data-label={t('description')}>{authority.description}</td>
+                                        <td data-label={t('code')}>{post.slug}</td>
+                                        <td data-label={t('description')}>{post.description[i18n.language as keyof typeof post.description]}</td>
                                     </tr>
                                 }))
                         }
@@ -83,12 +84,13 @@ export default function AuthorityListPage({ authorities }: Props) {
 
 export const getServerSideProps = withAuth(async (context: GetServerSidePropsContext) => {
     const clientInfo = getClientInfo(context);
-    const { data: authorities } = await getAuthorities(clientInfo);
+    const { data: pageable } = await getPosts(clientInfo);
+    
 
     return {
         props: {
             namespaces: ['common'],
-            authorities
+            pageable
         }
     }
 })

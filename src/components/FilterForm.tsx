@@ -1,22 +1,18 @@
 import CloseIcon from '@/icons/CloseIcon';
 import SearchIcon from '@/icons/SearchIcon';
-import { Authority } from '@/types/authority-type';
 import { useTranslation } from 'next-i18next';
-import { useRouter } from 'next/router';
-import { ChangeEvent, Dispatch, FocusEvent, SetStateAction, useRef, useState, useEffect } from 'react';
+import { ChangeEvent, FocusEvent, useRef, useState } from 'react';
+
 
 type Props = {
-    authorities: Authority[],
-    setFiltered: Dispatch<SetStateAction<Authority[]>>
+    filter: (keyword?: string) => void;
 }
 
-export default function FilterForm({ authorities, setFiltered }: Props) {
+export default function FilterForm({ filter }: Props) {
+
+    const [keyword, setKeyword] = useState<string>('');
 
     const inputRef = useRef<HTMLInputElement>(null);
-
-    const router = useRouter();
-
-    const [keyword, setKeyword] = useState<string>(typeof router.query?.keyword === "string" ? router.query.keyword : '');
 
     const handleFocus = (event: FocusEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -36,15 +32,14 @@ export default function FilterForm({ authorities, setFiltered }: Props) {
         if (inputRef.current && keyword.length === 0) {
             inputRef.current.focus();
         } else {
-            setFiltered(authorities.filter(el => el.code.toLowerCase().includes(keyword.toLowerCase()) ||
-                el.description.toLowerCase().includes(keyword.toLowerCase())))
+            filter(keyword);
         }
 
     }
 
     const handleReset = () => {
         setKeyword('');
-        setFiltered(authorities);
+        filter();
     }
 
     const { t } = useTranslation('common');

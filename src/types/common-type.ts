@@ -1,3 +1,5 @@
+export type Language = { id: "Indonesia", en: "English"}
+
 export type Pagination = {
     total: number,
     totalPage: number,
