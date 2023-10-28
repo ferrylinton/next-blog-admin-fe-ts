@@ -8,10 +8,8 @@ import { withAuth } from '@/services/wrapper-service';
 import { Image as ImageType } from '@/types/image-type';
 import { GetServerSidePropsContext } from 'next';
 import { useTranslation } from 'next-i18next';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { getImageSize } from 'react-image-size';
 
 
 type Props = {

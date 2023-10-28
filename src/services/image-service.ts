@@ -1,4 +1,4 @@
-import { getHeaders } from "@/libs/axios-util";
+import { getFormHeaders, getHeaders } from "@/libs/axios-util";
 import blogApiClient from "@/libs/blog-api-client";
 import { Image, ImageForm } from "@/types/image-type";
 import { ClientInfo } from "@/types/common-type";
@@ -15,8 +15,10 @@ export async function getImage(id: string, clientInfo: ClientInfo) {
 };
 
 export async function createImage(data: ImageForm, clientInfo: ClientInfo) {
-    const headers = getHeaders(clientInfo);
-    return await blogApiClient.post('/api/images', data, { headers });
+    const headers = getFormHeaders(clientInfo);
+    const formData = new FormData();
+    formData.append("file", data.file);
+    return await blogApiClient.post('/api/images/upload', formData, { headers });
 };
 
 export async function updateImage(id: string, data: ImageForm, clientInfo: ClientInfo) {

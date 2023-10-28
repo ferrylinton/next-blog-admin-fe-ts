@@ -6,7 +6,6 @@ export const translate = (issues: ZodIssue[], t: TFunction<[DefaultNamespace, ..
     const errors: ErrorValidation = {};
 
     if (issues) {
-        console.log(issues);
         issues.forEach(issue => {
             const field = issue.path[0];
             console.log(issue.path[0]);
@@ -19,8 +18,10 @@ export const translate = (issues: ZodIssue[], t: TFunction<[DefaultNamespace, ..
                 errors[field] = t('too_big', { maximum: (issue as ZodTooBigIssue).maximum });
 
             } else if (issue.code === 'too_small' && issue.type === "string") {
-                console.log(t('too_small', { minimum: (issue as ZodTooSmallIssue).minimum }));
                 errors[field] = t('too_small', { minimum: (issue as ZodTooSmallIssue).minimum });
+
+            } else if (issue.code === 'custom') {
+                    errors[field] = t(issue.message);
 
             } else {
                 errors[field] = issue.message

@@ -1,3 +1,5 @@
+import { ClientInfo } from "./common-type"
+
 export type ImageMetadata = {
     createdBy: string,
     contentType: string,
@@ -13,7 +15,10 @@ export type Image = {
     urls: string[]
 }
 
+export type ImageProps = {
+    clientInfo: ClientInfo
+}
+
 export type ImageForm = {
-    id?: string,
     file?: any
 }

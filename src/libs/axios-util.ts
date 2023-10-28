@@ -21,6 +21,25 @@ export function getHeaders(clientInfo: ClientInfo) {
     return headers;
 };
 
+export function getFormHeaders(clientInfo: ClientInfo) {
+    const headers: RawAxiosRequestHeaders = {
+        'Content-Type': 'multipart/form-data',
+        'Accept': 'application/json',
+        'x-client-ip': clientInfo.clientIp,
+        'x-access-token': clientInfo.token
+    };
+
+    if (clientInfo.locale) {
+        headers['x-accept-language'] = clientInfo.locale;
+    }
+
+    if (typeof window === 'undefined') {
+        headers['User-Agent'] = clientInfo.userAgent;
+    }
+
+    return headers;
+};
+
 export function errorHandler(error: any) {
     if (axios.isAxiosError(error)) {
         const response = error?.response
