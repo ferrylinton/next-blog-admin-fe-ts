@@ -52,5 +52,13 @@
     "title": "Judul",
     "email": "Surel",
     "image": "Gambar",
-    "user": "Pengguna"
+    "user": "Pengguna",
+    "minImageSize1b": "Ukuran gambar minimal 1 byte",
+    "maxImageSize3MB": "Ukuran gambar maksimal 3 MB",
+    "filename": "Nama Berkas",
+    "width": "Panjang",
+    "height": "Lebar",
+    "size": "Ukuran",
+    "selectImage": "Pilih gambar",
+    "noImage": "Tidak ada gambar"
 }

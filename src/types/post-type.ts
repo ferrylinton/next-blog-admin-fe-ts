@@ -1,4 +1,5 @@
 import { Audit, ClientInfo } from "./common-type"
+import { Tag } from "./tag-type"
 
 export type Post = {
     id: string,
@@ -18,12 +19,19 @@ export type Post = {
     }
 } & Audit
 
-export type PostProps = {
-    post?: Post,
+export type PostPageProps = {
+    tags: Tag[],
     clientInfo: ClientInfo
 }
 
-export type PostForm = {
+export type PostFormProps = {
+    post: PostFormData,
+    tags: Tag[],
+    clientInfo: ClientInfo
+}
+
+export type PostFormData = {
+    id?: string,
     slug?: string,
     tags?: string[],
     title?: {

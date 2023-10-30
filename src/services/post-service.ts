@@ -20,9 +20,9 @@ export async function fetchPostBySlug(slug: string): Promise<Post> {
     })
 };
 
-export async function getPosts(clientInfo: ClientInfo) {
+export async function getPosts(clientInfo: ClientInfo, params?: RequestParams) {
     const headers = getHeaders(clientInfo);
-    return await blogApiClient.get<Pageable<Post>>('/api/posts', { headers });
+    return await blogApiClient.get<Pageable<Post>>('/api/posts', { params, headers });
 };
 
 export async function getPost(id: string, clientInfo: ClientInfo) {

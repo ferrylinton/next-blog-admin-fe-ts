@@ -52,5 +52,13 @@
     "title": "Title",
     "email": "Email",
     "image": "Image",
-    "user": "User"
+    "user": "User",
+    "minImageSize1b": "Minimum image size is 1 byte",
+    "maxImageSize3MB": "Maximum image size is 3 MB",
+    "filename": "Filename",
+    "width": "Width",
+    "height": "Height",
+    "size": "Size",
+    "selectImage": "Select image",
+    "noImage": "No image"
 }

@@ -25,9 +25,9 @@ function ImageWithDimension({ image }: Props) {
     return (
         <Image src={process.env.NEXT_PUBLIC_API_HOST + image.urls[0]}
             alt={process.env.NEXT_PUBLIC_API_HOST + image.urls[0]}
-            priority={true}
             width={dimensions.width}
             height={dimensions.height}
+            quality={60}
             className='min-w-[50px] min-h-[50px] object-cover'
         />
     )

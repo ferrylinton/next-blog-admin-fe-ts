@@ -1,15 +1,17 @@
 import BreadCrumb from '@/components/BreadCrumb';
-import FilterForm from '@/components/FilterForm';
+import Paging from '@/components/Paging';
+import SearchForm from '@/components/SearchForm';
 import AddIcon from '@/icons/AddIcon';
 import { getClientInfo } from '@/libs/client-info-util';
+import { isValidPage } from '@/libs/paging-util';
 import { getPosts } from '@/services/post-service';
 import { withAuth } from '@/services/wrapper-service';
 import { Pageable } from '@/types/common-type';
 import { Post } from '@/types/post-type';
+import { RequestParams } from '@/types/request-params-type';
 import { GetServerSidePropsContext } from 'next';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 
 type Props = {
@@ -17,22 +19,11 @@ type Props = {
 }
 
 export default function PostListPage({ pageable }: Props) {
-  
+
     const { i18n, t } = useTranslation('common');
 
     const router = useRouter();
 
-    const [filtered, setFiltered] = useState(pageable.data);
-
-    const filter = (keyword? : string) => {
-        if(keyword){
-            setFiltered(pageable.data.filter(el => el.title.en.toLowerCase().includes(keyword.toLowerCase()) ||
-            el.title.id.toLowerCase().includes(keyword.toLowerCase())))
-        }else{
-            setFiltered(pageable.data);
-        }
-        
-    }
 
     return (
         <div className='w-full h-full grow flex flex-col justify-start items-center pt-[50px]'>
@@ -44,7 +35,7 @@ export default function PostListPage({ pageable }: Props) {
             </div>
             <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col justify-center items-center px-2 py-10'>
                 <div className='w-full flex justify-between items-center mb-3'>
-                    <FilterForm filter={filter} />
+                    <SearchForm url='/data/post'  />
                     <button
                         className='btn btn-default'
                         onClick={() => router.push('/data/post/add')}>
@@ -56,26 +47,25 @@ export default function PostListPage({ pageable }: Props) {
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>{t('slug')}</th>
                             <th>{t('title')}</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            (!filtered || filtered.length === 0) ?
+                            (!pageable.data || pageable.data.length === 0) ?
                                 <tr>
-                                    <td colSpan={3}>Empty Data</td>
+                                    <td key={1} colSpan={2}>Empty Data</td>
                                 </tr> :
-                                (filtered && filtered.map((post, index) => {
+                                (pageable.data && pageable.data.map((post, index) => {
                                     return <tr key={post.id} onClick={() => router.push(`/data/post/${post.id}`)}>
-                                        <td data-label="#">{index + 1}</td>
-                                        <td data-label={t('code')}>{post.slug}</td>
+                                        <td data-label="#">{((pageable.pagination.page - 1) * pageable.pagination.pageSize) + index + 1}</td>
                                         <td data-label={t('description')}>{post.description[i18n.language as keyof typeof post.description]}</td>
                                     </tr>
                                 }))
                         }
                     </tbody>
                 </table>
+                {pageable && pageable.data.length > 0 && <Paging pagination={pageable?.pagination} />}
             </div>
         </div>
     )
@@ -84,8 +74,18 @@ export default function PostListPage({ pageable }: Props) {
 
 export const getServerSideProps = withAuth(async (context: GetServerSidePropsContext) => {
     const clientInfo = getClientInfo(context);
-    const { data: pageable } = await getPosts(clientInfo);
-    
+    const { page, keyword, tag, destination } = getRequestParams(context);
+
+    if (destination) {
+        return {
+            redirect: {
+                destination: destination,
+                permanent: false,
+            },
+        }
+    }
+
+    const { data: pageable } = await getPosts(clientInfo, { page, keyword, tag });
 
     return {
         props: {
@@ -94,3 +94,25 @@ export const getServerSideProps = withAuth(async (context: GetServerSidePropsCon
         }
     }
 })
+
+function getRequestParams(context: GetServerSidePropsContext) {
+    const locale = context.locale ?? 'id';
+    const requestParams: RequestParams = { page: 1 };
+
+    if (context.query?.tag && context.query.tag.length > 2) {
+        requestParams.tag = context.query.tag as string
+    }
+
+    if (context.query?.keyword && context.query?.keyword.length > 2) {
+        requestParams.keyword = context.query?.keyword as string
+    }
+
+    if (context.query.page && !isValidPage(context.query.page as string)) {
+        requestParams.destination = (locale === 'id' ? '' : '/' + locale)
+            + (context.resolvedUrl.split("?")[0] + '?page=1')
+            + (context.query?.keyword ? '&keyword=' + context.query?.keyword : '');
+    }
+
+    requestParams.page = (context.query.page && isValidPage(context.query.page as string)) ? parseInt(context.query.page as string) : 1;
+    return requestParams;
+}

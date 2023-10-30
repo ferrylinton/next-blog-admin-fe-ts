@@ -1,5 +1,3 @@
-import BreadcrumbIcon from '@/icons/BredcrumbIcon';
-import HomeIcon from '@/icons/HomeIcon';
 import { translate } from '@/libs/validation-util';
 import { createAuthority, updateAuthority } from '@/services/authority-service';
 import { AuthorityForm, AuthorityProps } from '@/types/authority-type';
@@ -8,7 +6,6 @@ import { ErrorValidation } from '@/types/validation-type';
 import { CreateAuthoritySchema, UpdateAuthoritySchema } from '@/validations/authority-schema';
 import axios, { AxiosError } from 'axios';
 import { useTranslation } from 'next-i18next';
-import Link from 'next/link';
 import { useRouter } from "next/router";
 import { useState } from 'react';
 import BreadCrumb from '../BreadCrumb';
@@ -122,7 +119,7 @@ export default function AuthorityForm({ authority, clientInfo }: AuthorityProps)
                         <div className="form-group">
                             <label className="form-label" htmlFor="name">{t('description')}</label>
                             <input
-                                className={`w-full form-input ${validationErrors.code ? 'border-red-400' : 'border-stone-300'}`}
+                                className={`w-full form-input ${validationErrors.description ? 'border-red-400' : 'border-stone-300'}`}
                                 name='description'
                                 type="text"
                                 placeholder='xxx'

@@ -7,7 +7,13 @@ import { useRouter } from 'next/router';
 import { ChangeEvent, FocusEvent, useRef, useState } from 'react';
 
 
-export default function SearchForm() {
+type Props = {
+    url: string
+}
+
+export default function SearchForm({ url } : Props) {
+
+    const { t, i18n } = useTranslation('common');
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -41,20 +47,18 @@ export default function SearchForm() {
 
     const handleReset = () => {
         setKeyword('');
-        router.push('/post', undefined, { locale: i18n.language });
+        router.push(url, undefined, { locale: i18n.language });
     }
 
-    const { i18n } = useTranslation('common');
-
-    const { t } = i18n;
+    
 
     return (
         <form
-            action='/post'
+            action={url}
             onSubmit={handleSubmit}
             noValidate
             autoComplete='off'
-            className='search-bar'>
+            className='filter-form'>
 
             <button type="submit" onFocus={handleFocus}>
                 <SearchIcon />

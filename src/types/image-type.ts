@@ -3,7 +3,9 @@ import { ClientInfo } from "./common-type"
 export type ImageMetadata = {
     createdBy: string,
     contentType: string,
-    originalName: string
+    originalName: string,
+    width: number,
+    height: number
 }
 
 export type Image = {
@@ -16,7 +18,8 @@ export type Image = {
 }
 
 export type ImageProps = {
-    clientInfo: ClientInfo
+    clientInfo: ClientInfo,
+    image: Image
 }
 
 export type ImageForm = {

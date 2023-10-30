@@ -56,10 +56,11 @@ export default function ImageListPage({ images }: Props) {
                         (!filtered || filtered.length === 0) ?
                             <div>Empty Data</div> :
                             (filtered && filtered.map((image) => {
-                                return (<div key={image.id} className='flex flex-col justify-start items-center w-full sm:w-[calc(50%-5px)] h-[200px] border border-stone-300 p-2 hover:outline outline-2 outline-lime-300 overflow-hidden relative'>
+                                return (<div key={image.id} className='group cursor-pointer flex flex-col justify-start items-center w-full sm:w-[calc(50%-5px)] h-[200px] border border-stone-300 p-2 hover:outline outline-2 outline-lime-300 overflow-hidden relative' 
+                                onClick={() => router.push(`/data/image/${image.id}`)}>
                                     <ImageWithDimension image={image} />
-                                    <div className='bg-stone-500 bg-opacity-50 p-2 absolute bottom-1 inset-x-1 text-center'>
-                                        <span className='drop-shadow-[0_1px_1px_rgba(0,0,0,1)] text-white'>{image.filename}</span>
+                                    <div className='bg-stone-500 bg-opacity-80 p-2 absolute bottom-0 inset-x-0 text-center transition transform translate-y-8 ease-in-out invisible group-hover:visible group-hover:translate-y-0'>
+                                        <div className='drop-shadow-[0_1px_1px_rgba(0,0,0,1)] text-white text-sm'>{image.filename}</div>
                                     </div>
                                 </div>)
                             }))
