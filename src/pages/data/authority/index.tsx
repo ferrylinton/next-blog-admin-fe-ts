@@ -7,6 +7,7 @@ import { withAuth } from '@/services/wrapper-service';
 import { Authority } from '@/types/authority-type';
 import { GetServerSidePropsContext } from 'next';
 import { useTranslation } from 'next-i18next';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -23,14 +24,14 @@ export default function AuthorityListPage({ authorities }: Props) {
 
     const [filtered, setFiltered] = useState(authorities);
 
-    const filter = (keyword? : string) => {
-        if(keyword){
+    const filter = (keyword?: string) => {
+        if (keyword) {
             setFiltered(authorities.filter(el => el.code.toLowerCase().includes(keyword.toLowerCase()) ||
-            el.description.toLowerCase().includes(keyword.toLowerCase())))
-        }else{
+                el.description.toLowerCase().includes(keyword.toLowerCase())))
+        } else {
             setFiltered(authorities);
         }
-        
+
     }
 
     return (
@@ -45,7 +46,7 @@ export default function AuthorityListPage({ authorities }: Props) {
                 <div className='w-full flex justify-between items-center mb-3'>
                     <FilterForm filter={filter} />
                     <button
-                        className='btn btn-default'
+                        className='btn btn-link'
                         onClick={() => router.push('/data/authority/add')}>
                         <AddIcon className='w-[20px] h-[20px]' />
                         <span>{t('add')}</span>
@@ -57,19 +58,25 @@ export default function AuthorityListPage({ authorities }: Props) {
                             <th>#</th>
                             <th>{t('code')}</th>
                             <th>{t('description')}</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         {
                             (!filtered || filtered.length === 0) ?
                                 <tr>
-                                    <td colSpan={3}>Empty Data</td>
+                                    <td colSpan={4} className='empty'>
+                                        <span>{t('dataIsEmpty')}</span>
+                                    </td>
                                 </tr> :
                                 (filtered && filtered.map((authority, index) => {
-                                    return <tr key={authority.id} onClick={() => router.push(`/data/authority/${authority.id}`)}>
+                                    return <tr key={authority.id}>
                                         <td data-label="#">{index + 1}</td>
                                         <td data-label={t('code')}>{authority.code}</td>
                                         <td data-label={t('description')}>{authority.description}</td>
+                                        <td>
+                                            <Link href={`/data/authority/${authority.id}`}>{t('detail')}</Link>
+                                        </td>
                                     </tr>
                                 }))
                         }

@@ -3,9 +3,14 @@ import { withAuth } from '@/services/wrapper-service';
 import { ClientInfo } from '@/types/common-type';
 import { GetServerSidePropsContext } from 'next';
 
+type Props = {
+    clientInfo: ClientInfo
+}
 
-export default function AuthorityCreatePage(clientInfo: ClientInfo) {
-    return <AuthorityForm clientInfo={clientInfo}/>
+export default function AuthorityCreatePage({ clientInfo }: Props) {
+    return <AuthorityForm
+        authority={{ code: '', description: '' }}
+        clientInfo={clientInfo} />
 }
 
 export const getServerSideProps = withAuth(async (context: GetServerSidePropsContext) => {

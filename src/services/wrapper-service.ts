@@ -1,5 +1,6 @@
 import { COOKIE_TOKEN } from '@/configs/constant';
 import { errorHandler } from '@/libs/axios-util';
+import { getClientInfo } from '@/libs/client-info-util';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
@@ -16,25 +17,15 @@ export function withAuth(gssp: GetServerSideProps) {
                 }
             }
 
-            const { req, locale } = context;
-
-            const clientIp = req.headers["x-real-ip"] || req.headers['x-forwarded-for'] || req.socket.remoteAddress || '';
-            const userAgent = req.headers['user-agent'] || '';
-            const token = req.cookies[COOKIE_TOKEN];
-
+            const clientInfo = getClientInfo(context);
             const gsspData = await gssp(context);
             const props = 'props' in gsspData ? gsspData.props : {};
             const namespaces = 'namespaces' in props ? props.namespaces : [];
-            const ssrConfig = await serverSideTranslations(locale ?? 'id', namespaces || ['common']);
+            const ssrConfig = await serverSideTranslations(context.locale ?? 'id', namespaces || ['common']);
 
             return {
                 props: {
-                    clientInfo: {
-                        locale: locale ?? 'id',
-                        clientIp,
-                        userAgent,
-                        token
-                    },
+                    clientInfo,
                     ...('props' in gsspData ? gsspData.props : {}),
                     ...ssrConfig
                 }

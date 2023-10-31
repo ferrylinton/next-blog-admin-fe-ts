@@ -11,7 +11,8 @@ export type AuthorityProps = {
     clientInfo: ClientInfo
 }
 
-export type AuthorityForm = {
+export type AuthorityFormData = {
+    id?: string,
     code?: string,
     description?: string
 }

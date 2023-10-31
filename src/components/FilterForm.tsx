@@ -62,7 +62,8 @@ export default function FilterForm({ filter }: Props) {
                 onChange={handleChange}
                 placeholder={t('keyword')}
                 value={keyword}
-                maxLength={20} />
+                maxLength={30}
+            />
             {keyword && keyword.length > 0 &&
                 <button type="button" onClick={() => handleReset()}>
                     <CloseIcon />

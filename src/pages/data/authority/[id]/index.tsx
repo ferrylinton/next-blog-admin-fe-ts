@@ -80,14 +80,14 @@ export default function AuthorityDetailPage({ authority, clientInfo }: Authority
                         <button
                             onClick={() => router.push('/data/authority')}
                             type='button'
-                            className="btn">
+                            className="btn btn-link">
                             <BackIcon className='w-[20px] h-[20px]' />
                             <span>{t('back')}</span>
                         </button>
                         <button
                             onClick={() => router.push(`/data/authority/${authority.id}/modify`)}
                             type='button'
-                            className="btn">
+                            className="btn btn-link">
                             <EditIcon className='w-[22px] h-[22px]' />
                             <span>{t('modify')}</span>
                         </button>

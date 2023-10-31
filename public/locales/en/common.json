@@ -60,5 +60,6 @@
     "height": "Height",
     "size": "Size",
     "selectImage": "Select image",
-    "noImage": "No image"
+    "noImage": "No image",
+    "detail": "Detail"
 }

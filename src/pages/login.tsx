@@ -45,7 +45,7 @@ export default function LoginPage() {
                 {message && <div className='w-full text-center text-red-500 pb-4'>{message}</div>}
 
                 <input
-                    className={`w-full p-3 text-sm leading-tight border border-stone-200 focus:outline-none focus:ring-4 ring-lime-200`}
+                    className={`w-full`}
                     type="text"
                     placeholder="Username"
                     name='username'
@@ -55,7 +55,7 @@ export default function LoginPage() {
                 />
 
                 <input
-                    className={`w-full p-3 text-sm leading-tight border border-stone-200 focus:outline-none focus:ring-4 ring-lime-200`}
+                    className={`w-full`}
                     type="password"
                     placeholder="Password"
                     name='password'
@@ -64,8 +64,8 @@ export default function LoginPage() {
                     onChange={onFieldChange}
                 />
 
-                <button type="submit" className='btn btn-primary'>
-                    <span className={`text-lg tracking-wider ${logoFont.className}`}>Login</span>
+                <button type="submit" className='btn-primary'>
+                    <span>Login</span>
                 </button>
             </form>
         </div>

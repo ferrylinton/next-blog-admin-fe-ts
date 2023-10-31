@@ -26,12 +26,12 @@ const DeleteConfirmDialog = ({ showConfirm, setShowConfirm, okHandler }: Props) 
                     </AlertDialog.Description>
                     <div className="flex justify-end gap-[5px]">
                         <AlertDialog.Cancel asChild>
-                            <button className="w-[80px] btn">
+                            <button className="w-[100px] h-[40px] btn btn-secondary">
                                 <span>{t('cancel')}</span>
                             </button>
                         </AlertDialog.Cancel>
                         <AlertDialog.Action asChild>
-                            <button onClick={() => okHandler()} className="w-[80px] btn btn-primary">
+                            <button onClick={() => okHandler()} className="w-[100px]  h-[40px] btn btn-primary">
                                 <span>{t('ok')}</span>
                             </button>
                         </AlertDialog.Action>

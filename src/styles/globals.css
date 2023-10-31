@@ -3,11 +3,6 @@
 @tailwind utilities;
 
 
-.scroll-bars-hidden {
-  overflow: hidden !important;
-  padding-right: 17px !important;
-}
-
 
 @layer components {
 
@@ -26,11 +21,16 @@
   [multiple],
   textarea,
   select {
-    @apply placeholder:pl-1 placeholder:font-light placeholder:italic focus:border-stone-400;
+    @apply border border-stone-400 py-2 px-3;
+    @apply placeholder:font-light placeholder:italic;
+    @apply focus:ring-2 focus:ring-lime-200 focus:outline-none focus:border-stone-500
   }
 
   input[type='checkbox']{
-    @apply appearance-none outline-none focus:ring-0  focus:border-lime-500 focus:bg-lime-400 focus:outline-lime-400 focus:checked:bg-lime-400 hover:checked:bg-lime-400 checked:border-lime-500 checked:bg-lime-400 hover:bg-lime-400;
+    @apply appearance-none outline-none accent-lime-400;
+    @apply focus:ring-0 focus:border-lime-500 focus:bg-lime-400 focus:outline-lime-400 focus:checked:bg-lime-400;
+    @apply hover:checked:bg-lime-400 hover:bg-lime-400;
+    @apply checked:border-lime-500 checked:bg-lime-400;
   }
 
   body{
@@ -83,36 +83,40 @@
   }
 
   .btn {
-    @apply flex justify-center items-center gap-1 py-2 px-4 border border-stone-300 text-stone-500 shadow-[0_0_15px_0_rgba(106,106,106,0.15)]  ;
+    @apply transition duration-300 ease-out;
+    @apply h-[45px] border px-4 cursor-pointer flex justify-center items-center gap-2;
   }
 
-  .btn:hover {
-    @apply bg-stone-100 border-stone-400 text-stone-600
+  .btn-link{
+    @apply border-stone-300 text-stone-500 shadow-[0_1px_4px_0_rgba(0,0,0,0.1)];
+    @apply hover:border-stone-400 hover:text-stone-600 hover:bg-stone-50
+  }
+
+  .btn-secondary{
+    @apply border-stone-600 bg-stone-600/80 shadow-[0_1px_4px_0_rgba(0,0,0,0.4)];
+    @apply hover:bg-stone-600;
   }
 
   .btn-primary {
-    @apply border-lime-300 text-lime-500
+    @apply border-lime-600 bg-lime-600/80 shadow-[0_1px_4px_0_rgba(0,0,0,0.4)];
+    @apply hover:bg-lime-600;
   }
-
-  .btn-primary:hover {
-    @apply bg-lime-50 border-lime-400 text-lime-600;
-  }
-
+  
   .btn-danger{
-    @apply border-red-300 text-red-500
+    @apply border-red-600 bg-red-600/80 shadow-[0_1px_4px_0_rgba(0,0,0,0.4)];
+    @apply hover:bg-red-600;
   }
 
-  .btn-danger:hover {
-    @apply bg-red-50 border-red-400 text-red-600;
+  .btn-danger span, .btn-primary span, .btn-secondary span, .btn-danger svg, .btn-primary svg, .btn-secondary svg{
+    @apply text-stone-100 font-semibold;
+    @apply hover:text-white;
   }
 
   .filter-form {
-    @apply flex bg-white h-[42px] sm:w-[300px] border border-stone-300 overflow-hidden
+    @apply flex items-center h-[45px] w-[200px] sm:w-[350px] border border-stone-300;
+    @apply focus-within:ring-4 focus-within:ring-lime-200  focus-within:border-stone-400;
+
   } 
-
-  .filter-form {
-    @apply focus-within:ring-2 focus-within:ring-lime-200
-  }
 
   .filter-form button[type="submit"]{
     @apply border-none focus:outline-none h-full w-[45px] text-stone-400 hover:text-stone-500
@@ -123,7 +127,7 @@
   }
 
   .filter-form input[type="text"]{
-    @apply grow h-full border-none text-sm focus:outline-none placeholder-stone-300
+    @apply w-[120px] sm:w-auto sm:grow h-full border-none focus:outline-none ps-0 focus:ring-0 focus:ring-offset-0
   }
 
   .filter-form button[type="button"]{
@@ -162,42 +166,48 @@
     @apply w-full text-sm border-t border-stone-300
   }
 
+  .table-responsive a{
+    @apply transition duration-300 ease-out;
+    @apply inline-block border border-stone-300 py-[6px] px-4;
+    @apply hover:border-lime-500 hover:shadow-[0_1px_4px_0_rgba(0,0,0,0.1)] hover:bg-white;
+  }
+
   .table-responsive thead {
       @apply hidden sm:table-header-group
   }
 
-  .table-responsive tr{
-      @apply even:bg-stone-100/60 odd:bg-white border-b border-stone-300 rounded hover:bg-stone-100
-  }
-
-  .table-responsive tr{
+  .table-responsive tbody tr{
+      @apply even:bg-stone-100/60 odd:bg-white;
+      @apply  border-b border-stone-300 rounded hover:bg-stone-100;
       @apply sm:table-row sm:border-t-0
   }
 
   .table-responsive th, .table-responsive td{
-      @apply text-start sm:first:w-[50px] sm:first:ps-3 px-1 cursor-pointer break-all
+      @apply text-start sm:first:w-[50px] sm:first:ps-3 sm:last:w-[80px] px-1 break-all
   }
 
   .table-responsive th{
-      @apply py-3 text-stone-600 font-bold border-b-2 border-stone-400
+    @apply py-3 text-stone-600 font-bold border-b-2 border-stone-400
   }
 
-  .table-responsive td{
-      @apply sm:py-3 block relative pl-[calc(30%+10px)] hover:bg-stone-100
+  .table-responsive td:not(.empty){
+    @apply block relative pl-[calc(30%+10px)] py-1;
+    @apply sm:table-cell sm:pl-1; 
+  } 
+
+  .table-responsive td:not(.empty):before{
+    @apply absolute top-0 left-0 w-[30%] h-full;
+    @apply border-r-2 border-stone-400 pe-2;
+    @apply content-[attr(data-label)] text-right font-bold text-sm text-stone-600;
+    @apply sm:hidden;
   }
 
-  .table-responsive td{
-      @apply sm:table-cell sm:pl-1
+  .table-responsive td.empty{
+    @apply p-0
   }
-
-  .table-responsive td::before{
-      @apply content-[attr(data-label)] absolute border-r-2 border-stone-400 pe-2 top-0 left-0 w-[30%] h-full text-right font-bold text-sm text-stone-600
+  .table-responsive td.empty span{
+    @apply block my-2 p-4 text-center border border-red-400 bg-red-50 text-red-700;
   }
-
-  .table-responsive td::before{
-      @apply sm:hidden
-  }
-
 
   .detail{
     @apply flex flex-col gap-2 items-start w-full sm:border border-stone-200/80 px-2  sm:px-4 py-5
@@ -233,10 +243,6 @@
 
   .form-error-label{
     @apply text-xs text-red-500 mt-[2px]
-  }
-
-  .form-input{
-    @apply p-3 text-sm leading-tight border appearance-none focus:outline-none focus:ring-4 focus:ring-lime-200
   }
 
 }

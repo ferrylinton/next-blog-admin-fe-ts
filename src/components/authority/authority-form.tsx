@@ -1,38 +1,43 @@
 import { translate } from '@/libs/validation-util';
 import { createAuthority, updateAuthority } from '@/services/authority-service';
-import { AuthorityForm, AuthorityProps } from '@/types/authority-type';
+import { Authority, AuthorityFormData } from '@/types/authority-type';
+import { ClientInfo } from '@/types/common-type';
 import { MessageError } from '@/types/response-type';
 import { ErrorValidation } from '@/types/validation-type';
 import { CreateAuthoritySchema, UpdateAuthoritySchema } from '@/validations/authority-schema';
 import axios, { AxiosError } from 'axios';
+import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from "next/router";
 import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import BreadCrumb from '../BreadCrumb';
+import MessageErrorBox from '../MessageErrorBox';
+import ValidationError from '../ValidationError';
 
+type Props = {
+    authority: AuthorityFormData,
+    clientInfo: ClientInfo
+}
 
-export default function AuthorityForm({ authority, clientInfo }: AuthorityProps) {
+export default function AuthorityForm({ authority, clientInfo }: Props) {
 
     const router = useRouter();
 
     const { t } = useTranslation('common');
 
+    const { register, handleSubmit } = useForm<Authority>({ defaultValues: authority });
+
     const [validationErrors, setValidationErrors] = useState<ErrorValidation>({});
 
     const [messageError, setMessageError] = useState<MessageError | null>(null);
 
-    const [data, setData] = useState<AuthorityForm>(authority || {});
-
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setData({ ...data, [event.target.name]: event.target.value });
-    }
-
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit: SubmitHandler<Authority> = async (data) => {
         try {
-            event.preventDefault();
             const validation = (authority?.id) ? UpdateAuthoritySchema.safeParse(data) : CreateAuthoritySchema.safeParse(data);
 
             if (validation.success) {
+                setValidationErrors({});
                 const response = (authority?.id) ? (await updateAuthority(authority.id, validation.data, clientInfo)) : (await createAuthority(validation.data, clientInfo));
 
                 if (response.status === 201) {
@@ -68,8 +73,6 @@ export default function AuthorityForm({ authority, clientInfo }: AuthorityProps)
         }
     };
 
-
-
     return (
         <div className='w-full h-full grow flex flex-col justify-start items-center pt-[50px] pb-5'>
             <div className='w-full bg-stone-100 flex justify-center items-center text-stone-500'>
@@ -88,14 +91,10 @@ export default function AuthorityForm({ authority, clientInfo }: AuthorityProps)
             </div>
             <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col justify-center items-center px-2 py-5'>
                 <div className='form'>
-                    {
-                        messageError && <div className='w-full border border-red-300 bg-red-50 px-3 py-2 mb-8 text-sm flex flex-col text-red-500'>
-                            {messageError.message}
-                        </div>
-                    }
+                    <MessageErrorBox messageError={messageError} />
                     <form
                         className='w-full'
-                        onSubmit={handleSubmit}
+                        onSubmit={handleSubmit(onSubmit)}
                         method='post'
                         noValidate
                         autoComplete='off' >
@@ -104,40 +103,35 @@ export default function AuthorityForm({ authority, clientInfo }: AuthorityProps)
                             <label className='form-label' htmlFor="code">{t('code')}</label>
                             <div className='w-full bg-stone-200'>
                                 <input
-                                    className={`w-[80px] form-input ${validationErrors.code ? 'border-red-400' : 'border-stone-300'}`}
-                                    name='code'
+                                    className={clsx('w-[80px]', validationErrors.code && 'border-red-400')}
                                     type="text"
                                     placeholder='xxx'
                                     maxLength={5}
-                                    value={data.code}
-                                    onChange={handleChange}
+                                    {...register("code")}
                                 />
                             </div>
-                            {validationErrors.code && <div className="form-error-label"> {validationErrors.code} </div>}
+                            <ValidationError message={validationErrors.code} />
                         </div>
 
                         <div className="form-group">
                             <label className="form-label" htmlFor="name">{t('description')}</label>
                             <input
-                                className={`w-full form-input ${validationErrors.description ? 'border-red-400' : 'border-stone-300'}`}
-                                name='description'
+                                className={clsx('w-full', validationErrors.code && 'border-red-400')}
                                 type="text"
                                 placeholder='xxx'
                                 maxLength={50}
-                                value={data.description}
-                                onChange={handleChange}
+                                {...register("description")}
                             />
-                            {validationErrors.description && <div className="form-error-label"> {validationErrors.description} </div>}
+                            <ValidationError message={validationErrors.description} />
                         </div>
 
-                        <div className="mt-5 text-center flex gap-1">
+                        <div className="mt-5 text-center flex gap-1 max-w-[350px]">
                             <button
-                                onClick={() => router.push(authority ? `/data/authority/${authority.id}` : '/data/authority')}
+                                onClick={() => router.push(authority.id ? `/data/authority/${authority.id}` : '/data/authority')}
                                 type='button'
-                                className="w-full btn">
+                                className="w-full btn btn-secondary">
                                 <span>{t('cancel')}</span>
                             </button>
-
                             <button
                                 type="submit"
                                 className="w-full btn btn-primary">

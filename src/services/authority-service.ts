@@ -16,6 +16,8 @@ export async function getAuthority(id: string, clientInfo: ClientInfo) {
 
 export async function createAuthority(data: AuthorityForm, clientInfo: ClientInfo) {
     const headers = getHeaders(clientInfo);
+    console.log(clientInfo);
+    console.log(headers);
     return await blogApiClient.post('/api/authorities', data, { headers });
 };
 

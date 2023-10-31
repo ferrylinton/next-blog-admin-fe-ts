@@ -18,7 +18,7 @@ type FlatPost = {
 }
 
 export default function PostForm({ post, tags, clientInfo }: PostFormProps) {
-    console.log(flatten(post, { safe: true }));
+
     const router = useRouter();
 
     const { t } = useTranslation('common');
@@ -31,9 +31,8 @@ export default function PostForm({ post, tags, clientInfo }: PostFormProps) {
 
     const onSubmit: SubmitHandler<FlatPost> = async (data) => {
         try {
-            console.log(unflatten(data));
             const validation = (post?.id) ? UpdatePostSchema.safeParse(unflatten(data)) : CreatePostSchema.safeParse(unflatten(data));
-            console.log(validation);
+            
             if (validation.success) {
                 const response = (post?.id) ? (await updatePost(post.id, validation.data, clientInfo)) : (await createPost(validation.data, clientInfo));
 
