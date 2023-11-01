@@ -27,3 +27,7 @@ export type Audit = {
     updatedAt?: string,
     updatedBy?: string
 }
+
+export type PageProps = {
+    clientInfo: ClientInfo
+}

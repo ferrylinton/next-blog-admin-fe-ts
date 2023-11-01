@@ -20,7 +20,7 @@
     "too_small": "The minimum number of characters is {{minimum, number}}",
     "delete": "Delete",
     "add": "Add",
-    "modify": "Modify",
+    "update": "Update",
     "cancel": "Cancel",
     "next": "Next",
     "previous": "Previous",

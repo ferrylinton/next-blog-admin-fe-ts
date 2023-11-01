@@ -20,7 +20,7 @@
     "too_small": "Jumlah minimal karakter adalah {{minimum, number}}",
     "delete": "Hapus",
     "add": "Tambah",
-    "modify": "Ubah",
+    "update": "Ubah",
     "cancel": "Batal",
     "next": "Berikutnya",
     "previous": "Sebelumnya",

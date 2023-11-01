@@ -1,5 +1,6 @@
 import { ClientInfo } from "@/types/common-type";
-import axios, { RawAxiosRequestHeaders } from "axios";
+import axios, { AxiosResponse, RawAxiosRequestHeaders } from "axios";
+import { NextRouter } from "next/router";
 
 
 export function getHeaders(clientInfo: ClientInfo) {
@@ -50,6 +51,10 @@ export function errorHandler(error: any) {
                     destination: '/login',
                     permanent: false
                 }
+            }
+        } else if (response && response.status === 404) {
+            return {
+                notFound: true
             }
         }
     }

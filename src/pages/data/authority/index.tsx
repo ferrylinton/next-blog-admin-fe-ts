@@ -31,7 +31,6 @@ export default function AuthorityListPage({ authorities }: Props) {
         } else {
             setFiltered(authorities);
         }
-
     }
 
     return (
@@ -90,12 +89,12 @@ export default function AuthorityListPage({ authorities }: Props) {
 
 export const getServerSideProps = withAuth(async (context: GetServerSidePropsContext) => {
     const clientInfo = getClientInfo(context);
-    const { data: authorities } = await getAuthorities(clientInfo);
+    const { data } = await getAuthorities(clientInfo);
 
     return {
         props: {
             namespaces: ['common'],
-            authorities
+            authorities: data
         }
     }
 })

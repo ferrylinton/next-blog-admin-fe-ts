@@ -1,6 +1,5 @@
 import BreadCrumb from '@/components/BreadCrumb';
 import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
-import { COOKIE_TOKEN } from '@/configs/constant';
 import BackIcon from '@/icons/BackIcon';
 import DeleteIcon from '@/icons/DeleteIcon';
 import EditIcon from '@/icons/EditIcon';
@@ -8,7 +7,7 @@ import { getClientInfo } from '@/libs/client-info-util';
 import { formatToTimestamp } from '@/libs/date-util';
 import { deleteAuthority, getAuthority } from '@/services/authority-service';
 import { withAuth } from '@/services/wrapper-service';
-import { AuthorityProps } from '@/types/authority-type';
+import { AuthorityPageProps } from '@/types/authority-type';
 import { GetServerSidePropsContext } from 'next';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from "next/router";
@@ -16,7 +15,7 @@ import { useState } from 'react';
 
 
 
-export default function AuthorityDetailPage({ authority, clientInfo }: AuthorityProps) {
+export default function AuthorityDetailPage({ authority, clientInfo }: AuthorityPageProps) {
 
     const router = useRouter();
 
@@ -85,11 +84,11 @@ export default function AuthorityDetailPage({ authority, clientInfo }: Authority
                             <span>{t('back')}</span>
                         </button>
                         <button
-                            onClick={() => router.push(`/data/authority/${authority.id}/modify`)}
+                            onClick={() => router.push(`/data/authority/${authority.id}/update`)}
                             type='button'
                             className="btn btn-link">
                             <EditIcon className='w-[22px] h-[22px]' />
-                            <span>{t('modify')}</span>
+                            <span>{t('update')}</span>
                         </button>
                         <button
                             onClick={() => showDeleteConfirmation()}

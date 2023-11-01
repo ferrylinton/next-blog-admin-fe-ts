@@ -23,7 +23,7 @@
   select {
     @apply border border-stone-400 py-2 px-3;
     @apply placeholder:font-light placeholder:italic;
-    @apply focus:ring-2 focus:ring-lime-200 focus:outline-none focus:border-stone-500
+    @apply focus:ring-4 focus:ring-lime-200 focus:outline-none focus:border-stone-500
   }
 
   input[type='checkbox']{
@@ -89,7 +89,7 @@
 
   .btn-link{
     @apply border-stone-300 text-stone-500 shadow-[0_1px_4px_0_rgba(0,0,0,0.1)];
-    @apply hover:border-stone-400 hover:text-stone-600 hover:bg-stone-50
+    @apply hover:border-stone-400 hover:text-stone-600 hover:bg-stone-100
   }
 
   .btn-secondary{

@@ -1,10 +1,10 @@
 import { translate } from '@/libs/validation-util';
-import { createAuthority, updateAuthority } from '@/services/authority-service';
-import { Authority, AuthorityFormData } from '@/types/authority-type';
+import { createTag, updateTag } from '@/services/tag-service';
+import { Tag, TagFormData } from '@/types/tag-type';
 import { ClientInfo } from '@/types/common-type';
 import { MessageError } from '@/types/response-type';
 import { ErrorValidation } from '@/types/validation-type';
-import { CreateAuthoritySchema, UpdateAuthoritySchema } from '@/validations/authority-schema';
+import { CreateTagSchema, UpdateTagSchema } from '@/validations/tag-schema';
 import axios, { AxiosError } from 'axios';
 import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
@@ -16,35 +16,35 @@ import MessageErrorBox from '../MessageErrorBox';
 import ValidationError from '../ValidationError';
 
 type Props = {
-    authority: AuthorityFormData,
+    tag: TagFormData,
     clientInfo: ClientInfo
 }
 
-export default function AuthorityForm({ authority, clientInfo }: Props) {
+export default function TagForm({ tag, clientInfo }: Props) {
 
     const router = useRouter();
 
     const { t } = useTranslation('common');
 
-    const { register, handleSubmit } = useForm<Authority>({ defaultValues: authority });
+    const { register, handleSubmit } = useForm<Tag>({ defaultValues: tag });
 
     const [validationErrors, setValidationErrors] = useState<ErrorValidation>({});
 
     const [messageError, setMessageError] = useState<MessageError | null>(null);
 
-    const onSubmit: SubmitHandler<Authority> = async (data) => {
+    const onSubmit: SubmitHandler<Tag> = async (data) => {
         try {
             setValidationErrors({});
             setMessageError(null);
-            const validation = (authority?.id) ? UpdateAuthoritySchema.safeParse(data) : CreateAuthoritySchema.safeParse(data);
+            const validation = (tag?.id) ? UpdateTagSchema.safeParse(data) : CreateTagSchema.safeParse(data);
 
             if (validation.success) {
-                const response = (authority?.id) ? (await updateAuthority(authority.id, validation.data, clientInfo)) : (await createAuthority(validation.data, clientInfo));
+                const response = (tag?.id) ? (await updateTag(tag.id, validation.data, clientInfo)) : (await createTag(validation.data, clientInfo));
 
                 if (response.status === 201) {
-                    router.push('/data/authority');
+                    router.push('/data/tag');
                 } else if (response.status === 200) {
-                    router.push(`/data/authority/${authority?.id}`);
+                    router.push(`/data/tag/${tag?.id}`);
                 } else if (response.status === 400) {
                     setValidationErrors(translate(response.data, t));
                 } else if (response.status === 409) {
@@ -77,15 +77,15 @@ export default function AuthorityForm({ authority, clientInfo }: Props) {
     return (
         <div className='w-full h-full grow flex flex-col justify-start items-center pt-[50px] pb-5'>
             <div className='w-full bg-stone-100 flex justify-center items-center text-stone-500'>
-                {authority ?
+                {tag ?
                     <BreadCrumb
                         items={[
-                            { label: t('authority'), url: `/data/authority/${authority.id}` },
+                            { label: t('tag'), url: `/data/tag/${tag.id}` },
                             { label: t('update') }
                         ]} /> :
                     <BreadCrumb
                         items={[
-                            { label: t('authority'), url: `/data/authority` },
+                            { label: t('tag'), url: `/data/tag` },
                             { label: t('add') }
                         ]} />
                 }
@@ -101,34 +101,20 @@ export default function AuthorityForm({ authority, clientInfo }: Props) {
                         autoComplete='off' >
 
                         <div className="form-group">
-                            <label className='form-label' htmlFor="code">{t('code')}</label>
-                            <div className='w-full bg-stone-200'>
-                                <input
-                                    className={clsx('w-[80px]', validationErrors.code && 'border-red-400')}
-                                    type="text"
-                                    placeholder='xxx'
-                                    maxLength={5}
-                                    {...register("code")}
-                                />
-                            </div>
-                            <ValidationError message={validationErrors.code} />
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label" htmlFor="name">{t('description')}</label>
+                            <label className='form-label' htmlFor="name">{t('name')}</label>
                             <input
-                                className={clsx('w-full', validationErrors.code && 'border-red-400')}
+                                className={clsx('w-full', validationErrors.name && 'border-red-400')}
                                 type="text"
                                 placeholder='xxx'
-                                maxLength={50}
-                                {...register("description")}
+                                maxLength={30}
+                                {...register("name")}
                             />
-                            <ValidationError message={validationErrors.description} />
+                            <ValidationError message={validationErrors.name} />
                         </div>
 
                         <div className="mt-5 text-center flex gap-1 max-w-[350px]">
                             <button
-                                onClick={() => router.push(authority.id ? `/data/authority/${authority.id}` : '/data/authority')}
+                                onClick={() => router.push(tag.id ? `/data/tag/${tag.id}` : '/data/tag')}
                                 type='button'
                                 className="w-full btn btn-secondary">
                                 <span>{t('cancel')}</span>

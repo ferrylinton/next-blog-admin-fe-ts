@@ -3,13 +3,14 @@ import { Audit, ClientInfo } from "./common-type"
 export type Tag = {
     id: string,
     name: string
-}& Audit
+} & Audit
 
-export type TagProps = {
-    tag?: Tag,
+export type TagPageProps = {
+    tag: Tag,
     clientInfo: ClientInfo
 }
 
-export type TagForm = {
+export type TagFormData = {
+    id?: string,
     name?: string
 }

@@ -7,6 +7,7 @@ import { withAuth } from '@/services/wrapper-service';
 import { Tag } from '@/types/tag-type';
 import { GetServerSidePropsContext } from 'next';
 import { useTranslation } from 'next-i18next';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -23,10 +24,10 @@ export default function TagListPage({ tags }: Props) {
 
     const [filtered, setFiltered] = useState(tags);
 
-    const filter = (keyword? : string) => {
-        if(keyword){
+    const filter = (keyword?: string) => {
+        if (keyword) {
             setFiltered(tags.filter(tag => tag.name.toLowerCase().includes(keyword.toLowerCase())))
-        }else{
+        } else {
             setFiltered(tags);
         }
     }
@@ -43,7 +44,7 @@ export default function TagListPage({ tags }: Props) {
                 <div className='w-full flex justify-between items-center mb-3'>
                     <FilterForm filter={filter} />
                     <button
-                        className='btn btn-default'
+                        className='btn btn-link'
                         onClick={() => router.push('/data/tag/add')}>
                         <AddIcon className='w-[20px] h-[20px]' />
                         <span>{t('add')}</span>
@@ -54,18 +55,24 @@ export default function TagListPage({ tags }: Props) {
                         <tr>
                             <th>#</th>
                             <th>{t('name')}</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         {
                             (!filtered || filtered.length === 0) ?
                                 <tr>
-                                    <td colSpan={2}>Empty Data</td>
+                                    <td colSpan={3} className='empty'>
+                                        <span>{t('dataIsEmpty')}</span>
+                                    </td>
                                 </tr> :
                                 (filtered && filtered.map((tag, index) => {
                                     return <tr key={tag.id} onClick={() => router.push(`/data/tag/${tag.id}`)}>
                                         <td data-label="#">{index + 1}</td>
                                         <td data-label={t('name')}>{tag.name}</td>
+                                        <td>
+                                            <Link href={`/data/tag/${tag.id}`}>{t('detail')}</Link>
+                                        </td>
                                     </tr>
                                 }))
                         }
@@ -79,12 +86,12 @@ export default function TagListPage({ tags }: Props) {
 
 export const getServerSideProps = withAuth(async (context: GetServerSidePropsContext) => {
     const clientInfo = getClientInfo(context);
-    const { data: tags } = await getTags(clientInfo);
-    
+    const { data } = await getTags(clientInfo);
+
     return {
         props: {
             namespaces: ['common'],
-            tags
+            tags: data
         }
     }
 })

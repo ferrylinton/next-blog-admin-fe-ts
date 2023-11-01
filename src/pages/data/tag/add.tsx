@@ -1,11 +1,11 @@
-import AuthorityForm from '@/components/authority/authority-form';
+import TagForm from '@/components/tag/tag-form';
 import { withAuth } from '@/services/wrapper-service';
-import { ClientInfo } from '@/types/common-type';
+import { PageProps } from '@/types/common-type';
 import { GetServerSidePropsContext } from 'next';
 
 
-export default function AuthorityCreatePage(clientInfo: ClientInfo) {
-    return <AuthorityForm clientInfo={clientInfo}/>
+export default function AuthorityCreatePage({ clientInfo }: PageProps) {
+    return <TagForm tag={{ name: '' }} clientInfo={clientInfo} />
 }
 
 export const getServerSideProps = withAuth(async (context: GetServerSidePropsContext) => {

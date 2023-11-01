@@ -6,8 +6,8 @@ export type Authority = {
     description: string
 } & Audit
 
-export type AuthorityProps = {
-    authority?: Authority,
+export type AuthorityPageProps = {
+    authority: Authority,
     clientInfo: ClientInfo
 }
 

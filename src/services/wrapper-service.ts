@@ -20,13 +20,13 @@ export function withAuth(gssp: GetServerSideProps) {
             const clientInfo = getClientInfo(context);
             const gsspData = await gssp(context);
             const props = 'props' in gsspData ? gsspData.props : {};
-            const namespaces = 'namespaces' in props ? props.namespaces : [];
-            const ssrConfig = await serverSideTranslations(context.locale ?? 'id', namespaces || ['common']);
+            const namespaces = 'namespaces' in props ? props.namespaces : ['common'];
+            const ssrConfig = await serverSideTranslations(context.locale ?? 'id', namespaces);
 
             return {
                 props: {
                     clientInfo,
-                    ...('props' in gsspData ? gsspData.props : {}),
+                    ...props,
                     ...ssrConfig
                 }
             }

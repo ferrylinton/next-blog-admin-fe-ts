@@ -1,24 +1,21 @@
 import BreadCrumb from '@/components/BreadCrumb';
 import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
-import { COOKIE_TOKEN } from '@/configs/constant';
 import BackIcon from '@/icons/BackIcon';
-import BreadcrumbIcon from '@/icons/BredcrumbIcon';
 import DeleteIcon from '@/icons/DeleteIcon';
 import EditIcon from '@/icons/EditIcon';
-import HomeIcon from '@/icons/HomeIcon';
+import { getClientInfo } from '@/libs/client-info-util';
 import { formatToTimestamp } from '@/libs/date-util';
-import { deleteAuthority, getAuthority } from '@/services/authority-service';
+import { deleteTag, getTag } from '@/services/tag-service';
 import { withAuth } from '@/services/wrapper-service';
-import { AuthorityProps } from '@/types/authority-type';
+import { TagPageProps } from '@/types/tag-type';
 import { GetServerSidePropsContext } from 'next';
 import { useTranslation } from 'next-i18next';
-import Link from 'next/link';
 import { useRouter } from "next/router";
 import { useState } from 'react';
 
 
 
-export default function AuthorityDetailPage({ authority, clientInfo }: AuthorityProps) {
+export default function TagDetailPage({ tag, clientInfo }: TagPageProps) {
 
     const router = useRouter();
 
@@ -31,11 +28,11 @@ export default function AuthorityDetailPage({ authority, clientInfo }: Authority
     }
 
     const okHandler = async () => {
-        if (authority) {
-            await deleteAuthority(authority.id, clientInfo);
+        if (tag) {
+            await deleteTag(tag.id, clientInfo);
         }
 
-        router.push('/data/authority');
+        router.push('/data/tag');
     }
 
 
@@ -44,54 +41,50 @@ export default function AuthorityDetailPage({ authority, clientInfo }: Authority
             <div className='w-full bg-stone-100 flex justify-center items-center text-stone-500'>
                 <BreadCrumb
                     items={[
-                        { label: t('authority'), url: `/data/authority` },
+                        { label: t('tag'), url: `/data/tag` },
                         { label: t('detail') }
                     ]} />
             </div>
-            {authority && <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col justify-center items-center px-2 py-5'>
+            {tag && <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col justify-center items-center px-2 py-5'>
                 <div className='detail'>
                     <div className='detail-item'>
                         <span>ID</span>
-                        <span>{authority.id}</span>
+                        <span>{tag.id}</span>
                     </div>
                     <div className='detail-item'>
-                        <span>{t('code')}</span>
-                        <span>{authority.code}</span>
-                    </div>
-                    <div className='detail-item'>
-                        <span>{t('description')}</span>
-                        <span>{authority.description}</span>
+                        <span>{t('name')}</span>
+                        <span>{tag.name}</span>
                     </div>
                     <div className='detail-item'>
                         <span>{t('createdBy')}</span>
-                        <span>{authority.createdBy}</span>
+                        <span>{tag.createdBy}</span>
                     </div>
                     <div className='detail-item'>
                         <span>{t('createdAt')}</span>
-                        <span>{formatToTimestamp(authority.createdAt)}</span>
+                        <span>{formatToTimestamp(tag.createdAt)}</span>
                     </div>
-                    {authority.updatedBy && <div className='detail-item'>
+                    {tag.updatedBy && <div className='detail-item'>
                         <span>{t('updatedBy')}</span>
-                        <span>{authority.updatedBy}</span>
+                        <span>{tag.updatedBy}</span>
                     </div>}
-                    {authority.updatedAt && <div className='detail-item'>
+                    {tag.updatedAt && <div className='detail-item'>
                         <span>{t('updatedAt')}</span>
-                        <span>{formatToTimestamp(authority.updatedAt)}</span>
+                        <span>{formatToTimestamp(tag.updatedAt)}</span>
                     </div>}
                     <div className="mt-5 flex gap-2">
                         <button
-                            onClick={() => router.push('/data/authority')}
+                            onClick={() => router.push('/data/tag')}
                             type='button'
-                            className="btn">
+                            className="btn btn-link">
                             <BackIcon className='w-[20px] h-[20px]' />
                             <span>{t('back')}</span>
                         </button>
                         <button
-                            onClick={() => router.push(`/data/authority/${authority.id}/modify`)}
+                            onClick={() => router.push(`/data/tag/${tag.id}/update`)}
                             type='button'
-                            className="btn">
+                            className="btn btn-link">
                             <EditIcon className='w-[22px] h-[22px]' />
-                            <span>{t('modify')}</span>
+                            <span>{t('update')}</span>
                         </button>
                         <button
                             onClick={() => showDeleteConfirmation()}
@@ -114,17 +107,15 @@ export default function AuthorityDetailPage({ authority, clientInfo }: Authority
     )
 }
 
-export const getServerSideProps = withAuth(async ({ req, params, locale }: GetServerSidePropsContext) => {
-    const id = params?.id as string;
-    const clientIp = req.headers["x-real-ip"] || req.headers['x-forwarded-for'] || req.socket.remoteAddress || '';
-    const userAgent = req.headers['user-agent'] || '';
-    const token = req.cookies[COOKIE_TOKEN];
-    const { data } = await getAuthority(id, { locale: locale || 'id', clientIp: clientIp as string, userAgent, token: token as string });
+export const getServerSideProps = withAuth(async (context: GetServerSidePropsContext) => {
+    const id = context.params?.id as string;
+    const clientInfo = getClientInfo(context)
+    const { data } = await getTag(id, clientInfo);
 
     return {
         props: {
             namespaces: ['common'],
-            authority: data
+            tag: data
         }
     }
 })

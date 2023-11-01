@@ -64,7 +64,7 @@ export default function LoginPage() {
                     onChange={onFieldChange}
                 />
 
-                <button type="submit" className='btn-primary'>
+                <button type="submit" className='btn btn-primary'>
                     <span>Login</span>
                 </button>
             </form>

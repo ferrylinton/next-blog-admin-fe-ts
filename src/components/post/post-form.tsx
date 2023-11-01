@@ -78,7 +78,7 @@ export default function PostForm({ post, tags, clientInfo }: PostFormProps) {
                     <BreadCrumb
                         items={[
                             { label: t('post'), url: `/data/post/${post.id}` },
-                            { label: t('modify') }
+                            { label: t('update') }
                         ]} /> :
                     <BreadCrumb
                         items={[

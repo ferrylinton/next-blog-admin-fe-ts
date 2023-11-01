@@ -151,11 +151,11 @@ export default function PostDetailPage({ post, clientInfo }: Props) {
                             <span>{t('back')}</span>
                         </button>
                         <button
-                            onClick={() => router.push(`/data/post/${post.id}/modify`)}
+                            onClick={() => router.push(`/data/post/${post.id}/update`)}
                             type='button'
                             className="btn">
                             <EditIcon className='w-[22px] h-[22px]' />
-                            <span>{t('modify')}</span>
+                            <span>{t('update')}</span>
                         </button>
                         <button
                             onClick={() => showDeleteConfirmation()}
