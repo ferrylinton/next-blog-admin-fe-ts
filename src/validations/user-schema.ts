@@ -1,4 +1,4 @@
-import { boolean, number, object, string, z } from 'zod';
+import { boolean, coerce, number, object, string, z } from 'zod';
 
 export const CreateUserSchema = object({
 
@@ -38,7 +38,7 @@ export const UpdateUserSchema = object({
         .min(6)
         .max(30),
 
-    passwordConfirm: string().nonempty(),
+    passwordConfirm: string().min(1),
 
     authorities: string().array().nonempty(),
 
@@ -46,10 +46,6 @@ export const UpdateUserSchema = object({
 
     locked: boolean(),
 
-    loginAttempt: number(),
+    loginAttempt: coerce.number().min(0).max(3)
 
 }).partial();
-
-export type CreateUser = z.infer<typeof CreateUserSchema>
-
-export type UpdateUser = z.infer<typeof UpdateUserSchema>

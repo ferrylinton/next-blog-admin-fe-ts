@@ -12,6 +12,8 @@ import { useRouter } from "next/router";
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import BreadCrumb from '../BreadCrumb';
+import MessageErrorBox from '../MessageErrorBox';
+import ValidationError from '../ValidationError';
 
 type FlatPost = {
     [key: string]: string
@@ -88,12 +90,7 @@ export default function PostForm({ post, tags, clientInfo }: PostFormProps) {
                 }
             </div>
             <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col justify-center items-center px-2 py-5'>
-
-                {
-                    messageError && <div className='w-full border border-red-300 bg-red-50 px-3 py-2 mb-8 text-sm flex flex-col text-red-500'>
-                        {messageError.message}
-                    </div>
-                }
+                <MessageErrorBox messageError={messageError} />
                 <form
                     className='w-full'
                     onSubmit={handleSubmit(onSubmit)}
@@ -110,7 +107,7 @@ export default function PostForm({ post, tags, clientInfo }: PostFormProps) {
                             maxLength={100}
                             {...register("slug")}
                         />
-                        {validationErrors.slug && <div className="form-error-label"> {validationErrors.slug} </div>}
+                        <ValidationError message={validationErrors.slug} />
                     </div>
 
                     <div className="mb-5 uppercase">
@@ -134,7 +131,7 @@ export default function PostForm({ post, tags, clientInfo }: PostFormProps) {
                                 })
                             }
                         </div>
-                        {validationErrors.tags && <div className="form-error-label"> {validationErrors.tags} </div>}
+                        <ValidationError message={validationErrors.tags} />
                     </div>
 
                     <Tabs.Root
@@ -165,7 +162,7 @@ export default function PostForm({ post, tags, clientInfo }: PostFormProps) {
                                     rows={2}
                                     {...register("title.id")}
                                 />
-                                {validationErrors['title.id'] && <div className="form-error-label"> {validationErrors['title.id']} </div>}
+                                <ValidationError message={validationErrors['title.id']} />
                             </div>
                             <div className="form-group">
                                 <label className="form-label" htmlFor="name">{t('description')} - ID</label>
@@ -176,7 +173,7 @@ export default function PostForm({ post, tags, clientInfo }: PostFormProps) {
                                     rows={4}
                                     {...register("description.id")}
                                 />
-                                {validationErrors['description.id'] && <div className="form-error-label"> {validationErrors['description.id']} </div>}
+                                <ValidationError message={validationErrors['description.id']} />
                             </div>
                             <div className="form-group">
                                 <label className="form-label" htmlFor="name">{t('content')} - ID</label>
@@ -186,7 +183,7 @@ export default function PostForm({ post, tags, clientInfo }: PostFormProps) {
                                     rows={20}
                                     {...register("content.id")}
                                 />
-                                {validationErrors['content.id'] && <div className="form-error-label"> {validationErrors['content.id']} </div>}
+                                <ValidationError message={validationErrors['content.id']} />
                             </div>
 
                         </Tabs.Content>
@@ -203,7 +200,7 @@ export default function PostForm({ post, tags, clientInfo }: PostFormProps) {
                                     rows={2}
                                     {...register("title.en")}
                                 />
-                                {validationErrors['title.en'] && <div className="form-error-label"> {validationErrors['title.en']} </div>}
+                                <ValidationError message={validationErrors['title.en']} />
                             </div>
                             <div className="form-group">
                                 <label className="form-label" htmlFor="name">{t('description')} - EN</label>
@@ -214,7 +211,7 @@ export default function PostForm({ post, tags, clientInfo }: PostFormProps) {
                                     rows={4}
                                     {...register("description.en")}
                                 />
-                                {validationErrors['description.en'] && <div className="form-error-label"> {validationErrors['description.en']} </div>}
+                                <ValidationError message={validationErrors['description.en']} />
                             </div>
                             <div className="form-group">
                                 <label className="form-label" htmlFor="name">{t('content')} - EN</label>
@@ -224,7 +221,7 @@ export default function PostForm({ post, tags, clientInfo }: PostFormProps) {
                                     rows={20}
                                     {...register("content.en")}
                                 />
-                                {validationErrors['content.en'] && <div className="form-error-label"> {validationErrors['content.en']} </div>}
+                                <ValidationError message={validationErrors['content.en']} />
                             </div>
 
                         </Tabs.Content>

@@ -16,8 +16,9 @@
     "login": "Login",
     "logout": "Logout",
     "invalid_type": "Required",
-    "too_big": "The maximum number of characters is {{maximum, number}}",
-    "too_small": "The minimum number of characters is {{minimum, number}}",
+    "too_big_string": "The maximum number of characters is {{maximum, number}}",
+    "too_small_string": "The minimum number of characters is {{minimum, number}}",
+    "too_small_array": "Select at least 1 item",
     "delete": "Delete",
     "add": "Add",
     "update": "Update",
@@ -61,5 +62,8 @@
     "size": "Size",
     "selectImage": "Select image",
     "noImage": "No image",
-    "detail": "Detail"
+    "detail": "Detail",
+    "loginAttempt": "Login Attempt",
+    "activated": "Activated",
+    "locked": "Locked"
 }

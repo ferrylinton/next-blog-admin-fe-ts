@@ -1,6 +1,6 @@
+import AddButtonLink from '@/components/AddButtonLink';
 import BreadCrumb from '@/components/BreadCrumb';
 import FilterForm from '@/components/FilterForm';
-import AddIcon from '@/icons/AddIcon';
 import { getClientInfo } from '@/libs/client-info-util';
 import { getAuthorities } from '@/services/authority-service';
 import { withAuth } from '@/services/wrapper-service';
@@ -8,7 +8,6 @@ import { Authority } from '@/types/authority-type';
 import { GetServerSidePropsContext } from 'next';
 import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 
@@ -19,8 +18,6 @@ type Props = {
 export default function AuthorityListPage({ authorities }: Props) {
 
     const { t } = useTranslation('common');
-
-    const router = useRouter();
 
     const [filtered, setFiltered] = useState(authorities);
 
@@ -44,12 +41,7 @@ export default function AuthorityListPage({ authorities }: Props) {
             <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col justify-center items-center px-2 py-10'>
                 <div className='w-full flex justify-between items-center mb-3'>
                     <FilterForm filter={filter} />
-                    <button
-                        className='btn btn-link'
-                        onClick={() => router.push('/data/authority/add')}>
-                        <AddIcon className='w-[20px] h-[20px]' />
-                        <span>{t('add')}</span>
-                    </button>
+                    <AddButtonLink url='/data/authority/add' />
                 </div>
                 <table className='table-responsive w-full'>
                     <thead>
@@ -73,9 +65,7 @@ export default function AuthorityListPage({ authorities }: Props) {
                                         <td data-label="#">{index + 1}</td>
                                         <td data-label={t('code')}>{authority.code}</td>
                                         <td data-label={t('description')}>{authority.description}</td>
-                                        <td>
-                                            <Link href={`/data/authority/${authority.id}`}>{t('detail')}</Link>
-                                        </td>
+                                        <td><Link href={`/data/authority/${authority.id}`}>{t('detail')}</Link></td>
                                     </tr>
                                 }))
                         }

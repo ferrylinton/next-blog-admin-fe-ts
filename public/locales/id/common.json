@@ -16,8 +16,9 @@
     "login": "Masuk",
     "logout": "Keluar",
     "invalid_type": "Harus diisi",
-    "too_big": "Jumlah maksimal karakter adalah {{maximum, number}}",
-    "too_small": "Jumlah minimal karakter adalah {{minimum, number}}",
+    "too_big_string": "Jumlah maksimal karakter adalah {{maximum, number}}",
+    "too_small_string": "Jumlah minimal karakter adalah {{minimum, number}}",
+    "too_small_array": "Minimal pilih satu",
     "delete": "Hapus",
     "add": "Tambah",
     "update": "Ubah",
@@ -44,7 +45,7 @@
     "deleteQuestion": "Hapus data ?",
     "ok": "Ok",
     "name": "Nama",
-    "username": "Name Pengguna",
+    "username": "Nama",
     "password": "Kata Sandi",
     "passwordConfirm": "Konfirmasi Kata Sandi",
     "authorities": "Hak Akses",
@@ -61,5 +62,8 @@
     "size": "Ukuran",
     "selectImage": "Pilih gambar",
     "noImage": "Tidak ada gambar",
-    "detail": "Detil"
+    "detail": "Detil",
+    "loginAttempt": "Upaya Masuk",
+    "activated": "Aktif",
+    "locked": "Terkunci"
 }

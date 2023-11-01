@@ -2,7 +2,6 @@ import PostForm from '@/components/post/post-form';
 import { getClientInfo } from '@/libs/client-info-util';
 import { getTags } from '@/services/tag-service';
 import { withAuth } from '@/services/wrapper-service';
-import { ClientInfo } from '@/types/common-type';
 import { PostFormData, PostPageProps } from '@/types/post-type';
 import { GetServerSidePropsContext } from 'next';
 
@@ -33,12 +32,12 @@ export default function PostCreatePage({tags, clientInfo} : PostPageProps) {
 
 export const getServerSideProps = withAuth(async (context: GetServerSidePropsContext) => {
     const clientInfo = getClientInfo(context);
-    const { data: tags } = await getTags(clientInfo);
+    const { data } = await getTags(clientInfo);
 
     return {
         props: {
             namespaces: ['common'],
-            tags
+            tags: data
         }
     }
 })

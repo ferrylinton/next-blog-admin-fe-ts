@@ -1,3 +1,4 @@
+import { Authority } from "./authority-type"
 import { Audit, ClientInfo } from "./common-type"
 
 export type User = {
@@ -11,12 +12,19 @@ export type User = {
     authorities: string[]
 } & Audit
 
-export type UserProps = {
-    user?: User,
+export type UserPageProps = {
+    authorities: Authority[],
     clientInfo: ClientInfo
 }
 
-export type UserForm = {
+export type UserFormProps = {
+    user: UserFormData,
+    authorities: Authority[],
+    clientInfo: ClientInfo
+}
+
+export type UserFormData = {
+    id?: string,
     username?: string,
     password?: string,
     passwordConfirm?: string,

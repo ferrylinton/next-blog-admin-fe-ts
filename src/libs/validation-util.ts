@@ -15,10 +15,13 @@ export const translate = (issues: ZodIssue[], t: TFunction<[DefaultNamespace, ..
                 errors[field] = t('invalid_type');
 
             } else if (issue.code === 'too_big' && issue.type === "string") {
-                errors[field] = t('too_big', { maximum: (issue as ZodTooBigIssue).maximum });
+                errors[field] = t('too_big_string', { maximum: (issue as ZodTooBigIssue).maximum });
 
             } else if (issue.code === 'too_small' && issue.type === "string") {
-                errors[field] = t('too_small', { minimum: (issue as ZodTooSmallIssue).minimum });
+                errors[field] = t('too_small_string', { minimum: (issue as ZodTooSmallIssue).minimum });
+
+            } else if (issue.code === 'too_small' && issue.type === "array") {
+                errors[field] = t('too_small_array');
 
             } else if (issue.code === 'custom') {
                     errors[field] = t(issue.message);

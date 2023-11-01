@@ -27,10 +27,8 @@
   }
 
   input[type='checkbox']{
-    @apply appearance-none outline-none accent-lime-400;
-    @apply focus:ring-0 focus:border-lime-500 focus:bg-lime-400 focus:outline-lime-400 focus:checked:bg-lime-400;
-    @apply hover:checked:bg-lime-400 hover:bg-lime-400;
-    @apply checked:border-lime-500 checked:bg-lime-400;
+    @apply w-6 h-6 outline-none accent-lime-400 border-0;
+    @apply focus:ring-0 focus:ring-offset-0;
   }
 
   body{
@@ -197,7 +195,7 @@
 
   .table-responsive td:not(.empty):before{
     @apply absolute top-0 left-0 w-[30%] h-full;
-    @apply border-r-2 border-stone-400 pe-2;
+    @apply border-r-2 border-stone-400 pe-2 py-1;
     @apply content-[attr(data-label)] text-right font-bold text-sm text-stone-600;
     @apply sm:hidden;
   }
@@ -217,15 +215,15 @@
     @apply w-full flex border-b border-stone-200/50
   }
 
-  .detail-item span:first-child{
-    @apply sm:px-2 py-2 font-bold w-[100px] sm:w-[120px] text-sm sm:text-base
+  .detail-item div:first-child{
+    @apply py-2 font-bold w-[100px] sm:w-[120px] text-sm
   }
 
-  .detail-item span:nth-child(2){
-    @apply sm:px-2 py-2 text-sm sm:text-base
+  .detail-item div:nth-child(2){
+    @apply w-full flex sm:px-2 py-2 text-sm
   }
 
-  .detail-item span:nth-child(2)::before{
+  .detail-item div:nth-child(2)::before{
     @apply  content-[':'] pe-2 text-stone-400
   }
 
