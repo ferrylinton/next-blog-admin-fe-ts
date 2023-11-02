@@ -67,7 +67,7 @@ export default function TagListPage({ tags }: Props) {
                                     </td>
                                 </tr> :
                                 (filtered && filtered.map((tag, index) => {
-                                    return <tr key={tag.id} onClick={() => router.push(`/data/tag/${tag.id}`)}>
+                                    return <tr key={tag.id}>
                                         <td data-label="#">{index + 1}</td>
                                         <td data-label={t('name')}>{tag.name}</td>
                                         <td>

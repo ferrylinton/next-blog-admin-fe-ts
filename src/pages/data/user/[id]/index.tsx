@@ -1,10 +1,12 @@
 import BreadCrumb from '@/components/BreadCrumb';
 import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
+import DetailValue from '@/components/detail-value';
 import BackIcon from '@/icons/BackIcon';
 import CheckIcon from '@/icons/CheckIcon';
 import CloseIcon from '@/icons/CloseIcon';
 import DeleteIcon from '@/icons/DeleteIcon';
 import EditIcon from '@/icons/EditIcon';
+import PasswordIcon from '@/icons/PasswordIcon';
 import { getClientInfo } from '@/libs/client-info-util';
 import { formatToTimestamp } from '@/libs/date-util';
 import { deleteUser, getUser } from '@/services/user-service';
@@ -42,9 +44,9 @@ export default function UserDetailPage({ user, clientInfo }: Props) {
     }
 
     const getIcon = (val: boolean) => {
-        if(val){
+        if (val) {
             return <CheckIcon className='w-[18px] h-[18px] text-green-600' />
-        }else{
+        } else {
             return <CloseIcon className='w-[24px] h-[24px] text-red-600' />
         }
     }
@@ -60,80 +62,54 @@ export default function UserDetailPage({ user, clientInfo }: Props) {
                     ]} />
             </div>
             {user && <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col justify-center items-center px-2 py-5'>
-                <div className='detail'>
-                    <div className='detail-item'>
-                        <div>ID</div>
-                        <div>{user.id}</div>
-                    </div>
-                    <div className='detail-item'>
-                        <div>{t('username')}</div>
-                        <div>{user.username}</div>
-                    </div>
-                    <div className='detail-item'>
-                        <div>{t('email')}</div>
-                        <div>{user.email}</div>
-                    </div>
-                    <div className='detail-item'>
-                        <div>{t('loginAttempt')}</div>
-                        <div>{user.loginAttempt}</div>
-                    </div>
-                    <div className='detail-item'>
-                        <div>{t('activated')}</div>
-                        <div>{getIcon(user.activated)}</div>
-                    </div>
-                    <div className='detail-item'>
-                        <div>{t('locked')}</div>
-                        <div>{getIcon(user.locked)}</div>
-                    </div>
-                    <div className='detail-item'>
-                        <div>{t('authorities')}</div>
-                        <div>
-                            <ol className="list-decimal ms-4">
-                                {user.authorities.map(authority => <li key={authority}>{authority}</li>)}
-                            </ol>
-                        </div>
-                    </div>
-                    <div className='detail-item'>
-                        <div>{t('createdBy')}</div>
-                        <div>{user.createdBy}</div>
-                    </div>
-                    <div className='detail-item'>
-                        <div>{t('createdAt')}</div>
-                        <div>{formatToTimestamp(user.createdAt)}</div>
-                    </div>
-                    {user.updatedBy && <div className='detail-item'>
-                        <div>{t('updatedBy')}</div>
-                        <div>{user.updatedBy}</div>
-                    </div>}
-                    {user.updatedAt && <div className='detail-item'>
-                        <div>{t('updatedAt')}</div>
-                        <div>{formatToTimestamp(user.updatedAt)}</div>
-                    </div>}
-                    <div className="mt-5 flex gap-2">
-                        <button
-                            onClick={() => router.push('/data/user')}
-                            type='button'
-                            className="btn btn-link">
-                            <BackIcon className='w-[20px] h-[20px]' />
-                            <span>{t('back')}</span>
-                        </button>
-                        <button
-                            onClick={() => router.push(`/data/user/${user.id}/update`)}
-                            type='button'
-                            className="btn btn-link">
-                            <EditIcon className='w-[22px] h-[22px]' />
-                            <span>{t('update')}</span>
-                        </button>
-                        <button
-                            onClick={() => showDeleteConfirmation()}
-                            type='button'
-                            className="btn btn-danger">
-                            <DeleteIcon className='w-[20px] h-[20px]' />
-                            <span>{t('delete')}</span>
-                        </button>
-                    </div>
+                <table className='table-detail'>
+                    <tbody>
+                        {
+                            Object.keys(user).map(key => {
+                                if (key === 'password')
+                                    return null;
+                                else
+                                    return <tr key={key}>
+                                        <th>{t(key)}</th>
+                                        <td><DetailValue val={user[key as keyof typeof user]} /></td>
+                                    </tr>
+                            })
+                        }
+                    </tbody>
+                </table>
 
+                <div className="mt-5 flex flex-wrap gap-2">
+                    <button
+                        onClick={() => router.push('/data/user')}
+                        type='button'
+                        className="btn btn-link">
+                        <BackIcon className='w-[20px] h-[20px]' />
+                        <span>{t('back')}</span>
+                    </button>
+                    <button
+                        onClick={() => router.push(`/data/user/${user.id}/update`)}
+                        type='button'
+                        className="btn btn-link">
+                        <EditIcon className='w-[22px] h-[22px]' />
+                        <span>{t('update')}</span>
+                    </button>
+                    <button
+                        onClick={() => router.push(`/data/user/${user.id}/changepassword`)}
+                        type='button'
+                        className="btn btn-link">
+                        <PasswordIcon className='w-[22px] h-[22px]' />
+                        <span>{t('changePassword')}</span>
+                    </button>
+                    <button
+                        onClick={() => showDeleteConfirmation()}
+                        type='button'
+                        className="btn btn-danger">
+                        <DeleteIcon className='w-[20px] h-[20px]' />
+                        <span>{t('delete')}</span>
+                    </button>
                 </div>
+
+
             </div>}
 
             <DeleteConfirmDialog

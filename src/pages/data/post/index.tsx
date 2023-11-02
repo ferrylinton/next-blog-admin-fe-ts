@@ -11,6 +11,7 @@ import { Post } from '@/types/post-type';
 import { RequestParams } from '@/types/request-params-type';
 import { GetServerSidePropsContext } from 'next';
 import { useTranslation } from 'next-i18next';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 
@@ -35,7 +36,7 @@ export default function PostListPage({ pageable }: Props) {
             </div>
             <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col justify-center items-center px-2 py-10'>
                 <div className='w-full flex justify-between items-center mb-3'>
-                    <SearchForm url='/data/post'  />
+                    <SearchForm url='/data/post' />
                     <button
                         className='btn btn-default'
                         onClick={() => router.push('/data/post/add')}>
@@ -48,18 +49,22 @@ export default function PostListPage({ pageable }: Props) {
                         <tr>
                             <th>#</th>
                             <th>{t('title')}</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         {
                             (!pageable.data || pageable.data.length === 0) ?
-                                <tr>
-                                    <td key={1} colSpan={2}>Empty Data</td>
-                                </tr> :
+                                <td colSpan={3} className='empty'>
+                                    <span>{t('dataIsEmpty')}</span>
+                                </td> :
                                 (pageable.data && pageable.data.map((post, index) => {
-                                    return <tr key={post.id} onClick={() => router.push(`/data/post/${post.id}`)}>
+                                    return <tr key={post.id}>
                                         <td data-label="#">{((pageable.pagination.page - 1) * pageable.pagination.pageSize) + index + 1}</td>
                                         <td data-label={t('description')}>{post.description[i18n.language as keyof typeof post.description]}</td>
+                                        <td>
+                                            <Link href={`/data/post/${post.id}`}>{t('detail')}</Link>
+                                        </td>
                                     </tr>
                                 }))
                         }

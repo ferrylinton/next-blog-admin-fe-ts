@@ -34,3 +34,10 @@ export type UserFormData = {
     locked?: boolean,
     authorities?: string[]
 }
+
+export type ChangePassworddFormData = {
+    id?: string,
+    username?: string,
+    password: string,
+    passwordConfirm: string,
+}

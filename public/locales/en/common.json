@@ -65,5 +65,7 @@
     "detail": "Detail",
     "loginAttempt": "Login Attempt",
     "activated": "Activated",
-    "locked": "Locked"
+    "locked": "Locked",
+    "password.notMatch": "Password is not match",
+    "changePassword": "Change Password"
 }

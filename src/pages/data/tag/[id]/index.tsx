@@ -1,5 +1,6 @@
 import BreadCrumb from '@/components/BreadCrumb';
 import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
+import DetailValue from '@/components/detail-value';
 import BackIcon from '@/icons/BackIcon';
 import DeleteIcon from '@/icons/DeleteIcon';
 import EditIcon from '@/icons/EditIcon';
@@ -46,55 +47,40 @@ export default function TagDetailPage({ tag, clientInfo }: TagPageProps) {
                     ]} />
             </div>
             {tag && <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col justify-center items-center px-2 py-5'>
-                <div className='detail'>
-                    <div className='detail-item'>
-                        <span>ID</span>
-                        <span>{tag.id}</span>
-                    </div>
-                    <div className='detail-item'>
-                        <span>{t('name')}</span>
-                        <span>{tag.name}</span>
-                    </div>
-                    <div className='detail-item'>
-                        <span>{t('createdBy')}</span>
-                        <span>{tag.createdBy}</span>
-                    </div>
-                    <div className='detail-item'>
-                        <span>{t('createdAt')}</span>
-                        <span>{formatToTimestamp(tag.createdAt)}</span>
-                    </div>
-                    {tag.updatedBy && <div className='detail-item'>
-                        <span>{t('updatedBy')}</span>
-                        <span>{tag.updatedBy}</span>
-                    </div>}
-                    {tag.updatedAt && <div className='detail-item'>
-                        <span>{t('updatedAt')}</span>
-                        <span>{formatToTimestamp(tag.updatedAt)}</span>
-                    </div>}
-                    <div className="mt-5 flex gap-2">
-                        <button
-                            onClick={() => router.push('/data/tag')}
-                            type='button'
-                            className="btn btn-link">
-                            <BackIcon className='w-[20px] h-[20px]' />
-                            <span>{t('back')}</span>
-                        </button>
-                        <button
-                            onClick={() => router.push(`/data/tag/${tag.id}/update`)}
-                            type='button'
-                            className="btn btn-link">
-                            <EditIcon className='w-[22px] h-[22px]' />
-                            <span>{t('update')}</span>
-                        </button>
-                        <button
-                            onClick={() => showDeleteConfirmation()}
-                            type='button'
-                            className="btn btn-danger">
-                            <DeleteIcon className='w-[20px] h-[20px]' />
-                            <span>{t('delete')}</span>
-                        </button>
-                    </div>
-
+                <table className='table-detail'>
+                    <tbody>
+                        {
+                            Object.keys(tag).map(key => {
+                                return <tr key={key}>
+                                    <th>{t(key)}</th>
+                                    <td><DetailValue val={tag[key as keyof typeof tag]} /></td>
+                                </tr>
+                            })
+                        }
+                    </tbody>
+                </table>
+                <div className="mt-5 flex gap-2">
+                    <button
+                        onClick={() => router.push('/data/tag')}
+                        type='button'
+                        className="btn btn-link">
+                        <BackIcon className='w-[20px] h-[20px]' />
+                        <span>{t('back')}</span>
+                    </button>
+                    <button
+                        onClick={() => router.push(`/data/tag/${tag.id}/update`)}
+                        type='button'
+                        className="btn btn-link">
+                        <EditIcon className='w-[22px] h-[22px]' />
+                        <span>{t('update')}</span>
+                    </button>
+                    <button
+                        onClick={() => showDeleteConfirmation()}
+                        type='button'
+                        className="btn btn-danger">
+                        <DeleteIcon className='w-[20px] h-[20px]' />
+                        <span>{t('delete')}</span>
+                    </button>
                 </div>
             </div>}
 

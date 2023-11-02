@@ -13,6 +13,12 @@ export const formatToDate = (str: string) => {
     return format(new Date(str), 'MM/dd/yyyy');
 }
 
-export const formatToTimestamp = (str: string) => {
-    return format(new Date(str), 'MM/dd/yyyy HH:mm SSS');
+export const formatToTimestamp = (str: string | undefined) => {
+    const req = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)((-(\d{2}):(\d{2})|Z)?)$/;
+
+    if (str && str.match(req)) {
+        return format(new Date(str), 'MM/dd/yyyy HH:mm SSS');
+    }
+
+    return str;
 }

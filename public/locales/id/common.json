@@ -65,5 +65,7 @@
     "detail": "Detil",
     "loginAttempt": "Upaya Masuk",
     "activated": "Aktif",
-    "locked": "Terkunci"
+    "locked": "Terkunci",
+    "password.notMatch": "Konfirmasi kata sandi salah",
+    "changePassword": "Ubah Kata Sandi"
 }

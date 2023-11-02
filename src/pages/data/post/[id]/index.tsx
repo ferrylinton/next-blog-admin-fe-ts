@@ -53,28 +53,28 @@ export default function PostDetailPage({ post, clientInfo }: Props) {
             {post && <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col justify-center items-center px-2 py-5'>
                 <div className='detail'>
                     <div className='detail-item'>
-                        <span>ID</span>
-                        <span>{post.id}</span>
+                        <div>ID</div>
+                        <div>{post.id}</div>
                     </div>
                     <div className='detail-item'>
-                        <span>{t('slug')}</span>
-                        <span>{post.slug}</span>
+                        <div>{t('slug')}</div>
+                        <div>{post.slug}</div>
                     </div>
                     <div className='detail-item'>
-                        <span>{t('createdBy')}</span>
-                        <span>{post.createdBy}</span>
+                        <div>{t('createdBy')}</div>
+                        <div>{post.createdBy}</div>
                     </div>
                     <div className='detail-item'>
-                        <span>{t('createdAt')}</span>
-                        <span>{formatToTimestamp(post.createdAt)}</span>
+                        <div>{t('createdAt')}</div>
+                        <div>{formatToTimestamp(post.createdAt)}</div>
                     </div>
                     {post.updatedBy && <div className='detail-item'>
-                        <span>{t('updatedBy')}</span>
-                        <span>{post.updatedBy}</span>
+                        <div>{t('updatedBy')}</div>
+                        <div>{post.updatedBy}</div>
                     </div>}
                     {post.updatedAt && <div className='detail-item'>
-                        <span>{t('updatedAt')}</span>
-                        <span>{formatToTimestamp(post.updatedAt)}</span>
+                        <div>{t('updatedAt')}</div>
+                        <div>{formatToTimestamp(post.updatedAt)}</div>
                     </div>}
                     <Tabs.Root
                         className='w-full'

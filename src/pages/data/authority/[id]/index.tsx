@@ -1,5 +1,6 @@
 import BreadCrumb from '@/components/BreadCrumb';
 import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
+import DetailValue from '@/components/detail-value';
 import BackIcon from '@/icons/BackIcon';
 import DeleteIcon from '@/icons/DeleteIcon';
 import EditIcon from '@/icons/EditIcon';
@@ -35,7 +36,6 @@ export default function AuthorityDetailPage({ authority, clientInfo }: Authority
         router.push('/data/authority');
     }
 
-
     return (
         <div className='w-full h-full grow flex flex-col justify-start items-center pt-[50px] pb-5'>
             <div className='w-full bg-stone-100 flex justify-center items-center text-stone-500'>
@@ -46,60 +46,43 @@ export default function AuthorityDetailPage({ authority, clientInfo }: Authority
                     ]} />
             </div>
             {authority && <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col justify-center items-center px-2 py-5'>
-                <div className='detail'>
-                    <div className='detail-item'>
-                        <span>ID</span>
-                        <span>{authority.id}</span>
-                    </div>
-                    <div className='detail-item'>
-                        <span>{t('code')}</span>
-                        <span>{authority.code}</span>
-                    </div>
-                    <div className='detail-item'>
-                        <span>{t('description')}</span>
-                        <span>{authority.description}</span>
-                    </div>
-                    <div className='detail-item'>
-                        <span>{t('createdBy')}</span>
-                        <span>{authority.createdBy}</span>
-                    </div>
-                    <div className='detail-item'>
-                        <span>{t('createdAt')}</span>
-                        <span>{formatToTimestamp(authority.createdAt)}</span>
-                    </div>
-                    {authority.updatedBy && <div className='detail-item'>
-                        <span>{t('updatedBy')}</span>
-                        <span>{authority.updatedBy}</span>
-                    </div>}
-                    {authority.updatedAt && <div className='detail-item'>
-                        <span>{t('updatedAt')}</span>
-                        <span>{formatToTimestamp(authority.updatedAt)}</span>
-                    </div>}
-                    <div className="mt-5 flex gap-2">
-                        <button
-                            onClick={() => router.push('/data/authority')}
-                            type='button'
-                            className="btn btn-link">
-                            <BackIcon className='w-[20px] h-[20px]' />
-                            <span>{t('back')}</span>
-                        </button>
-                        <button
-                            onClick={() => router.push(`/data/authority/${authority.id}/update`)}
-                            type='button'
-                            className="btn btn-link">
-                            <EditIcon className='w-[22px] h-[22px]' />
-                            <span>{t('update')}</span>
-                        </button>
-                        <button
-                            onClick={() => showDeleteConfirmation()}
-                            type='button'
-                            className="btn btn-danger">
-                            <DeleteIcon className='w-[20px] h-[20px]' />
-                            <span>{t('delete')}</span>
-                        </button>
-                    </div>
-
+                <table className='table-detail'>
+                    <tbody>
+                        {
+                            Object.keys(authority).map(key => {
+                                return <tr key={key}>
+                                    <th>{t(key)}</th>
+                                    <td><DetailValue val={authority[key as keyof typeof authority]} /></td>
+                                </tr>
+                            })
+                        }
+                    </tbody>
+                </table>
+                <div className="mt-5 flex gap-2">
+                    <button
+                        onClick={() => router.push('/data/authority')}
+                        type='button'
+                        className="btn btn-link">
+                        <BackIcon className='w-[20px] h-[20px]' />
+                        <span>{t('back')}</span>
+                    </button>
+                    <button
+                        onClick={() => router.push(`/data/authority/${authority.id}/update`)}
+                        type='button'
+                        className="btn btn-link">
+                        <EditIcon className='w-[22px] h-[22px]' />
+                        <span>{t('update')}</span>
+                    </button>
+                    <button
+                        onClick={() => showDeleteConfirmation()}
+                        type='button'
+                        className="btn btn-danger">
+                        <DeleteIcon className='w-[20px] h-[20px]' />
+                        <span>{t('delete')}</span>
+                    </button>
                 </div>
+
+
             </div>}
 
             <DeleteConfirmDialog

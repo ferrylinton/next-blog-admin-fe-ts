@@ -58,32 +58,32 @@ export default function ImageDetailPage({ image, clientInfo }: ImageProps) {
                 </div>
                 <div className='detail'>
                     <div className='detail-item'>
-                        <span>ID</span>
-                        <span>{image.id}</span>
+                        <div>ID</div>
+                        <div>{image.id}</div>
                     </div>
                     <div className='detail-item'>
-                        <span>{t('filename')}</span>
-                        <span>{image.filename}</span>
+                        <div>{t('filename')}</div>
+                        <div>{image.filename}</div>
                     </div>
                     <div className='detail-item'>
-                        <span>{t('width')}</span>
-                        <span>{image.metadata.width}</span>
+                        <div>{t('width')}</div>
+                        <div>{image.metadata.width}</div>
                     </div>
                     <div className='detail-item'>
-                        <span>{t('height')}</span>
-                        <span>{image.metadata.height}</span>
+                        <div>{t('height')}</div>
+                        <div>{image.metadata.height}</div>
                     </div>
                     <div className='detail-item'>
-                        <span>{t('size')}</span>
-                        <span>{image.length} byte</span>
+                        <div>{t('size')}</div>
+                        <div>{image.length} byte</div>
                     </div>
                     <div className='detail-item'>
-                        <span>{t('createdBy')}</span>
-                        <span>{image.metadata.createdBy}</span>
+                        <div>{t('createdBy')}</div>
+                        <div>{image.metadata.createdBy}</div>
                     </div>
                     <div className='detail-item'>
-                        <span>{t('createdAt')}</span>
-                        <span>{formatToTimestamp(image.uploadDate)}</span>
+                        <div>{t('createdAt')}</div>
+                        <div>{formatToTimestamp(image.uploadDate)}</div>
                     </div>
                     <div className="mt-5 flex gap-2">
                         <button
