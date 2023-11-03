@@ -1,22 +1,17 @@
 import AngelDownIcon from '@/icons/AngelDownIcon';
 import DataIcon from '@/icons/DataIcon';
-import UserIcon from '@/icons/UserIcon';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
-import React, { useRef } from 'react';
 
 const DataMenu = () => {
 
-    const formRef = useRef<HTMLFormElement>(null);
-
     const router = useRouter();
+
+    const { t } = useTranslation('common');
 
     const handleSelect = (href: string) => {
         router.push(href);
-    }
-
-    const handleLogout = () => {
-        formRef.current?.submit();
     }
 
     return (
@@ -32,20 +27,24 @@ const DataMenu = () => {
                 <DropdownMenu.Portal>
                 <DropdownMenu.Content className="nav-dropdown-content" side='bottom' sideOffset={5} align='end' alignOffset={5}>
                         <DropdownMenu.Item onSelect={() => handleSelect('/data/image')} className="nav-dropdown-item">
-                            Image
+                            {t('image')}
                         </DropdownMenu.Item>
                         <DropdownMenu.Item onSelect={() => handleSelect('/data/post')} className="nav-dropdown-item">
-                            Post
+                            {t('post')}
                         </DropdownMenu.Item>
                         <DropdownMenu.Item onSelect={() => handleSelect('/data/tag')} className="nav-dropdown-item">
-                            Tag
+                            {t('tag')}
                         </DropdownMenu.Item>
                         <DropdownMenu.Separator className="h-[1px] bg-stone-300 m-[5px]" />
                         <DropdownMenu.Item onSelect={() => handleSelect('/data/user')} className="nav-dropdown-item">
-                            User
+                            {t('user')}
                         </DropdownMenu.Item>
                         <DropdownMenu.Item onSelect={() => handleSelect('/data/authority')} className="nav-dropdown-item">
-                            Authority
+                            {t('authority')}
+                        </DropdownMenu.Item>
+                        <DropdownMenu.Separator className="h-[1px] bg-stone-300 m-[5px]" />
+                        <DropdownMenu.Item onSelect={() => handleSelect('/data/whitelist')} className="nav-dropdown-item">
+                            {t('whitelist')}
                         </DropdownMenu.Item>
                     </DropdownMenu.Content>
                 </DropdownMenu.Portal>

@@ -45,7 +45,7 @@
     "deleteQuestion": "Hapus data ?",
     "ok": "Ok",
     "name": "Nama",
-    "username": "Nama",
+    "username": "Nama Pengguna",
     "password": "Kata Sandi",
     "passwordConfirm": "Konfirmasi Kata Sandi",
     "authorities": "Hak Akses",
@@ -67,5 +67,10 @@
     "activated": "Aktif",
     "locked": "Terkunci",
     "password.notMatch": "Konfirmasi kata sandi salah",
-    "changePassword": "Ubah Kata Sandi"
+    "changePassword": "Ubah Kata Sandi",
+    "whitelist": "Daftar IP",
+    "ip": "Ip",
+    "dataNotFound": "Data tidak ditemukan",
+    "dataUpdated": "Data diperbarui",
+    "dataDeleted": "Data dihapus"
 }

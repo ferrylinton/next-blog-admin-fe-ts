@@ -67,5 +67,10 @@
     "activated": "Activated",
     "locked": "Locked",
     "password.notMatch": "Password is not match",
-    "changePassword": "Change Password"
+    "changePassword": "Change Password",
+    "whitelist": "IP Whitelist",
+    "ip": "Ip",
+    "dataNotFound": "Data is not found",
+    "dataUpdated": "Data is updated",
+    "dataDeleted": "Data is deleted"
 }
