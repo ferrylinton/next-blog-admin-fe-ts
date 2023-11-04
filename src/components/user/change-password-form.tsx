@@ -128,12 +128,12 @@ export default function ChangePasswordForm({ id, username, clientInfo }: Props) 
                         </div>
 
                         <div className="mt-5 max-w-[400px] text-center flex gap-1">
-                            {id && <button
-                                onClick={() => router.push(`/data/user/${id}`)}
+                            <button
+                                onClick={() => router.push(id ? `/data/user/${id}` : '/profile')}
                                 type='button'
                                 className="w-full btn btn-secondary">
                                 <span>{t('cancel')}</span>
-                            </button>}
+                            </button>
 
                             <button
                                 type="submit"

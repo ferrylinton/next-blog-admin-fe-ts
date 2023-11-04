@@ -29,7 +29,7 @@ export default function Navbar({ authData }: Props) {
                         <div className='flex gap-1'>
                             <DataMenu authData={authData} />
                             <LocaleMenu />
-                            {authData && <ProfileMenu />}
+                            <ProfileMenu authData={authData}/>
                         </div>
                     </div>
                 </div>

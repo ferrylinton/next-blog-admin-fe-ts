@@ -9,9 +9,9 @@ export async function getUsers(clientInfo: ClientInfo) {
     return await blogApiClient.get<User[]>('/api/users', { headers });
 };
 
-export async function getUser(id: string, clientInfo: ClientInfo) {
+export async function getUser(idOrUsername: string, clientInfo: ClientInfo) {
     const headers = getHeaders(clientInfo);
-    return await blogApiClient.get<User>(`/api/users/${id}`, { headers });
+    return await blogApiClient.get<User>(`/api/users/${idOrUsername}`, { headers });
 };
 
 export async function createUser(data: UserFormData, clientInfo: ClientInfo) {

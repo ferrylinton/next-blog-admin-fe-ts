@@ -72,6 +72,8 @@
     "dataNotFound": "Data tidak ditemukan",
     "dataUpdated": "Data diperbarui",
     "dataDeleted": "Data dihapus",
-    "logoutSuccessfully": "Pengguna keluar dari sistem",
-    "invalidUsernameOrPassword": "Nama pengguna atau kata sandi salah"
+    "logoutSuccessfully": "Pengguna berhasil keluar",
+    "invalidUsernameOrPassword": "Nama pengguna atau kata sandi salah",
+    "welcome": "Selamat Datang",
+    "information": "Informasi"
 }

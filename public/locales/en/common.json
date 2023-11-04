@@ -73,5 +73,7 @@
     "dataUpdated": "Data is updated",
     "dataDeleted": "Data is deleted",
     "logoutSuccessfully": "Logout successfully",
-    "invalidUsernameOrPassword": "Invalid username or password"
+    "invalidUsernameOrPassword": "Invalid username or password",
+    "welcome": "Welcome",
+    "information": "Information"
 }
