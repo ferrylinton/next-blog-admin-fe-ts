@@ -1,5 +1,5 @@
 import UserForm from '@/components/user/user-form';
-import { getClientInfo } from '@/libs/client-info-util';
+import { getClientInfo } from '@/libs/auth-util';
 import { getAuthorities } from '@/services/authority-service';
 import { getUser } from '@/services/user-service';
 import { withAuth } from '@/services/wrapper-service';

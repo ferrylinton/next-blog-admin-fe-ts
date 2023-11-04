@@ -1,15 +1,17 @@
 import { ClientInfo } from "@/types/common-type";
-import axios, { AxiosResponse, RawAxiosRequestHeaders } from "axios";
-import { NextRouter } from "next/router";
+import axios, { RawAxiosRequestHeaders } from "axios";
 
 
 export function getHeaders(clientInfo: ClientInfo) {
     const headers: RawAxiosRequestHeaders = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'x-client-ip': clientInfo.clientIp,
-        'x-access-token': clientInfo.token
+        'x-client-ip': clientInfo.clientIp
     };
+
+    if (clientInfo.authData?.token) {
+        headers['x-access-token'] = clientInfo.authData?.token;
+    }
 
     if (clientInfo.locale) {
         headers['x-accept-language'] = clientInfo.locale;
@@ -23,21 +25,8 @@ export function getHeaders(clientInfo: ClientInfo) {
 };
 
 export function getFormHeaders(clientInfo: ClientInfo) {
-    const headers: RawAxiosRequestHeaders = {
-        'Content-Type': 'multipart/form-data',
-        'Accept': 'application/json',
-        'x-client-ip': clientInfo.clientIp,
-        'x-access-token': clientInfo.token
-    };
-
-    if (clientInfo.locale) {
-        headers['x-accept-language'] = clientInfo.locale;
-    }
-
-    if (typeof window === 'undefined') {
-        headers['User-Agent'] = clientInfo.userAgent;
-    }
-
+    const headers = getHeaders(clientInfo);
+    headers['Content-Type'] = 'multipart/form-data';
     return headers;
 };
 

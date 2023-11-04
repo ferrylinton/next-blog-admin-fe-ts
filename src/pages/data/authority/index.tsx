@@ -1,7 +1,7 @@
 import AddButtonLink from '@/components/AddButtonLink';
 import BreadCrumb from '@/components/BreadCrumb';
 import FilterForm from '@/components/FilterForm';
-import { getClientInfo } from '@/libs/client-info-util';
+import { getClientInfo } from '@/libs/auth-util';
 import { getAuthorities } from '@/services/authority-service';
 import { withAuth } from '@/services/wrapper-service';
 import { Authority } from '@/types/authority-type';

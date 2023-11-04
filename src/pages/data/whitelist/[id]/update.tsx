@@ -1,5 +1,5 @@
 import WhitelistForm from '@/components/whitelist/whitelist-form';
-import { getClientInfo } from '@/libs/client-info-util';
+import { getClientInfo } from '@/libs/auth-util';
 import { getWhitelist } from '@/services/whitelist-service';
 import { withAuth } from '@/services/wrapper-service';
 import { WhitelistPageProps } from '@/types/whitelist-type';

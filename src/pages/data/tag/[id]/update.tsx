@@ -1,5 +1,5 @@
 import TagForm from '@/components/tag/tag-form';
-import { getClientInfo } from '@/libs/client-info-util';
+import { getClientInfo } from '@/libs/auth-util';
 import { getTag } from '@/services/tag-service';
 import { withAuth } from '@/services/wrapper-service';
 import { TagPageProps } from '@/types/tag-type';

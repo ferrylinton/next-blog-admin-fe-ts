@@ -1,7 +1,7 @@
 import BreadCrumb from '@/components/BreadCrumb';
 import FilterForm from '@/components/FilterForm';
 import AddIcon from '@/icons/AddIcon';
-import { getClientInfo } from '@/libs/client-info-util';
+import { getClientInfo } from '@/libs/auth-util';
 import { getTags } from '@/services/tag-service';
 import { withAuth } from '@/services/wrapper-service';
 import { Tag } from '@/types/tag-type';

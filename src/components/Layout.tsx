@@ -2,15 +2,23 @@ import { PropsWithChildren } from 'react';
 import Navbar from './Navbar';
 import { Inter } from 'next/font/google';
 import Image from 'next/image';
+import { AuthData } from '@/types/auth-type';
+import { ClientInfo } from '@/types/common-type';
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'] });
+
+type Props = {
+    clientInfo: ClientInfo | null
+} & PropsWithChildren;
 
 
-export default function Layout({ children }: PropsWithChildren) {
+export default function Layout({ children, clientInfo }: Props) {
+
+    const authData = clientInfo ? clientInfo.authData : null;
 
     return (
         <>
-            <Navbar />
+            <Navbar authData={authData} />
             <div className={`w-full min-h-screen flex flex-col min-w-[350px] ${inter.className}`}>
                 {children}
                 <footer className="w-full flex justify-center items-center bg-[#3a3a3a] text-white px-2 py-3">

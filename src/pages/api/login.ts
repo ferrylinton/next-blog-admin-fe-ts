@@ -1,53 +1,41 @@
-import { COOKIE_AUTHORITIES, COOKIE_TOKEN, COOKIE_USERNAME } from '@/configs/constant';
+import { COOKIE_AUTH_DATA } from '@/configs/constant';
 import { getToken } from '@/services/auth-service';
-import { AxiosError } from 'axios';
+import { ClientInfo } from '@/types/common-type';
 import { setCookie } from 'cookies-next';
 import { OptionsType } from 'cookies-next/lib/types';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-    
+
     if (req.method === 'POST') {
+        const { username, password, locale } = req.body;
+
         try {
             const clientIp = req.headers["x-real-ip"] || req.headers['x-forwarded-for'] || req.socket.remoteAddress || '';
             const userAgent = req.headers['user-agent'] || '';
-            const { username, password } = req.body;
-            const { data } = await getToken(username, password, clientIp as string, userAgent);
-            const option: OptionsType = {
-                req,
-                res,
-                httpOnly: true,
-                secure: process.env.NODE_ENV !== 'development',
-                sameSite: 'strict',
-                path: "/",
-                maxAge: 1 * 60 * 1000
-            };
+            const clientInfo: ClientInfo = { clientIp: clientIp as string, locale, userAgent, authData: null };
 
-            setCookie(COOKIE_TOKEN, data.token, option);
-            setCookie(COOKIE_USERNAME, username, option);
-            setCookie(COOKIE_AUTHORITIES, data.authorities, option);
+            const response = await getToken(username, password, clientInfo);
 
-            res.redirect("/");
+            if (response.status !== 200) {
+                res.redirect(locale === 'en' ? "/en/login?message=invalidUsernameOrPassword" : "/login?message=invalidUsernameOrPassword");
+            } else {
+                const option: OptionsType = {
+                    req,
+                    res,
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV !== 'development',
+                    sameSite: 'strict',
+                    path: "/",
+                    maxAge: 1 * 60 * 1000
+                };
 
-        } catch (error: any) {
-            if (error instanceof AxiosError) {
-                const { data, status, config } = error.response!;
-                switch (status) {
-                    case 400:
-                        console.error(data);
-                        break;
-
-                    case 403:
-                        console.error(error.message);
-                        break;
-
-                    case 404:
-                        console.error(`${config.baseURL}${config.url} is not found`);
-                        break;
-                }
+                setCookie(COOKIE_AUTH_DATA, response.data, option);
+                res.redirect(locale === 'en' ? "/en/" : "/");
             }
-            res.redirect("/login?message=Invalid username or password")
+        } catch (error: any) {
+            res.redirect(locale === 'en' ? `/en/login?message=${error.message}` : `/login?message=${error.message}`);
         }
 
 

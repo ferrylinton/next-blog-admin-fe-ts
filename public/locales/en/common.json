@@ -10,7 +10,6 @@
     "selectTag": "Select Tag",
     "recentBlogPosts" : "Recent Blog Posts",
     "pageNotFound": "Page is not found",
-    "invalidUsernameOrPassword": "Invalid username or password",
     "unauthorized": "Uauthorized",
     "forbidden": "Forbidden",
     "login": "Login",
@@ -72,5 +71,7 @@
     "ip": "Ip",
     "dataNotFound": "Data is not found",
     "dataUpdated": "Data is updated",
-    "dataDeleted": "Data is deleted"
+    "dataDeleted": "Data is deleted",
+    "logoutSuccessfully": "Logout successfully",
+    "invalidUsernameOrPassword": "Invalid username or password"
 }

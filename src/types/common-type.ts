@@ -1,4 +1,8 @@
-export type Language = { id: "Indonesia", en: "English"}
+import { AuthData } from "./auth-type"
+
+export type Language = { id: "Indonesia", en: "English" }
+
+export type Locale = 'id' | 'en';
 
 export type Pagination = {
     total: number,
@@ -15,10 +19,10 @@ export type Pageable<T> = {
 }
 
 export type ClientInfo = {
-    locale?: string,
+    authData: AuthData | null,
+    locale: string,
     clientIp: string,
-    userAgent: string,
-    token: string
+    userAgent: string
 }
 
 export type Audit = {

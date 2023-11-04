@@ -1,5 +1,5 @@
 import PostForm from '@/components/post/post-form';
-import { getClientInfo } from '@/libs/client-info-util';
+import { getClientInfo } from '@/libs/auth-util';
 import { getPost } from '@/services/post-service';
 import { getTags } from '@/services/tag-service';
 import { withAuth } from '@/services/wrapper-service';

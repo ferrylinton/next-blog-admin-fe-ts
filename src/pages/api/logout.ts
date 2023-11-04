@@ -1,28 +1,28 @@
-import { COOKIE_AUTHORITIES, COOKIE_TOKEN, COOKIE_USERNAME } from '@/configs/constant';
+import { COOKIE_AUTH_DATA } from '@/configs/constant';
+import { authDataFromApi } from '@/libs/auth-util';
 import { revokeToken } from '@/services/auth-service';
-import { deleteCookie, getCookie } from 'cookies-next';
+import { deleteCookie } from 'cookies-next';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (req.method === 'POST') {
+        const { locale } = req.body;
+        
         try {
             const clientIp = req.headers["x-real-ip"] || req.headers['x-forwarded-for'] || req.socket.remoteAddress || '';
             const userAgent = req.headers['user-agent'] || '';
-            const token = req.cookies[COOKIE_TOKEN];
+            const authData = authDataFromApi(req);
 
-            if (token) {
-                deleteCookie(COOKIE_TOKEN, { req, res, path: '/' });
-                deleteCookie(COOKIE_USERNAME, { req, res, path: '/' });
-                deleteCookie(COOKIE_AUTHORITIES, { req, res, path: '/' });
-                await revokeToken({locale: 'id', clientIp: clientIp as string, userAgent, token: token as string });
+            if (authData) {
+                await revokeToken({ locale, clientIp: clientIp as string, userAgent, authData });
             }
 
-            res.redirect("/login?message=logoutSuccessfully")
-
+            deleteCookie(COOKIE_AUTH_DATA, { req, res, path: '/' });
+            res.redirect(locale === 'en' ? `/en/login?message=logoutSuccessfully` : `/login?message=logoutSuccessfully`);
         } catch (error: any) {
-            res.redirect("/login?message=" + error.message)
+            res.redirect(locale === 'en' ? `/en/login?message=${error.message}` : `/login?message=${error.message}`)
         }
 
     } else {

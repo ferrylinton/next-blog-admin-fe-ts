@@ -3,7 +3,7 @@ import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
 import BackIcon from '@/icons/BackIcon';
 import DeleteIcon from '@/icons/DeleteIcon';
 import EditIcon from '@/icons/EditIcon';
-import { getClientInfo } from '@/libs/client-info-util';
+import { getClientInfo } from '@/libs/auth-util';
 import { formatToTimestamp } from '@/libs/date-util';
 import { deletePost, getPost } from '@/services/post-service';
 import { withAuth } from '@/services/wrapper-service';

@@ -2,7 +2,7 @@ import BreadCrumb from '@/components/BreadCrumb';
 import FilterForm from '@/components/FilterForm';
 import ImageWithDimension from '@/components/ImageWithDimension';
 import AddIcon from '@/icons/AddIcon';
-import { getClientInfo } from '@/libs/client-info-util';
+import { getClientInfo } from '@/libs/auth-util';
 import { getImages } from '@/services/image-service';
 import { withAuth } from '@/services/wrapper-service';
 import { Image as ImageType } from '@/types/image-type';

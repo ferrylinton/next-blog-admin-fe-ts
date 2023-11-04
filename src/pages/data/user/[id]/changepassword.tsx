@@ -1,5 +1,5 @@
 import ChangePasswordForm from '@/components/user/change-password-form';
-import { getClientInfo } from '@/libs/client-info-util';
+import { getClientInfo } from '@/libs/auth-util';
 import { getUser } from '@/services/user-service';
 import { withAuth } from '@/services/wrapper-service';
 import { ClientInfo } from '@/types/common-type';

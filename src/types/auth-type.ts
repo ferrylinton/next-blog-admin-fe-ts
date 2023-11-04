@@ -6,8 +6,3 @@ export type AuthData = {
     browser: string,
     os: string
 }
-
-export type LoginData = {
-    username: string,
-    password: string
-}

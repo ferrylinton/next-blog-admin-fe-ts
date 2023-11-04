@@ -3,6 +3,7 @@ import Link from 'next/link';
 import DataMenu from './DataMenu';
 import LocaleMenu from './LocaleMenu';
 import ProfileMenu from './ProfileMenu';
+import { AuthData } from '@/types/auth-type';
 
 
 const logoFont = Righteous({
@@ -10,7 +11,11 @@ const logoFont = Righteous({
     subsets: ['latin']
 });
 
-export default function Navbar() {
+type Props = {
+    authData: AuthData | null;
+}
+
+export default function Navbar({ authData }: Props) {
 
     return (
         <nav className="fixed top-0 left-0 right-0 z-50 border-b border-stone-200 shadow-[0_0_15px_0_rgba(106,106,106,0.15)]">
@@ -22,9 +27,9 @@ export default function Navbar() {
                             <span className='text-lime-500 drop-shadow-[0_1px_1px_rgba(0,0,0,1)]'>.COM</span>
                         </Link>
                         <div className='flex gap-1'>
-                            <DataMenu/>
-                            <LocaleMenu/>
-                            <ProfileMenu/>
+                            <DataMenu authData={authData} />
+                            <LocaleMenu />
+                            {authData && <ProfileMenu />}
                         </div>
                     </div>
                 </div>

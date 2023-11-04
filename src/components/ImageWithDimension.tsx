@@ -20,7 +20,7 @@ function ImageWithDimension({ image }: Props) {
         }
         getDimension().catch(error => console.log(error));
 
-    }, []);
+    }, [image.urls]);
 
     return (
         <Image src={process.env.NEXT_PUBLIC_API_HOST + image.urls[0]}

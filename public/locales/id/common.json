@@ -10,7 +10,6 @@
     "selectTag": "Pilih Tag",
     "recentBlogPosts" : "Postingan Blog Terbaru",
     "pageNotFound": "Halaman tidak ditemukan",
-    "invalidUsernameOrPassword": "Nama pengguna atau atau kata sandi tidak valid",
     "unauthorized": "Tidak punya akses",
     "forbidden": "Tidak punya akses",
     "login": "Masuk",
@@ -72,5 +71,7 @@
     "ip": "Ip",
     "dataNotFound": "Data tidak ditemukan",
     "dataUpdated": "Data diperbarui",
-    "dataDeleted": "Data dihapus"
+    "dataDeleted": "Data dihapus",
+    "logoutSuccessfully": "Pengguna keluar dari sistem",
+    "invalidUsernameOrPassword": "Nama pengguna atau kata sandi salah"
 }

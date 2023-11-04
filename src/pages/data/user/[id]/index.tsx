@@ -7,7 +7,7 @@ import CloseIcon from '@/icons/CloseIcon';
 import DeleteIcon from '@/icons/DeleteIcon';
 import EditIcon from '@/icons/EditIcon';
 import PasswordIcon from '@/icons/PasswordIcon';
-import { getClientInfo } from '@/libs/client-info-util';
+import { getClientInfo } from '@/libs/auth-util';
 import { formatToTimestamp } from '@/libs/date-util';
 import { deleteUser, getUser } from '@/services/user-service';
 import { withAuth } from '@/services/wrapper-service';

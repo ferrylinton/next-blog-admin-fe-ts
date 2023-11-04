@@ -1,0 +1,18 @@
+2023-11-04.09:51:39.503 [error] AxiosError: Request failed with status code 401
+    at settle (file:///C:/Projects/next-blog-admin-fe-ts/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///C:/Projects/next-blog-admin-fe-ts/node_modules/axios/lib/adapters/http.js:572:11)
+    at IncomingMessage.emit (node:events:525:35)
+    at endReadableNT (node:internal/streams/readable:1359:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+2023-11-04.09:51:39.586 [error] AxiosError: Request failed with status code 401
+    at settle (file:///C:/Projects/next-blog-admin-fe-ts/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///C:/Projects/next-blog-admin-fe-ts/node_modules/axios/lib/adapters/http.js:572:11)
+    at IncomingMessage.emit (node:events:525:35)
+    at endReadableNT (node:internal/streams/readable:1359:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+2023-11-04.09:51:39.702 [error] AxiosError: Request failed with status code 401
+    at settle (file:///C:/Projects/next-blog-admin-fe-ts/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///C:/Projects/next-blog-admin-fe-ts/node_modules/axios/lib/adapters/http.js:572:11)
+    at IncomingMessage.emit (node:events:525:35)
+    at endReadableNT (node:internal/streams/readable:1359:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)

@@ -1,6 +1,6 @@
 import { getHeaders } from "@/libs/axios-util";
 import blogApiClient from "@/libs/blog-api-client";
-import { PasswordFormData, User, UserFormData } from "@/types/user-type";
+import { ChangePassworddFormData, User, UserFormData } from "@/types/user-type";
 import { ClientInfo } from "@/types/common-type";
 
 
@@ -24,7 +24,7 @@ export async function updateUser(id: string, data: UserFormData, clientInfo: Cli
     return await blogApiClient.put(`/api/users/${id}`, data, { headers })
 };
 
-export async function changePassword(data: PasswordFormData, clientInfo: ClientInfo) {
+export async function changePassword(data: ChangePassworddFormData, clientInfo: ClientInfo) {
     const headers = getHeaders(clientInfo);
     return await blogApiClient.post(data.id ? `/api/users/${data.id}/changepassword` : `/api/users/changepassword`, data, { headers })
 };

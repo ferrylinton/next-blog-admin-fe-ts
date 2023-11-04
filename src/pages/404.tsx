@@ -5,9 +5,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default function NotFoundPage() {
 
-    const { i18n } = useTranslation('common');
-
-    const { t } = i18n;
+    const { t } = useTranslation('common');
 
     return (
         <div className='w-full h-full grow flex flex-col justify-center items-center gap-4 text-stone-600'>
@@ -26,8 +24,8 @@ export default function NotFoundPage() {
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
-    const props = await serverSideTranslations(context.locale ?? 'id', ['common'])
-
+    const props = await serverSideTranslations(context.locale ?? 'id', ['common']);
+    
     return {
         props: {
             ...props

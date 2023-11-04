@@ -1,8 +1,5 @@
 import { RequestParams } from "@/types/request-params-type";
-import { dehydrate, QueryClient } from "@tanstack/react-query";
 import { GetServerSidePropsContext } from 'next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { fetchPosts } from "./post-service";
 
 const isValidPage = (str: string) => {
     const number = Number(str);
@@ -10,36 +7,6 @@ const isValidPage = (str: string) => {
     const isPositive = number > 0;
 
     return isInteger && isPositive;
-}
-
-export const getPostsServerSideProps = async (context: GetServerSidePropsContext) => {
-    const locale = context.locale ?? 'id';
-    const props = await serverSideTranslations(locale, ['common']);
-    const queryClient = new QueryClient();
-
-    const { page, keyword, tag, destination } = getRequestParams(context);
-    if (destination) {
-        return {
-            redirect: {
-                destination: destination,
-                permanent: false,
-            },
-        }
-    }
-
-    const queryKey = ['posts', page || 1, keyword || '', tag || ''];
-
-    await queryClient.prefetchQuery({
-        queryKey,
-        queryFn: () => fetchPosts({ page, keyword, tag }),
-    })
-
-    return {
-        props: {
-            dehydratedState: dehydrate(queryClient),
-            ...props
-        },
-    };
 }
 
 export function getRequestParams(context: GetServerSidePropsContext) {

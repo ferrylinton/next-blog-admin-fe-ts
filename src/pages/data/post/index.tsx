@@ -2,7 +2,7 @@ import BreadCrumb from '@/components/BreadCrumb';
 import Paging from '@/components/Paging';
 import SearchForm from '@/components/SearchForm';
 import AddIcon from '@/icons/AddIcon';
-import { getClientInfo } from '@/libs/client-info-util';
+import { getClientInfo } from '@/libs/auth-util';
 import { isValidPage } from '@/libs/paging-util';
 import { getPosts } from '@/services/post-service';
 import { withAuth } from '@/services/wrapper-service';

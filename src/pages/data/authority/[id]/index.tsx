@@ -4,7 +4,7 @@ import DetailValue from '@/components/detail-value';
 import BackIcon from '@/icons/BackIcon';
 import DeleteIcon from '@/icons/DeleteIcon';
 import EditIcon from '@/icons/EditIcon';
-import { getClientInfo } from '@/libs/client-info-util';
+import { getClientInfo } from '@/libs/auth-util';
 import { formatToTimestamp } from '@/libs/date-util';
 import { deleteAuthority, getAuthority } from '@/services/authority-service';
 import { withAuth } from '@/services/wrapper-service';

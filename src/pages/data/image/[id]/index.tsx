@@ -2,7 +2,7 @@ import BreadCrumb from '@/components/BreadCrumb';
 import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
 import BackIcon from '@/icons/BackIcon';
 import DeleteIcon from '@/icons/DeleteIcon';
-import { getClientInfo } from '@/libs/client-info-util';
+import { getClientInfo } from '@/libs/auth-util';
 import { formatToTimestamp } from '@/libs/date-util';
 import { deleteImage, getImage } from '@/services/image-service';
 import { withAuth } from '@/services/wrapper-service';

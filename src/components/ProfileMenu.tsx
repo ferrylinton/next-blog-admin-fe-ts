@@ -1,14 +1,17 @@
 import AngelDownIcon from '@/icons/AngelDownIcon';
 import UserIcon from '@/icons/UserIcon';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import React, { useRef } from 'react';
 
 const ProfileMenu = () => {
 
-    const formRef = useRef<HTMLFormElement>(null);
-
     const router = useRouter();
+
+    const { i18n } = useTranslation('common');
+
+    const formRef = useRef<HTMLFormElement>(null);
 
     const handleSelect = (href: string) => {
         router.push(href);
@@ -51,7 +54,9 @@ const ProfileMenu = () => {
                     </DropdownMenu.Content>
                 </DropdownMenu.Portal>
             </DropdownMenu.Root>
-            <form ref={formRef} action='/api/logout' method='POST'></form>
+            <form ref={formRef} action='/api/logout' method='POST'>
+                <input type='hidden' id='locale' name='locale' value={i18n.language}></input>
+            </form>
         </>
     );
 };

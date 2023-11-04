@@ -44,7 +44,6 @@ export default function ImageCreatePage({ clientInfo }: ImageProps) {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         try {
             event.preventDefault();
-            console.log({ file: selectedFile });
             const validation = CreateImageSchema.safeParse({ file: selectedFile });
 
             if (validation.success) {

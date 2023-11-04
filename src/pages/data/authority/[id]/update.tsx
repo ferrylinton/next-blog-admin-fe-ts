@@ -1,5 +1,5 @@
 import AuthorityForm from '@/components/authority/authority-form';
-import { getClientInfo } from '@/libs/client-info-util';
+import { getClientInfo } from '@/libs/auth-util';
 import { getAuthority } from '@/services/authority-service';
 import { withAuth } from '@/services/wrapper-service';
 import { AuthorityPageProps } from '@/types/authority-type';
