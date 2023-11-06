@@ -4,7 +4,7 @@ const blogApiClient = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_HOST,
     timeout: 15000,
     validateStatus: function (status) {
-        return (status >= 200 && status < 300) || status === 400 || status === 409 || status === 401 || status === 403;
+        return (status >= 200 && status < 300) || status === 400 || status === 409;
     }
 });
 

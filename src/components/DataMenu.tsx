@@ -1,3 +1,4 @@
+import { READ_USER_DATA, READ_WHITELIST_DATA } from '@/configs/auth-constant';
 import AngelDownIcon from '@/icons/AngelDownIcon';
 import DataIcon from '@/icons/DataIcon';
 import { AuthData } from '@/types/auth-type';
@@ -19,7 +20,7 @@ const DataMenu = ({ authData }: Props) => {
         router.push(href);
     }
 
-    if (!authData)
+    if (!authData || authData.authorities.length === 0)
         return null;
     else
         return (
@@ -43,17 +44,24 @@ const DataMenu = ({ authData }: Props) => {
                             <DropdownMenu.Item onSelect={() => handleSelect('/data/tag')} className="nav-dropdown-item">
                                 {t('tag')}
                             </DropdownMenu.Item>
-                            <DropdownMenu.Separator className="h-[1px] bg-stone-300 m-[5px]" />
-                            <DropdownMenu.Item onSelect={() => handleSelect('/data/user')} className="nav-dropdown-item">
-                                {t('user')}
-                            </DropdownMenu.Item>
-                            <DropdownMenu.Item onSelect={() => handleSelect('/data/authority')} className="nav-dropdown-item">
-                                {t('authority')}
-                            </DropdownMenu.Item>
-                            <DropdownMenu.Separator className="h-[1px] bg-stone-300 m-[5px]" />
-                            <DropdownMenu.Item onSelect={() => handleSelect('/data/whitelist')} className="nav-dropdown-item">
-                                {t('whitelist')}
-                            </DropdownMenu.Item>
+
+                            {authData.authorities.includes(READ_USER_DATA) && <>
+                                <DropdownMenu.Separator className="h-[1px] bg-stone-300 m-[5px]" />
+                                <DropdownMenu.Item onSelect={() => handleSelect('/data/user')} className="nav-dropdown-item">
+                                    {t('user')}
+                                </DropdownMenu.Item>
+                                <DropdownMenu.Item onSelect={() => handleSelect('/data/authority')} className="nav-dropdown-item">
+                                    {t('authority')}
+                                </DropdownMenu.Item>
+                            </>}
+
+                            {authData.authorities.includes(READ_WHITELIST_DATA) && <>
+                                <DropdownMenu.Separator className="h-[1px] bg-stone-300 m-[5px]" />
+                                <DropdownMenu.Item onSelect={() => handleSelect('/data/whitelist')} className="nav-dropdown-item">
+                                    {t('whitelist')}
+                                </DropdownMenu.Item>
+                            </>}
+
                         </DropdownMenu.Content>
                     </DropdownMenu.Portal>
                 </DropdownMenu.Root>

@@ -7,7 +7,7 @@ export type Authority = {
 } & Audit
 
 export type AuthorityPageProps = {
-    authority: Authority,
+    authority?: Authority,
     clientInfo: ClientInfo
 }
 

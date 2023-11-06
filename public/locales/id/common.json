@@ -75,5 +75,6 @@
     "logoutSuccessfully": "Pengguna berhasil keluar",
     "invalidUsernameOrPassword": "Nama pengguna atau kata sandi salah",
     "welcome": "Selamat Datang",
-    "information": "Informasi"
+    "information": "Informasi",
+    "post": "Postingan"
 }

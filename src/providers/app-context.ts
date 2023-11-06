@@ -3,10 +3,8 @@ import { createContext, useContext } from 'react';
 
 
 export const AppContext = createContext<AppContextProps>({
-    id: null,
-    setId: () => null,
-    data: null,
-    setData: () => null
+    loading: false,
+    setLoading: () => null
 });
 
 export const useAppContext = () => useContext(AppContext);

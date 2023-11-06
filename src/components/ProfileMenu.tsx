@@ -32,7 +32,7 @@ const ProfileMenu = ({ authData }: Props) => {
                 <DropdownMenu.Trigger className='nav-dropdown-trigger' asChild>
                     <button type='button' aria-label="ProfileMenu" >
                         <UserIcon className='w-[20px] h-[20px]' />
-                        <span className='hidden sm:inline-block px-1'>{authData?.username}</span>
+                        {authData?.username && <span className='hidden sm:inline-block sm:px-1'>{authData?.username}</span>}
                         <AngelDownIcon className='caret' />
                     </button>
                 </DropdownMenu.Trigger>

@@ -1,5 +1,8 @@
 import { ClientInfo } from "@/types/common-type";
-import axios, { RawAxiosRequestHeaders } from "axios";
+import axios, { AxiosError, RawAxiosRequestHeaders } from "axios";
+import { redirectToLogin } from "./redirect-util";
+import { MessageError } from "@/types/response-type";
+import { Dispatch, SetStateAction } from "react";
 
 
 export function getHeaders(clientInfo: ClientInfo) {
@@ -30,30 +33,17 @@ export function getFormHeaders(clientInfo: ClientInfo) {
     return headers;
 };
 
-export function errorHandler(error: any) {
+export function errorHandler(setMessageError: Dispatch<SetStateAction<MessageError | null>>, locale: string, error: any) {
+    console.log(error);
     if (axios.isAxiosError(error)) {
-        const response = error?.response
+        const axiosError = error as AxiosError;
 
-        if (response && response.status === 401) {
-            return {
-                redirect: {
-                    destination: '/login',
-                    permanent: false
-                }
-            }
-        } else if (response && response.status === 404) {
-            return {
-                notFound: true
-            }
+        if (axiosError.response?.status === 401) {
+            return redirectToLogin(locale);
+        } else {
+            setMessageError({ message: axiosError.message });
         }
+    } else {
+        setMessageError({ message: error.message })
     }
-
-    return {
-        props: {
-            error: {
-                message: error.message
-            }
-        }
-    }
-
 }

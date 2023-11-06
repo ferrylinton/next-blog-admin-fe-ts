@@ -1,10 +1,17 @@
 import MessageErrorBox from '@/components/MessageErrorBox';
 import ValidationError from '@/components/ValidationError';
+import { COOKIE_AUTH_DATA } from '@/configs/constant';
+import { logger } from '@/configs/winston';
+import { getClientInfo } from '@/libs/auth-util';
+import { redirectToPath } from '@/libs/redirect-util';
 import { translate } from '@/libs/validation-util';
+import { checkToken } from '@/services/auth-service';
 import { MessageError } from '@/types/response-type';
 import { ErrorValidation } from '@/types/validation-type';
 import { AuthenticateSchema, AuthenticateType } from '@/validations/authenticate-schema';
+import axios from 'axios';
 import clsx from 'clsx';
+import { deleteCookie } from 'cookies-next';
 import { GetServerSidePropsContext } from 'next';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -31,18 +38,19 @@ export default function LoginPage() {
 
     const { register, handleSubmit } = useForm<AuthenticateType>({
         defaultValues: {
-            username: "admin111",
-            password: "admin111"
+            username: "",
+            password: ""
         }
     });
 
     const [validationErrors, setValidationErrors] = useState<ErrorValidation>({});
 
-    const [messageError, setMessageError] = useState<MessageError | null>(null);
+    const [messageError, setMessageError] = useState<MessageError | null>({ message: t(message) });
 
     const onSubmit: SubmitHandler<AuthenticateType> = async (data) => {
         try {
             setValidationErrors({});
+            setMessageError(null);
             const validation = AuthenticateSchema.safeParse(data);
             if (validation.success) {
                 formRef.current?.submit();
@@ -62,7 +70,7 @@ export default function LoginPage() {
             </div>
 
             <form
-                ref={formRef} 
+                ref={formRef}
                 className='w-full sm:w-[350px] flex flex-col gap-4 sm:border border-stone-200 px-6 py-9'
                 noValidate
                 autoComplete='off'
@@ -70,7 +78,6 @@ export default function LoginPage() {
                 method='post'
                 action={'/api/login'}>
 
-                {message && <div className='w-full text-center text-red-500 pb-4'>{t(message)}</div>}
                 <MessageErrorBox messageError={messageError} />
 
                 <div className="form-group">
@@ -108,11 +115,41 @@ export default function LoginPage() {
 }
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
-    const props = await serverSideTranslations(context.locale ?? 'id', ['common']);
+    logger.info(`[${context.locale}] : ${context.resolvedUrl}`);
 
-    return {
-        props: {
-            ...props
-        },
-    };
+    const clientInfo = getClientInfo(context);
+    const ssrConfig = await serverSideTranslations(context.locale ?? 'id', ['common']);
+
+    try {
+        if (clientInfo.authData) {
+            await checkToken(clientInfo);
+            return redirectToPath(clientInfo.locale, '/');
+        }
+
+        return {
+            props: {
+                clientInfo,
+                ...ssrConfig
+            }
+        }
+    } catch (error: any) {
+        logger.error(error);
+        const messageError: MessageError = { message: error.message }
+
+        if (axios.isAxiosError(error)) {
+            const response = error?.response;
+            console.log(response?.status);
+            if (response && response.status === 401) {
+                deleteCookie(COOKIE_AUTH_DATA, { req: context.req, res: context.res, path: '/' });
+            }
+        }
+
+        return {
+            props: {
+                clientInfo,
+                messageError,
+                ...ssrConfig
+            }
+        }
+    }
 }

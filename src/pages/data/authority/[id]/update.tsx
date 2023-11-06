@@ -1,14 +1,23 @@
 import AuthorityForm from '@/components/authority/authority-form';
+import { MODIFY_USER_DATA } from '@/configs/auth-constant';
 import { getClientInfo } from '@/libs/auth-util';
 import { getAuthority } from '@/services/authority-service';
 import { withAuth } from '@/services/wrapper-service';
 import { AuthorityPageProps } from '@/types/authority-type';
 import { GetServerSidePropsContext } from 'next';
+import { useRouter } from 'next/router';
 
 
 export default function AuthorityUpdatePage({ authority, clientInfo }: AuthorityPageProps) {
-    const { id, code, description } = authority;
-    return <AuthorityForm authority={{ id, code, description }} clientInfo={clientInfo} />
+    const router = useRouter();
+
+    if(authority){
+        const { id, code, description } = authority;
+        return <AuthorityForm authority={{ id, code, description }} clientInfo={clientInfo} />
+    }else{
+        router.push('/data/authority');
+    }
+    
 }
 
 export const getServerSideProps = withAuth(async (context: GetServerSidePropsContext) => {
@@ -18,8 +27,8 @@ export const getServerSideProps = withAuth(async (context: GetServerSidePropsCon
 
     return {
         props: {
-            namespaces: ['common'],
-            authority: data
+            authority: data,
+            hasAuthority: MODIFY_USER_DATA
         }
     }
 })

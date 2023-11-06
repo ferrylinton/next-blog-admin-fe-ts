@@ -32,7 +32,7 @@ export const getClientInfo = (context: GetServerSidePropsContext): ClientInfo =>
     const clientIp = (context.req.headers["x-real-ip"] || context.req.headers['x-forwarded-for'] || context.req.socket.remoteAddress || '') as string;
     const userAgent = context.req.headers['user-agent'] || '';
     const authData = authDataFromContext(context);
-    const locale = context.locale || 'id';
+    const locale = context.locale ?? 'id';
 
     return { locale, clientIp, userAgent, authData }
 }

@@ -1,25 +1,47 @@
+import { COOKIE_NEXT_LOCALE } from '@/configs/constant';
 import AngelDownIcon from '@/icons/AngelDownIcon';
 import CheckIcon from '@/icons/CheckIcon';
 import EnIcon from '@/icons/EnIcon';
 import IdIcon from '@/icons/IdIcon';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { getCookie, setCookie } from 'cookies-next';
+import { OptionsType } from 'cookies-next/lib/types';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
+import React, { useState, useEffect } from 'react'
 
 const locales = [
     { "value": "id", "label": "Indonesia", "flag": <IdIcon className='w-[24px] h-auto border border-slate-300 rounded shadow-md' /> },
     { "value": "en", "label": "English", "flag": <EnIcon className='w-[24px] h-auto border border-slate-300 rounded shadow-md' /> }
 ]
 
+const option: OptionsType = {
+    sameSite: 'strict',
+    path: "/",
+    maxAge: 1 * 60 * 1000
+};
+
 const LocaleMenu = () => {
 
     const router = useRouter();
 
+    const { pathname, asPath, query } = router;
+
     const { i18n } = useTranslation('common');
 
+    useEffect(() => {
+        const locale = getCookie(COOKIE_NEXT_LOCALE);
+
+        if (!locale) {
+            setCookie(COOKIE_NEXT_LOCALE, i18n.language, option);
+        } else if (locale !== i18n.language) {
+            router.push({ pathname, query }, asPath, { locale });
+        }
+    }, [])
+
     const handleSelectLocale = (locale: string) => {
-        const { pathname, asPath, query } = router;
-        router.push({ pathname, query }, asPath, { locale }) ;
+        setCookie(COOKIE_NEXT_LOCALE, locale, option);
+        router.push({ pathname, query }, asPath, { locale });
     }
 
     const getFlag = () => {
@@ -36,7 +58,7 @@ const LocaleMenu = () => {
         <DropdownMenu.Root modal={false}>
             <DropdownMenu.Trigger className='nav-dropdown-trigger' asChild>
                 <button aria-label="LocaleMenu" >
-                    {getFlag()} 
+                    {getFlag()}
                     <AngelDownIcon className='caret' />
                 </button>
             </DropdownMenu.Trigger>

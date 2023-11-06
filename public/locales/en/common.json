@@ -75,5 +75,6 @@
     "logoutSuccessfully": "Logout successfully",
     "invalidUsernameOrPassword": "Invalid username or password",
     "welcome": "Welcome",
-    "information": "Information"
+    "information": "Information",
+    "post": "Post"
 }

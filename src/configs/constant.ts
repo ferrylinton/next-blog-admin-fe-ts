@@ -1,1 +1,3 @@
 export const COOKIE_AUTH_DATA = 'AUTH_DATA';
+
+export const COOKIE_NEXT_LOCALE = 'NEXT_LOCALE';

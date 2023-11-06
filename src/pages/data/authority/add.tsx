@@ -1,4 +1,5 @@
 import AuthorityForm from '@/components/authority/authority-form';
+import { MODIFY_USER_DATA } from '@/configs/auth-constant';
 import { withAuth } from '@/services/wrapper-service';
 import { PageProps } from '@/types/common-type';
 import { GetServerSidePropsContext } from 'next';
@@ -12,7 +13,7 @@ export default function AuthorityCreatePage({ clientInfo }: PageProps) {
 export const getServerSideProps = withAuth(async (context: GetServerSidePropsContext) => {
     return {
         props: {
-            namespaces: ['common'],
+            hasAuthority: MODIFY_USER_DATA
         }
     }
 })

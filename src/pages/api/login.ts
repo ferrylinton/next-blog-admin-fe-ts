@@ -1,6 +1,7 @@
 import { COOKIE_AUTH_DATA } from '@/configs/constant';
 import { getToken } from '@/services/auth-service';
 import { ClientInfo } from '@/types/common-type';
+import axios from 'axios';
 import { setCookie } from 'cookies-next';
 import { OptionsType } from 'cookies-next/lib/types';
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -17,25 +18,28 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             const clientInfo: ClientInfo = { clientIp: clientIp as string, locale, userAgent, authData: null };
 
             const response = await getToken(username, password, clientInfo);
+            const option: OptionsType = {
+                req,
+                res,
+                httpOnly: true,
+                secure: process.env.NODE_ENV !== 'development',
+                sameSite: 'strict',
+                path: "/",
+                maxAge: 1 * 60 * 1000
+            };
 
-            if (response.status !== 200) {
-                res.redirect(locale === 'en' ? "/en/login?message=invalidUsernameOrPassword" : "/login?message=invalidUsernameOrPassword");
-            } else {
-                const option: OptionsType = {
-                    req,
-                    res,
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV !== 'development',
-                    sameSite: 'strict',
-                    path: "/",
-                    maxAge: 1 * 60 * 1000
-                };
-
-                setCookie(COOKIE_AUTH_DATA, response.data, option);
-                res.redirect(locale === 'en' ? "/en/" : "/");
-            }
+            setCookie(COOKIE_AUTH_DATA, response.data, option);
+            return res.redirect(locale === 'en' ? "/en/" : "/");
         } catch (error: any) {
-            res.redirect(locale === 'en' ? `/en/login?message=${error.message}` : `/login?message=${error.message}`);
+            if (axios.isAxiosError(error)) {
+                const response = error?.response
+
+                if (response && response.status === 401) {
+                    return res.redirect(locale === 'en' ? "/en/login?message=invalidUsernameOrPassword" : "/login?message=invalidUsernameOrPassword");
+                }
+            }
+
+            return res.redirect(locale === 'en' ? `/en/login?message=${error.message}` : `/login?message=${error.message}`);
         }
 
 

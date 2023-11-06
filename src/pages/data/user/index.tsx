@@ -20,8 +20,6 @@ export default function UserListPage({ users }: Props) {
 
     const { t } = useTranslation('common');
 
-    const router = useRouter();
-
     const [filtered, setFiltered] = useState(users);
 
     const filter = (keyword?: string) => {
@@ -84,6 +82,7 @@ export default function UserListPage({ users }: Props) {
 export const getServerSideProps = withAuth(async (context: GetServerSidePropsContext) => {
     const clientInfo = getClientInfo(context);
     const { data } = await getUsers(clientInfo);
+    console.log(data);
 
     return {
         props: {

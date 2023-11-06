@@ -28,10 +28,10 @@ export default function UserForm({ user, authorities, clientInfo }: UserFormProp
 
     const [messageError, setMessageError] = useState<MessageError | null>(null);
 
-    const onSubmit: SubmitHandler<UserFormData> = async (data) => {
+    const onSubmit: SubmitHandler<UserFormData> = async (createData) => {
         try {
-            const {password, passwordConfirm, ...newData} = data;console.log(data);
-            const validation = (user?.id) ? UpdateUserSchema.safeParse(newData) : CreateUserSchema.safeParse(newData);
+            const { password, passwordConfirm, ...updateData } = createData;
+            const validation = (user?.id) ? UpdateUserSchema.safeParse(updateData) : CreateUserSchema.safeParse(createData);
 
             if (validation.success) {
                 const response = (user?.id) ? (await updateUser(user.id, validation.data, clientInfo)) : (await createUser(validation.data, clientInfo));
@@ -144,7 +144,7 @@ export default function UserForm({ user, authorities, clientInfo }: UserFormProp
                             <ValidationError message={validationErrors.passwordConfirm} />
                         </div>}
 
-                        <div className="form-group">
+                        {user.id && <div className="form-group">
                             <label className='form-label' htmlFor="loginAttempt">{t('loginAttempt')}</label>
                             <div className='w-full bg-stone-200'>
                                 <input
@@ -156,7 +156,7 @@ export default function UserForm({ user, authorities, clientInfo }: UserFormProp
                                 />
                             </div>
                             <ValidationError message={validationErrors.loginAttempt} />
-                        </div>
+                        </div>}
 
                         <div className="form-group flex gap-3 justify-start items-center">
                             <input
@@ -168,7 +168,7 @@ export default function UserForm({ user, authorities, clientInfo }: UserFormProp
                             </label>
                         </div>
 
-                        <div className="form-group flex gap-3 justify-start items-center">
+                        {user.id && <div className="form-group flex gap-3 justify-start items-center">
                             <input
                                 type="checkbox"
                                 {...register("locked")}
@@ -176,7 +176,7 @@ export default function UserForm({ user, authorities, clientInfo }: UserFormProp
                             <label className="hover:cursor-pointer text-xs">
                                 {t('locked')}
                             </label>
-                        </div>
+                        </div>}
 
                         <div className="mb-5">
                             <label className="block mb-1 text-xs ps-1" htmlFor="name">{t('authorities')}</label>
@@ -191,7 +191,7 @@ export default function UserForm({ user, authorities, clientInfo }: UserFormProp
                                                 value={authority.code}
                                                 {...register("authorities")}
                                             />
-                                            <label className="hover:cursor-pointer text-xs">
+                                            <label className="hover:cursor-pointer text-xs min-w-[160px]">
                                                 {authority.description}
                                             </label>
                                         </div>

@@ -1,9 +1,9 @@
-import { PropsWithChildren } from 'react';
-import Navbar from './Navbar';
+import { useAppContext } from '@/providers/app-context';
+import { ClientInfo } from '@/types/common-type';
 import { Inter } from 'next/font/google';
 import Image from 'next/image';
-import { AuthData } from '@/types/auth-type';
-import { ClientInfo } from '@/types/common-type';
+import { PropsWithChildren } from 'react';
+import Navbar from './Navbar';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -15,6 +15,8 @@ type Props = {
 export default function Layout({ children, clientInfo }: Props) {
 
     const authData = clientInfo ? clientInfo.authData : null;
+
+    const { loading } = useAppContext();
 
     return (
         <>
@@ -41,6 +43,13 @@ export default function Layout({ children, clientInfo }: Props) {
                     </div>
                 </footer>
             </div>
+            {loading && <div className="z-[55] fixed inset-x-0 top-[60px] animate-slideDownAndFade">
+                <div className='mx-auto border rounded-full w-[60px] h-[60px] p-1 bg-stone-200 bg-opacity-30'>
+                    <div className="animate-spin h-full w-full">
+                        <div className="h-full w-full border-4 border-t-lime-600 border-b-lime-700 rounded-[50%]" />
+                    </div>
+                </div>
+            </div>}
         </>
     )
 }

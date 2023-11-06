@@ -2,13 +2,10 @@ import BreadCrumb from '@/components/BreadCrumb';
 import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
 import DetailValue from '@/components/detail-value';
 import BackIcon from '@/icons/BackIcon';
-import CheckIcon from '@/icons/CheckIcon';
-import CloseIcon from '@/icons/CloseIcon';
 import DeleteIcon from '@/icons/DeleteIcon';
 import EditIcon from '@/icons/EditIcon';
 import PasswordIcon from '@/icons/PasswordIcon';
 import { getClientInfo } from '@/libs/auth-util';
-import { formatToTimestamp } from '@/libs/date-util';
 import { deleteUser, getUser } from '@/services/user-service';
 import { withAuth } from '@/services/wrapper-service';
 import { ClientInfo } from '@/types/common-type';
@@ -43,22 +40,13 @@ export default function UserDetailPage({ user, clientInfo }: Props) {
         router.push('/data/user');
     }
 
-    const getIcon = (val: boolean) => {
-        if (val) {
-            return <CheckIcon className='w-[18px] h-[18px] text-green-600' />
-        } else {
-            return <CloseIcon className='w-[24px] h-[24px] text-red-600' />
-        }
-    }
-
-
     return (
         <div className='w-full h-full grow flex flex-col justify-start items-center pt-[50px] pb-5'>
             <div className='w-full bg-stone-100 flex justify-center items-center text-stone-500'>
                 <BreadCrumb
                     items={[
                         { label: t('user'), url: `/data/user` },
-                        { label: t('detail') }
+                        { label: router.query.id as string }
                     ]} />
             </div>
             {user && <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col justify-center items-center px-2 py-5'>
