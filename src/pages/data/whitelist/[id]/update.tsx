@@ -1,5 +1,7 @@
 import WhitelistForm from '@/components/whitelist/whitelist-form';
-import { getClientInfo } from '@/libs/auth-util';
+import { MODIFY_WHITELIST_DATA } from '@/configs/auth-constant';
+import { getClientInfo } from '@/libs/auth-data-util';
+import { isAuthorize } from '@/libs/auth-util';
 import { getWhitelist } from '@/services/whitelist-service';
 import { withAuth } from '@/services/wrapper-service';
 import { WhitelistPageProps } from '@/types/whitelist-type';
@@ -18,8 +20,8 @@ export const getServerSideProps = withAuth(async (context: GetServerSidePropsCon
 
     return {
         props: {
-            namespaces: ['common'],
-            whitelist: data
+            whitelist: data,
+            authorized: isAuthorize(clientInfo, [MODIFY_WHITELIST_DATA])
         }
     }
 })

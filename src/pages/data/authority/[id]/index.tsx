@@ -3,12 +3,13 @@ import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
 import MessageErrorBox from '@/components/MessageErrorBox';
 import NotFound from '@/components/NotFound';
 import DetailValue from '@/components/detail-value';
-import { READ_USER_DATA } from '@/configs/auth-constant';
+import { MODIFY_USER_DATA, READ_USER_DATA } from '@/configs/auth-constant';
 import BackIcon from '@/icons/BackIcon';
 import DeleteIcon from '@/icons/DeleteIcon';
 import EditIcon from '@/icons/EditIcon';
 import NotFoundIcon from '@/icons/NotFoundIcon';
-import { getClientInfo } from '@/libs/auth-util';
+import { getClientInfo } from '@/libs/auth-data-util';
+import { isAuthorize } from '@/libs/auth-util';
 import { errorHandler } from '@/libs/axios-util';
 import { useAppContext } from '@/providers/app-context';
 import { deleteAuthority, getAuthority } from '@/services/authority-service';
@@ -46,10 +47,10 @@ export default function AuthorityDetailPage({ authority, clientInfo }: Authority
                 setTimeout(() => router.push('/data/authority'), 500);
             } catch (error: any) {
                 errorHandler(setMessageError, i18n.language, error);
-            }finally{
+            } finally {
                 setTimeout(() => setLoading(false), 500);
             }
-        }        
+        }
     }
 
     return (
@@ -61,7 +62,7 @@ export default function AuthorityDetailPage({ authority, clientInfo }: Authority
                         { label: router.query.id as string }
                     ]} />
             </div>
-            <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col justify-center items-center px-2 py-5'>
+            <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col items-start px-2'>
                 <MessageErrorBox messageError={messageError} />
                 {!authority && <NotFound id={router.query.id} />}
                 {authority && <>
@@ -77,7 +78,7 @@ export default function AuthorityDetailPage({ authority, clientInfo }: Authority
                             }
                         </tbody>
                     </table>
-                    <div className="mt-5 flex gap-2">
+                    <div className="w-ful flex justify-start items-start gap-2">
                         <button
                             onClick={() => router.push('/data/authority')}
                             type='button'
@@ -85,25 +86,28 @@ export default function AuthorityDetailPage({ authority, clientInfo }: Authority
                             <BackIcon className='w-[20px] h-[20px]' />
                             <span>{t('back')}</span>
                         </button>
-                        <button
-                            onClick={() => router.push(`/data/authority/${authority.id}/update`)}
-                            type='button'
-                            className="btn btn-link">
-                            <EditIcon className='w-[22px] h-[22px]' />
-                            <span>{t('update')}</span>
-                        </button>
-                        <button
-                            onClick={() => showDeleteConfirmation()}
-                            type='button'
-                            className="btn btn-danger">
-                            <DeleteIcon className='w-[20px] h-[20px]' />
-                            <span>{t('delete')}</span>
-                        </button>
+                        {(isAuthorize(clientInfo, [MODIFY_USER_DATA]) || clientInfo.authData?.username === authority.createdBy) && <>
+                            <button
+                                onClick={() => router.push(`/data/authority/${authority.id}/update`)}
+                                type='button'
+                                className="btn btn-link">
+                                <EditIcon className='w-[22px] h-[22px]' />
+                                <span>{t('update')}</span>
+                            </button>
+                            <button
+                                onClick={() => showDeleteConfirmation()}
+                                type='button'
+                                className="btn btn-danger">
+                                <DeleteIcon className='w-[20px] h-[20px]' />
+                                <span>{t('delete')}</span>
+                            </button>
+                            <DeleteConfirmDialog
+                                showConfirm={showConfirm}
+                                setShowConfirm={setShowConfirm}
+                                okHandler={okHandler} />
+                        </>}
                     </div>
-                    <DeleteConfirmDialog
-                        showConfirm={showConfirm}
-                        setShowConfirm={setShowConfirm}
-                        okHandler={okHandler} />
+
                 </>}
             </div>
 
@@ -115,12 +119,12 @@ export default function AuthorityDetailPage({ authority, clientInfo }: Authority
 export const getServerSideProps = withAuth(async (context: GetServerSidePropsContext) => {
     const id = context.params?.id as string;
     const clientInfo = getClientInfo(context);
-    const { data } = await getAuthority(id, clientInfo);
+    const { data: authority } = await getAuthority(id, clientInfo);
 
     return {
         props: {
-            authority: data,
-            hasAuthority: READ_USER_DATA
+            authority,
+            authorized: isAuthorize(clientInfo, [READ_USER_DATA]) || (authority.createdBy === clientInfo.authData?.username)
         }
     }
 })

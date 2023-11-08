@@ -2,10 +2,11 @@ import MessageErrorBox from '@/components/MessageErrorBox';
 import ValidationError from '@/components/ValidationError';
 import { COOKIE_AUTH_DATA } from '@/configs/constant';
 import { logger } from '@/configs/winston';
-import { getClientInfo } from '@/libs/auth-util';
+import { getClientInfo } from '@/libs/auth-data-util';
 import { redirectToPath } from '@/libs/redirect-util';
 import { translate } from '@/libs/validation-util';
 import { checkToken } from '@/services/auth-service';
+import { ClientInfo } from '@/types/common-type';
 import { MessageError } from '@/types/response-type';
 import { ErrorValidation } from '@/types/validation-type';
 import { AuthenticateSchema, AuthenticateType } from '@/validations/authenticate-schema';
@@ -17,7 +18,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Righteous } from 'next/font/google';
 import { useRouter } from 'next/router';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 
@@ -26,7 +27,11 @@ const logoFont = Righteous({
     subsets: ['latin']
 });
 
-export default function LoginPage() {
+type Props = {
+    clientInfo? : ClientInfo
+}
+
+export default function LoginPage({clientInfo} : Props) {
 
     const router = useRouter();
 
@@ -35,6 +40,18 @@ export default function LoginPage() {
     const message = router.query?.message as string;
 
     const formRef = useRef<HTMLFormElement>(null);
+
+    useEffect(() => {
+
+        console.log(clientInfo);
+        if(clientInfo){
+            console.log('redirect.....');
+            router.push('/');
+        }else{
+            console.log('nooo redirect.....');
+        }
+
+    }, [clientInfo])
 
     const { register, handleSubmit } = useForm<AuthenticateType>({
         defaultValues: {
@@ -64,7 +81,7 @@ export default function LoginPage() {
     }
 
     return (
-        <div className='w-full h-full grow flex flex-col justify-center items-center px-2 pb-5'>
+        <div className='w-full h-full grow flex flex-col justify-center items-center px-2 pt-[50px] pb-5'>
             <div className={`uppercase leading-none text-2xl text-[#333] tracking-wider sm:text-3xl mb-4  ${logoFont.className}`}>
                 <span className='drop-shadow-[0_1px_1px_rgba(0,0,0,1)]'>{t('login')}</span>
             </div>
@@ -115,16 +132,11 @@ export default function LoginPage() {
 }
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
-    logger.info(`[${context.locale}] : ${context.resolvedUrl}`);
-
     const clientInfo = getClientInfo(context);
     const ssrConfig = await serverSideTranslations(context.locale ?? 'id', ['common']);
 
     try {
-        if (clientInfo.authData) {
-            await checkToken(clientInfo);
-            return redirectToPath(clientInfo.locale, '/');
-        }
+        await checkToken(clientInfo);
 
         return {
             props: {
@@ -138,7 +150,6 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
         if (axios.isAxiosError(error)) {
             const response = error?.response;
-            console.log(response?.status);
             if (response && response.status === 401) {
                 deleteCookie(COOKIE_AUTH_DATA, { req: context.req, res: context.res, path: '/' });
             }
@@ -146,7 +157,6 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
         return {
             props: {
-                clientInfo,
                 messageError,
                 ...ssrConfig
             }

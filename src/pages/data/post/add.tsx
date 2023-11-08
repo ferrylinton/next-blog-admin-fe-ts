@@ -1,10 +1,11 @@
 import PostForm from '@/components/post/post-form';
-import { getClientInfo } from '@/libs/auth-util';
+import { BLOG_OWNER } from '@/configs/auth-constant';
+import { getClientInfo } from '@/libs/auth-data-util';
+import { isAuthorize } from '@/libs/auth-util';
 import { getTags } from '@/services/tag-service';
 import { withAuth } from '@/services/wrapper-service';
 import { PostFormData, PostPageProps } from '@/types/post-type';
 import { GetServerSidePropsContext } from 'next';
-
 
 
 export default function PostCreatePage({tags, clientInfo} : PostPageProps) {
@@ -36,8 +37,8 @@ export const getServerSideProps = withAuth(async (context: GetServerSidePropsCon
 
     return {
         props: {
-            namespaces: ['common'],
-            tags: data
+            tags: data,
+            authorized: isAuthorize(clientInfo, [BLOG_OWNER])
         }
     }
 })

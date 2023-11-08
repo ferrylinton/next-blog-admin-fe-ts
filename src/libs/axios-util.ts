@@ -1,6 +1,6 @@
 import { ClientInfo } from "@/types/common-type";
 import axios, { AxiosError, RawAxiosRequestHeaders } from "axios";
-import { redirectToLogin } from "./redirect-util";
+import { redirectTo403, redirectToLogin } from "./redirect-util";
 import { MessageError } from "@/types/response-type";
 import { Dispatch, SetStateAction } from "react";
 
@@ -34,12 +34,13 @@ export function getFormHeaders(clientInfo: ClientInfo) {
 };
 
 export function errorHandler(setMessageError: Dispatch<SetStateAction<MessageError | null>>, locale: string, error: any) {
-    console.log(error);
     if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
 
         if (axiosError.response?.status === 401) {
             return redirectToLogin(locale);
+        } else if (axiosError.response?.status === 403) {
+            return redirectTo403(locale, axiosError.config?.url || '-');
         } else {
             setMessageError({ message: axiosError.message });
         }

@@ -1,12 +1,9 @@
 import { logger } from '@/configs/winston';
-import { getClientInfo } from '@/libs/auth-util';
-import { redirectTo403, redirectToLogin, redirectToPath } from '@/libs/redirect-util';
-import { MessageError } from '@/types/response-type';
+import { getClientInfo } from '@/libs/auth-data-util';
+import { redirectTo403, redirectToLogin } from '@/libs/redirect-util';
 import axios from 'axios';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { checkToken } from './auth-service';
-
 
 
 export function withAuth(gssp: GetServerSideProps) {
@@ -20,27 +17,25 @@ export function withAuth(gssp: GetServerSideProps) {
         try {
             if (!clientInfo.authData && url.pathname !== '/login') {
                 return redirectToLogin(clientInfo.locale);
-            } 
+            }
 
             const gsspData = await gssp(context);
             const props = 'props' in gsspData ? gsspData.props : {};
-            
 
-            if ('hasAuthority' in props && !clientInfo.authData?.authorities.includes(props.hasAuthority)) {
+            if ("authorized" in props && props.authorized) {
+                return {
+                    props: {
+                        clientInfo,
+                        ...props,
+                        ...ssrConfig
+                    }
+                }
+            } else {
                 return redirectTo403(clientInfo.locale, context.resolvedUrl)
             }
 
-            return {
-                props: {
-                    clientInfo,
-                    ...props,
-                    ...ssrConfig
-                }
-            }
-            
         } catch (error: any) {
             logger.error(error);
-            const messageError: MessageError = { message: error.message }
 
             if (axios.isAxiosError(error)) {
                 const response = error?.response
@@ -53,6 +48,7 @@ export function withAuth(gssp: GetServerSideProps) {
                     return {
                         props: {
                             clientInfo,
+                            messageError: { message: error.message },
                             ...ssrConfig
                         }
                     }
@@ -62,7 +58,7 @@ export function withAuth(gssp: GetServerSideProps) {
             return {
                 props: {
                     clientInfo,
-                    messageError,
+                    messageError: { message: error.message },
                     ...ssrConfig
                 }
             }

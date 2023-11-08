@@ -1,12 +1,13 @@
 import { getFormHeaders, getHeaders } from "@/libs/axios-util";
 import blogApiClient from "@/libs/blog-api-client";
 import { Image, ImageForm } from "@/types/image-type";
-import { ClientInfo } from "@/types/common-type";
+import { ClientInfo, Pageable } from "@/types/common-type";
+import { RequestParams } from "@/types/request-params-type";
 
 
-export async function getImages(clientInfo: ClientInfo) {
+export async function getImages(clientInfo: ClientInfo, params?: RequestParams) {
     const headers = getHeaders(clientInfo);
-    return await blogApiClient.get<Image[]>('/api/images', { headers });
+    return await blogApiClient.get<Pageable<Image>>('/api/images', { params, headers });
 };
 
 export async function getImage(id: string, clientInfo: ClientInfo) {

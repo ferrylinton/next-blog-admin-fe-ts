@@ -1,9 +1,14 @@
-import AddButtonLink from '@/components/AddButtonLink';
 import BreadCrumb from '@/components/BreadCrumb';
 import FilterForm from '@/components/FilterForm';
-import { getClientInfo } from '@/libs/auth-util';
+import MessageErrorBox from '@/components/MessageErrorBox';
+import { MODIFY_WHITELIST_DATA, READ_WHITELIST_DATA } from '@/configs/auth-constant';
+import AddIcon from '@/icons/AddIcon';
+import { getClientInfo } from '@/libs/auth-data-util';
+import { isAuthorize } from '@/libs/auth-util';
 import { getWhitelists } from '@/services/whitelist-service';
 import { withAuth } from '@/services/wrapper-service';
+import { ClientInfo } from '@/types/common-type';
+import { MessageError } from '@/types/response-type';
 import { Whitelist } from '@/types/whitelist-type';
 import { GetServerSidePropsContext } from 'next';
 import { useTranslation } from 'next-i18next';
@@ -12,10 +17,12 @@ import { useState } from 'react';
 
 
 type Props = {
-    whitelists: Whitelist[]
+    whitelists: Whitelist[],
+    messageError: MessageError | null,
+    clientInfo: ClientInfo
 }
 
-export default function WhitelistListPage({ whitelists }: Props) {
+export default function WhitelistListPage({ whitelists, messageError, clientInfo }: Props) {
 
     const { t } = useTranslation('common');
 
@@ -39,9 +46,15 @@ export default function WhitelistListPage({ whitelists }: Props) {
                     ]} />
             </div>
             <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col justify-center items-center px-2 py-10'>
+                <MessageErrorBox messageError={messageError} />
                 <div className='w-full flex justify-between items-center mb-3'>
                     <FilterForm filter={filter} />
-                    <AddButtonLink url='/data/whitelist/add' />
+                    {isAuthorize(clientInfo, [MODIFY_WHITELIST_DATA]) && <Link
+                        className='btn btn-link'
+                        href={'/data/whitelist/add'}>
+                        <AddIcon className='w-[20px] h-[20px]' />
+                        <span>{t('add')}</span>
+                    </Link>}
                 </div>
                 <table className='table-responsive w-full'>
                     <thead>
@@ -79,12 +92,12 @@ export default function WhitelistListPage({ whitelists }: Props) {
 
 export const getServerSideProps = withAuth(async (context: GetServerSidePropsContext) => {
     const clientInfo = getClientInfo(context);
-    const { data } = await getWhitelists(clientInfo);
+    const { data: whitelists } = await getWhitelists(clientInfo);
 
     return {
         props: {
-            namespaces: ['common'],
-            whitelists: data
+            whitelists,
+            authorized: isAuthorize(clientInfo, [READ_WHITELIST_DATA])
         }
     }
 })

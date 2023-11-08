@@ -1,32 +1,36 @@
 import BreadCrumb from '@/components/BreadCrumb';
 import FilterForm from '@/components/FilterForm';
+import MessageErrorBox from '@/components/MessageErrorBox';
+import { BLOG_ADMIN, BLOG_OWNER } from '@/configs/auth-constant';
 import AddIcon from '@/icons/AddIcon';
-import { getClientInfo } from '@/libs/auth-util';
+import { getClientInfo } from '@/libs/auth-data-util';
+import { isAuthorize } from '@/libs/auth-util';
 import { getTags } from '@/services/tag-service';
 import { withAuth } from '@/services/wrapper-service';
+import { ClientInfo } from '@/types/common-type';
+import { MessageError } from '@/types/response-type';
 import { Tag } from '@/types/tag-type';
 import { GetServerSidePropsContext } from 'next';
 import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 
 type Props = {
-    tags: Tag[]
+    tags?: Tag[],
+    messageError: MessageError | null,
+    clientInfo: ClientInfo
 }
 
-export default function TagListPage({ tags }: Props) {
+export default function TagListPage({ tags, messageError, clientInfo }: Props) {
 
     const { t } = useTranslation('common');
-
-    const router = useRouter();
 
     const [filtered, setFiltered] = useState(tags);
 
     const filter = (keyword?: string) => {
         if (keyword) {
-            setFiltered(tags.filter(tag => tag.name.toLowerCase().includes(keyword.toLowerCase())))
+            setFiltered(tags && tags.filter(tag => tag.name.toLowerCase().includes(keyword.toLowerCase())))
         } else {
             setFiltered(tags);
         }
@@ -41,20 +45,22 @@ export default function TagListPage({ tags }: Props) {
                     ]} />
             </div>
             <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col justify-center items-center px-2 py-10'>
+                <MessageErrorBox messageError={messageError} />
                 <div className='w-full flex justify-between items-center mb-3'>
                     <FilterForm filter={filter} />
-                    <button
+                    {isAuthorize(clientInfo, [BLOG_OWNER]) && <Link
                         className='btn btn-link'
-                        onClick={() => router.push('/data/tag/add')}>
+                        href={'/data/tag/add'}>
                         <AddIcon className='w-[20px] h-[20px]' />
                         <span>{t('add')}</span>
-                    </button>
+                    </Link>}
                 </div>
                 <table className='table-responsive w-full'>
                     <thead>
                         <tr>
                             <th>#</th>
                             <th>{t('name')}</th>
+                            <th>{t('createdBy')}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -62,7 +68,7 @@ export default function TagListPage({ tags }: Props) {
                         {
                             (!filtered || filtered.length === 0) ?
                                 <tr>
-                                    <td colSpan={3} className='empty'>
+                                    <td colSpan={4} className='empty'>
                                         <span>{t('dataIsEmpty')}</span>
                                     </td>
                                 </tr> :
@@ -70,6 +76,7 @@ export default function TagListPage({ tags }: Props) {
                                     return <tr key={tag.id}>
                                         <td data-label="#">{index + 1}</td>
                                         <td data-label={t('name')}>{tag.name}</td>
+                                        <td data-label={t('createdBy')}>{tag.createdBy}</td>
                                         <td>
                                             <Link href={`/data/tag/${tag.id}`}>{t('detail')}</Link>
                                         </td>
@@ -90,8 +97,8 @@ export const getServerSideProps = withAuth(async (context: GetServerSidePropsCon
 
     return {
         props: {
-            namespaces: ['common'],
-            tags: data
+            tags: data,
+            authorized: isAuthorize(clientInfo, [BLOG_ADMIN, BLOG_OWNER])
         }
     }
 })

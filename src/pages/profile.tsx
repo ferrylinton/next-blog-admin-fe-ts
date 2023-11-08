@@ -1,6 +1,6 @@
 import BreadCrumb from '@/components/BreadCrumb';
 import DetailValue from '@/components/detail-value';
-import { getClientInfo } from '@/libs/auth-util';
+import { getClientInfo } from '@/libs/auth-data-util';
 import { getUser } from '@/services/user-service';
 import { withAuth } from '@/services/wrapper-service';
 import { AuthData } from '@/types/auth-type';

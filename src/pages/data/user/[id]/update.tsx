@@ -1,5 +1,7 @@
 import UserForm from '@/components/user/user-form';
-import { getClientInfo } from '@/libs/auth-util';
+import { MODIFY_USER_DATA } from '@/configs/auth-constant';
+import { getClientInfo } from '@/libs/auth-data-util';
+import { isAuthorize } from '@/libs/auth-util';
 import { getAuthorities } from '@/services/authority-service';
 import { getUser } from '@/services/user-service';
 import { withAuth } from '@/services/wrapper-service';
@@ -15,7 +17,7 @@ type Props = {
 }
 
 export default function UserUpdatePage({ user, authorities, clientInfo }: Props) {
-    const {password,  ...rest} = user;
+    const { password, ...rest } = user;
     return <UserForm user={rest} authorities={authorities} clientInfo={clientInfo} />
 }
 
@@ -27,9 +29,9 @@ export const getServerSideProps = withAuth(async (context: GetServerSidePropsCon
 
     return {
         props: {
-            namespaces: ['common'],
             user,
-            authorities
+            authorities,
+            authorized: isAuthorize(clientInfo, [MODIFY_USER_DATA])
         }
     }
 })

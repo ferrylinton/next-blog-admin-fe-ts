@@ -16,5 +16,5 @@ export async function revokeToken(clientInfo: ClientInfo) {
 
 export async function checkToken(clientInfo: ClientInfo) {
     const headers = getHeaders(clientInfo);
-    return await blogApiClient.post<{ ttl: number }>('/auth/checktoken', {}, { headers })
+    return await blogApiClient.post<{ ttl: number }>('/auth/check', {}, { headers })
 };

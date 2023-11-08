@@ -1,5 +1,7 @@
 import TagForm from '@/components/tag/tag-form';
-import { getClientInfo } from '@/libs/auth-util';
+import { BLOG_ADMIN } from '@/configs/auth-constant';
+import { getClientInfo } from '@/libs/auth-data-util';
+import { isAuthorize } from '@/libs/auth-util';
 import { getTag } from '@/services/tag-service';
 import { withAuth } from '@/services/wrapper-service';
 import { TagPageProps } from '@/types/tag-type';
@@ -12,14 +14,14 @@ export default function TagUpdatePage({ tag, clientInfo }: TagPageProps) {
 }
 
 export const getServerSideProps = withAuth(async (context: GetServerSidePropsContext) => {
-    const id = context.params?.id as string;
     const clientInfo = getClientInfo(context);
+    const id = context.params?.id as string;
     const { data } = await getTag(id, clientInfo);
 
     return {
         props: {
-            namespaces: ['common'],
-            tag: data
+            tag: data,
+            authorized: isAuthorize(clientInfo, [BLOG_ADMIN]) || ( data.createdBy === clientInfo.authData?.username)
         }
     }
 })

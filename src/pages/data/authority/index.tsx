@@ -1,9 +1,10 @@
-import AddButtonLink from '@/components/AddButtonLink';
 import BreadCrumb from '@/components/BreadCrumb';
 import FilterForm from '@/components/FilterForm';
 import MessageErrorBox from '@/components/MessageErrorBox';
 import { MODIFY_USER_DATA, READ_USER_DATA } from '@/configs/auth-constant';
-import { getClientInfo } from '@/libs/auth-util';
+import AddIcon from '@/icons/AddIcon';
+import { getClientInfo } from '@/libs/auth-data-util';
+import { isAuthorize } from '@/libs/auth-util';
 import { getAuthorities } from '@/services/authority-service';
 import { withAuth } from '@/services/wrapper-service';
 import { Authority } from '@/types/authority-type';
@@ -16,7 +17,7 @@ import { useState } from 'react';
 
 
 type Props = {
-    authorities: Authority[],
+    authorities?: Authority[],
     messageError: MessageError | null,
     clientInfo: ClientInfo
 }
@@ -48,10 +49,12 @@ export default function AuthorityListPage({ authorities, messageError, clientInf
                 <MessageErrorBox messageError={messageError} />
                 <div className='w-full flex justify-between items-center mb-3'>
                     <FilterForm filter={filter} />
-                    {
-                        clientInfo.authData?.authorities.includes(MODIFY_USER_DATA) &&
-                        <AddButtonLink url='/data/authority/add' />
-                    }
+                    {isAuthorize(clientInfo, [MODIFY_USER_DATA]) && <Link
+                        className='btn btn-link'
+                        href={'/data/authority/add'}>
+                        <AddIcon className='w-[20px] h-[20px]' />
+                        <span>{t('add')}</span>
+                    </Link>}
                 </div>
                 <table className='table-responsive w-full'>
                     <thead>
@@ -95,9 +98,8 @@ export const getServerSideProps = withAuth(async (context: GetServerSidePropsCon
 
     return {
         props: {
-            namespaces: ['common'],
             authorities: data,
-            hasAuthority: READ_USER_DATA
+            authorized: isAuthorize(clientInfo, [READ_USER_DATA])
         }
     }
 })

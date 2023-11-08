@@ -1,6 +1,7 @@
 import AuthorityForm from '@/components/authority/authority-form';
 import { MODIFY_USER_DATA } from '@/configs/auth-constant';
-import { getClientInfo } from '@/libs/auth-util';
+import { getClientInfo } from '@/libs/auth-data-util';
+import { isAuthorize } from '@/libs/auth-util';
 import { getAuthority } from '@/services/authority-service';
 import { withAuth } from '@/services/wrapper-service';
 import { AuthorityPageProps } from '@/types/authority-type';
@@ -23,12 +24,12 @@ export default function AuthorityUpdatePage({ authority, clientInfo }: Authority
 export const getServerSideProps = withAuth(async (context: GetServerSidePropsContext) => {
     const id = context.params?.id as string;
     const clientInfo = getClientInfo(context);
-    const { data } = await getAuthority(id, clientInfo);
+    const { data: authority } = await getAuthority(id, clientInfo);
 
     return {
         props: {
-            authority: data,
-            hasAuthority: MODIFY_USER_DATA
+            authority,
+            authorized: isAuthorize(clientInfo, [MODIFY_USER_DATA]) || ( authority.createdBy === clientInfo.authData?.username)
         }
     }
 })

@@ -1,3 +1,6 @@
+import { BASIC } from '@/configs/auth-constant';
+import { getClientInfo } from '@/libs/auth-data-util';
+import { isAuthorize } from '@/libs/auth-util';
 import { withAuth } from '@/services/wrapper-service';
 import { AuthData } from '@/types/auth-type';
 import { ClientInfo } from '@/types/common-type';
@@ -18,7 +21,7 @@ export default function HomePage({ clientInfo, userAgent }: Props) {
   const authData = clientInfo.authData as AuthData;
 
   return (
-    <div className='w-full h-full grow flex flex-col justify-center items-center'>
+    <div className='w-full h-full grow flex flex-col justify-center items-center px-2 pt-[50px] pb-5'>
       <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col justify-center items-center px-2 py-5 text-center'>
         <div className='text-4xl sm:text-5xl drop-shadow-[0_1px_1px_rgba(0,0,0,1)]'>{t('welcome')}</div>
         <div className='text-2xl sm:text-3xl my-3 text-lime-500 drop-shadow-[0_1px_1px_rgba(0,0,0,1)]'>{authData.username}</div>
@@ -35,12 +38,13 @@ export default function HomePage({ clientInfo, userAgent }: Props) {
 }
 
 export const getServerSideProps = withAuth(async (context: GetServerSidePropsContext) => {
+  const clientInfo = getClientInfo(context)
   const userAgent = JSON.stringify(parser(context.req.headers['user-agent']));
 
   return {
     props: {
       userAgent: JSON.parse(userAgent),
-      namespaces: ['common'],
+      authorized: isAuthorize(clientInfo, [BASIC])
     }
   }
 })

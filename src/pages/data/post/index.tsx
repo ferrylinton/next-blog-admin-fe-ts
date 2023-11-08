@@ -1,30 +1,32 @@
 import BreadCrumb from '@/components/BreadCrumb';
+import MessageErrorBox from '@/components/MessageErrorBox';
 import Paging from '@/components/Paging';
 import SearchForm from '@/components/SearchForm';
+import { BLOG_ADMIN, BLOG_OWNER } from '@/configs/auth-constant';
 import AddIcon from '@/icons/AddIcon';
-import { getClientInfo } from '@/libs/auth-util';
+import { getClientInfo } from '@/libs/auth-data-util';
+import { isAuthorize } from '@/libs/auth-util';
 import { isValidPage } from '@/libs/paging-util';
 import { getPosts } from '@/services/post-service';
 import { withAuth } from '@/services/wrapper-service';
-import { Pageable } from '@/types/common-type';
+import { ClientInfo, Pageable } from '@/types/common-type';
 import { Post } from '@/types/post-type';
 import { RequestParams } from '@/types/request-params-type';
+import { MessageError } from '@/types/response-type';
 import { GetServerSidePropsContext } from 'next';
 import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 
 
 type Props = {
-    pageable: Pageable<Post>
+    pageable: Pageable<Post>,
+    messageError: MessageError | null,
+    clientInfo: ClientInfo
 }
 
-export default function PostListPage({ pageable }: Props) {
+export default function PostListPage({ pageable, messageError, clientInfo }: Props) {
 
     const { i18n, t } = useTranslation('common');
-
-    const router = useRouter();
-
 
     return (
         <div className='w-full h-full grow flex flex-col justify-start items-center pt-[50px]'>
@@ -35,14 +37,15 @@ export default function PostListPage({ pageable }: Props) {
                     ]} />
             </div>
             <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col justify-center items-center px-2 py-10'>
+                <MessageErrorBox messageError={messageError} />
                 <div className='w-full flex justify-between items-center mb-3'>
                     <SearchForm url='/data/post' />
-                    <button
-                        className='btn btn-default'
-                        onClick={() => router.push('/data/post/add')}>
+                    {isAuthorize(clientInfo, [BLOG_OWNER]) && <Link
+                        className='btn btn-link'
+                        href={'/data/post/add'}>
                         <AddIcon className='w-[20px] h-[20px]' />
                         <span>{t('add')}</span>
-                    </button>
+                    </Link>}
                 </div>
                 <table className='table-responsive w-full'>
                     <thead>
@@ -94,8 +97,8 @@ export const getServerSideProps = withAuth(async (context: GetServerSidePropsCon
 
     return {
         props: {
-            namespaces: ['common'],
-            pageable
+            pageable,
+            authorized: isAuthorize(clientInfo, [BLOG_ADMIN, BLOG_OWNER])
         }
     }
 })

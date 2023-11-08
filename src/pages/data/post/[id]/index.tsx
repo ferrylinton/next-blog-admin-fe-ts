@@ -3,7 +3,7 @@ import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
 import BackIcon from '@/icons/BackIcon';
 import DeleteIcon from '@/icons/DeleteIcon';
 import EditIcon from '@/icons/EditIcon';
-import { getClientInfo } from '@/libs/auth-util';
+import { getClientInfo } from '@/libs/auth-data-util';
 import { formatToTimestamp } from '@/libs/date-util';
 import { deletePost, getPost } from '@/services/post-service';
 import { withAuth } from '@/services/wrapper-service';
@@ -14,6 +14,11 @@ import { useTranslation } from 'next-i18next';
 import { useRouter } from "next/router";
 import { useState } from 'react';
 import * as Tabs from '@radix-ui/react-tabs';
+import { useAppContext } from '@/providers/app-context';
+import { errorHandler } from '@/libs/axios-util';
+import { MessageError } from '@/types/response-type';
+import { isAuthorize } from '@/libs/auth-util';
+import { BLOG_ADMIN, BLOG_OWNER } from '@/configs/auth-constant';
 
 type Props = {
     post: Post,
@@ -24,9 +29,13 @@ export default function PostDetailPage({ post, clientInfo }: Props) {
 
     const router = useRouter();
 
-    const { t } = useTranslation('common');
+    const { t, i18n } = useTranslation('common');
+
+    const { setLoading } = useAppContext();
 
     const [showConfirm, setShowConfirm] = useState(false);
+
+    const [messageError, setMessageError] = useState<MessageError | null>(null);
 
     const showDeleteConfirmation = () => {
         setShowConfirm(true);
@@ -34,12 +43,18 @@ export default function PostDetailPage({ post, clientInfo }: Props) {
 
     const okHandler = async () => {
         if (post) {
-            await deletePost(post.id, clientInfo);
+            try {
+                setLoading(true);
+                await deletePost(post.id, clientInfo);
+                setTimeout(() => router.push('/data/tag'), 500);
+            } catch (error: any) {
+                errorHandler(setMessageError, i18n.language, error);
+            } finally {
+                setTimeout(() => setLoading(false), 500);
+            }
+
         }
-
-        router.push('/data/post');
     }
-
 
     return (
         <div className='w-full h-full grow flex flex-col justify-start items-center pt-[50px] pb-5'>
@@ -146,34 +161,33 @@ export default function PostDetailPage({ post, clientInfo }: Props) {
                         <button
                             onClick={() => router.push('/data/post')}
                             type='button'
-                            className="btn">
+                            className="btn btn-link">
                             <BackIcon className='w-[20px] h-[20px]' />
                             <span>{t('back')}</span>
                         </button>
-                        <button
-                            onClick={() => router.push(`/data/post/${post.id}/update`)}
-                            type='button'
-                            className="btn">
-                            <EditIcon className='w-[22px] h-[22px]' />
-                            <span>{t('update')}</span>
-                        </button>
-                        <button
-                            onClick={() => showDeleteConfirmation()}
-                            type='button'
-                            className="btn btn-danger">
-                            <DeleteIcon className='w-[20px] h-[20px]' />
-                            <span>{t('delete')}</span>
-                        </button>
+                        {(isAuthorize(clientInfo, [BLOG_ADMIN]) || clientInfo.authData?.username === post.createdBy) && <>
+                            <button
+                                onClick={() => router.push(`/data/post/${post.id}/update`)}
+                                type='button'
+                                className="btn btn-link">
+                                <EditIcon className='w-[22px] h-[22px]' />
+                                <span>{t('update')}</span>
+                            </button>
+                            <button
+                                onClick={() => showDeleteConfirmation()}
+                                type='button'
+                                className="btn btn-danger">
+                                <DeleteIcon className='w-[20px] h-[20px]' />
+                                <span>{t('delete')}</span>
+                            </button>
+                            <DeleteConfirmDialog
+                                showConfirm={showConfirm}
+                                setShowConfirm={setShowConfirm}
+                                okHandler={okHandler} />
+                        </>}
                     </div>
-
                 </div>
             </div>}
-
-            <DeleteConfirmDialog
-                showConfirm={showConfirm}
-                setShowConfirm={setShowConfirm}
-                okHandler={okHandler} />
-
         </div>
     )
 }
@@ -185,8 +199,8 @@ export const getServerSideProps = withAuth(async (context: GetServerSidePropsCon
 
     return {
         props: {
-            namespaces: ['common'],
-            post: data
+            post: data,
+            authorized: isAuthorize(clientInfo, [BLOG_ADMIN, BLOG_OWNER])
         }
     }
 })

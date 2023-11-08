@@ -1,5 +1,7 @@
 import UserForm from '@/components/user/user-form';
-import { getClientInfo } from '@/libs/auth-util';
+import { MODIFY_USER_DATA } from '@/configs/auth-constant';
+import { getClientInfo } from '@/libs/auth-data-util';
+import { isAuthorize } from '@/libs/auth-util';
 import { getAuthorities } from '@/services/authority-service';
 import { getTags } from '@/services/tag-service';
 import { withAuth } from '@/services/wrapper-service';
@@ -24,12 +26,12 @@ export default function UserCreatePage({ authorities, clientInfo }: UserPageProp
 
 export const getServerSideProps = withAuth(async (context: GetServerSidePropsContext) => {
     const clientInfo = getClientInfo(context);
-    const { data } = await getAuthorities(clientInfo);
+    const { data: authorities } = await getAuthorities(clientInfo);
 
     return {
         props: {
-            namespaces: ['common'],
-            authorities: data
+            authorities,
+            authorized: isAuthorize(clientInfo, [MODIFY_USER_DATA])
         }
     }
 })

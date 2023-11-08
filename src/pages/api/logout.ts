@@ -1,5 +1,5 @@
 import { COOKIE_AUTH_DATA } from '@/configs/constant';
-import { authDataFromApi } from '@/libs/auth-util';
+import { authDataFromApi } from '@/libs/auth-data-util';
 import { revokeToken } from '@/services/auth-service';
 import { deleteCookie } from 'cookies-next';
 import type { NextApiRequest, NextApiResponse } from 'next';

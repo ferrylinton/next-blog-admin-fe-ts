@@ -74,7 +74,7 @@ export default function AuthorityForm({ authority, clientInfo }: Props) {
     return (
         <div className='w-full h-full grow flex flex-col justify-start items-center pt-[50px] pb-5'>
             <div className='w-full bg-stone-100 flex justify-center items-center text-stone-500'>
-                {authority ?
+                {authority.id ?
                     <BreadCrumb
                         items={[
                             { label: t('authority'), url: `/data/authority/${authority.id}` },

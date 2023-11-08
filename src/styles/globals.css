@@ -208,7 +208,7 @@
   }
 
   .table-detail{
-    @apply w-[calc(100%-20px)] sm:w-auto sm:min-w-[500px] text-sm
+    @apply w-full sm:w-auto sm:min-w-[600px] border border-b-0 border-stone-200 text-sm my-5
   }
 
   .table-detail tr{
@@ -219,11 +219,15 @@
 
   .table-detail th,
   .table-detail td{
-    @apply block leading-none sm:table-cell sm:leading-normal sm:py-2;
+    @apply block leading-none sm:table-cell sm:leading-normal sm:py-2 px-3;
+  }
+
+  .table-detail th::after{
+    @apply sm:absolute sm:right-0 sm:content-[':'] sm:inline-block ;
   }
 
   .table-detail th{
-    @apply capitalize relative pe-6 text-left pb-1 sm:pt-1;
+    @apply capitalize relative text-left;
     
   }
 

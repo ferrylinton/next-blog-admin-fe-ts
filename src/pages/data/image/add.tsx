@@ -14,10 +14,13 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Image from 'next/image';
 import ImageIcon from '@/icons/ImageIcon';
+import { getClientInfo } from '@/libs/auth-data-util';
+import { isAuthorize } from '@/libs/auth-util';
+import { IMAGE_OWNER } from '@/configs/auth-constant';
 
 
 export default function ImageCreatePage({ clientInfo }: ImageProps) {
-    
+
     const router = useRouter();
 
     const { t } = useTranslation('common');
@@ -55,10 +58,6 @@ export default function ImageCreatePage({ clientInfo }: ImageProps) {
                     setValidationErrors(response.data);
                 } else if (response.status === 409) {
                     setMessageError(response.data);
-                } else if (response.status === 401) {
-                    router.push('/login?status=401');
-                } else if (response.status === 403) {
-                    router.push('/login?status=403');
                 }
             } else {
                 setValidationErrors(translate(validation.error.issues, t));
@@ -160,9 +159,11 @@ export default function ImageCreatePage({ clientInfo }: ImageProps) {
 }
 
 export const getServerSideProps = withAuth(async (context: GetServerSidePropsContext) => {
+    const clientInfo = getClientInfo(context);
+
     return {
         props: {
-            namespaces: ['common'],
+            authorized: isAuthorize(clientInfo, [IMAGE_OWNER])
         }
     }
 })

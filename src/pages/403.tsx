@@ -1,7 +1,7 @@
 import BreadCrumb from '@/components/BreadCrumb';
-import { withAuth } from '@/services/wrapper-service';
 import { GetServerSidePropsContext } from 'next';
 import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
 
 
@@ -23,10 +23,8 @@ export default function ForbiddenPage() {
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
-                    className='w-[80px] h-[80px]'
-                    fillRule="evenodd"
-                    clipRule="evenodd">
-                    <path d="M17.825 24h-15.825v-24h10.189c3.162 0 9.811 7.223 9.811 9.614v10.071l-2-2v-7.228c0-4.107-6-2.457-6-2.457s1.517-6-2.638-6h-7.362v20h11.825l2 2zm-2.026-4.858c-.799.542-1.762.858-2.799.858-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5c0 1-.294 1.932-.801 2.714l4.801 4.872-1.414 1.414-4.787-4.858zm-2.799-7.142c1.656 0 3 1.344 3 3s-1.344 3-3 3-3-1.344-3-3 1.344-3 3-3z" />
+                    className='w-[80px] h-[80px]'>
+                    <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm0 22c-5.514 0-10-4.486-10-10 0-2.397.85-4.6 2.262-6.324l11.197 11.209.004-.008 2.861 2.861c-1.724 1.412-3.927 2.262-6.324 2.262zm7.738-3.676l-3.312-3.313c.61-1.215 1.393-2.768 1.478-2.97.066-.144.096-.278.096-.401 0-.81-1.276-1.127-1.697-.324-.007.01-.757 1.388-.872 1.604-.124.228-.494.18-.494-.118v-5.326c0-.839-1.348-.814-1.348 0v4.696l-.453-.451-.002-5.065c0-.44-.355-.656-.714-.656-.363 0-.729.222-.729.656v3.62l-.437-.437v-2.429c0-.861-1.476-.885-1.476 0v.954l-4.102-4.102c1.724-1.412 3.927-2.262 6.324-2.262 5.514 0 10 4.486 10 10 0 2.397-.85 4.6-2.262 6.324zm-11.736-7.483l6.768 6.769c-.35.236-.8.39-1.429.39h-2.935c-1.575 0-2.406-.85-2.406-2.337l.002-4.822z"/>
                 </svg>
                 <div className='text-3xl font-bold leading-none'>403</div>
                 <div className='leading-none uppercase font-bold'>{t("forbidden")}</div>
@@ -36,10 +34,12 @@ export default function ForbiddenPage() {
     )
 }
 
-export const getServerSideProps = withAuth(async (context: GetServerSidePropsContext) => {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+    const props = await serverSideTranslations(context.locale ?? 'id', ['common']);
+
     return {
         props: {
-            namespaces: ['common'],
-        }
-    }
-})
+            ...props
+        },
+    };
+}

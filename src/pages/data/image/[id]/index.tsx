@@ -1,8 +1,10 @@
 import BreadCrumb from '@/components/BreadCrumb';
 import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
+import { IMAGE_ADMIN } from '@/configs/auth-constant';
 import BackIcon from '@/icons/BackIcon';
 import DeleteIcon from '@/icons/DeleteIcon';
-import { getClientInfo } from '@/libs/auth-util';
+import { getClientInfo } from '@/libs/auth-data-util';
+import { isAuthorize } from '@/libs/auth-util';
 import { formatToTimestamp } from '@/libs/date-util';
 import { deleteImage, getImage } from '@/services/image-service';
 import { withAuth } from '@/services/wrapper-service';
@@ -89,26 +91,29 @@ export default function ImageDetailPage({ image, clientInfo }: ImageProps) {
                         <button
                             onClick={() => router.push('/data/image')}
                             type='button'
-                            className="btn">
+                            className="btn btn-link">
                             <BackIcon className='w-[20px] h-[20px]' />
                             <span>{t('back')}</span>
                         </button>
-                        <button
-                            onClick={() => showDeleteConfirmation()}
-                            type='button'
-                            className="btn btn-danger">
-                            <DeleteIcon className='w-[20px] h-[20px]' />
-                            <span>{t('delete')}</span>
-                        </button>
+                        {(isAuthorize(clientInfo, [IMAGE_ADMIN]) || clientInfo.authData?.username === image.metadata.createdBy) && <>
+                            <button
+                                onClick={() => showDeleteConfirmation()}
+                                type='button'
+                                className="btn btn-danger">
+                                <DeleteIcon className='w-[20px] h-[20px]' />
+                                <span>{t('delete')}</span>
+                            </button>
+                            <DeleteConfirmDialog
+                                showConfirm={showConfirm}
+                                setShowConfirm={setShowConfirm}
+                                okHandler={okHandler} />
+                        </>}
                     </div>
 
                 </div>
             </div>}
 
-            <DeleteConfirmDialog
-                showConfirm={showConfirm}
-                setShowConfirm={setShowConfirm}
-                okHandler={okHandler} />
+
 
         </div>
     )
@@ -117,12 +122,12 @@ export default function ImageDetailPage({ image, clientInfo }: ImageProps) {
 export const getServerSideProps = withAuth(async (context: GetServerSidePropsContext) => {
     const id = context.params?.id as string;
     const clientInfo = getClientInfo(context);
-    const { data } = await getImage(id, clientInfo);
+    const { data: image } = await getImage(id, clientInfo);
 
     return {
         props: {
-            namespaces: ['common'],
-            image: data
+            image,
+            authorized: isAuthorize(clientInfo, [IMAGE_ADMIN]) || (image.metadata.createdBy === clientInfo.authData?.username)
         }
     }
 })
