@@ -1,5 +1,5 @@
 import { ClientInfo } from "@/types/common-type";
-import axios, { AxiosError, RawAxiosRequestHeaders } from "axios";
+import axios, { AxiosError, AxiosResponse, RawAxiosRequestHeaders } from "axios";
 import { redirectTo403, redirectToLogin } from "./redirect-util";
 import { MessageError } from "@/types/response-type";
 import { Dispatch, SetStateAction } from "react";
@@ -33,7 +33,7 @@ export function getFormHeaders(clientInfo: ClientInfo) {
     return headers;
 };
 
-export function errorHandler(setMessageError: Dispatch<SetStateAction<MessageError | null>>, locale: string, error: any) {
+export function handleError(setMessageError: Dispatch<SetStateAction<MessageError | null>>, locale: string, error: any) {
     if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
 

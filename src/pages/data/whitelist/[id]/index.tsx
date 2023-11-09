@@ -2,14 +2,14 @@ import BreadCrumb from '@/components/BreadCrumb';
 import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
 import MessageErrorBox from '@/components/MessageErrorBox';
 import NotFound from '@/components/NotFound';
-import DetailValue from '@/components/detail-value';
+import DetailValue from '@/components/DetailValue';
 import { MODIFY_USER_DATA } from '@/configs/auth-constant';
 import BackIcon from '@/icons/BackIcon';
 import DeleteIcon from '@/icons/DeleteIcon';
 import EditIcon from '@/icons/EditIcon';
 import { getClientInfo } from '@/libs/auth-data-util';
 import { isAuthorize } from '@/libs/auth-util';
-import { errorHandler } from '@/libs/axios-util';
+import { handleError } from '@/libs/axios-util';
 import { useAppContext } from '@/providers/app-context';
 import { deleteWhitelist, getWhitelist } from '@/services/whitelist-service';
 import { withAuth } from '@/services/wrapper-service';
@@ -45,7 +45,7 @@ export default function WhitelistDetailPage({ whitelist, clientInfo }: Whitelist
                 await deleteWhitelist(whitelist.id, clientInfo);
                 setTimeout(() => router.push('/data/whitelist'), 500);
             } catch (error: any) {
-                errorHandler(setMessageError, i18n.language, error);
+                handleError(setMessageError, i18n.language, error);
             } finally {
                 setTimeout(() => setLoading(false), 500);
             }

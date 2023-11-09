@@ -4,7 +4,7 @@ import { MessageError } from '@/types/response-type';
 import { UserFormData, UserFormProps } from '@/types/user-type';
 import { ErrorValidation } from '@/types/validation-type';
 import { CreateUserSchema, UpdateUserSchema } from '@/validations/user-schema';
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { clsx } from 'clsx';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from "next/router";
@@ -13,6 +13,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import BreadCrumb from '../BreadCrumb';
 import MessageErrorBox from '../MessageErrorBox';
 import ValidationError from '../ValidationError';
+import { useAppContext } from '@/providers/app-context';
+import { handleError } from '@/libs/axios-util';
 
 
 
@@ -20,7 +22,9 @@ export default function UserForm({ user, authorities, clientInfo }: UserFormProp
 
     const router = useRouter();
 
-    const { t } = useTranslation('common');
+    const { t, i18n } = useTranslation('common');
+
+    const { setLoading } = useAppContext();
 
     const { register, handleSubmit } = useForm<UserFormData>({ defaultValues: user });
 
@@ -34,42 +38,32 @@ export default function UserForm({ user, authorities, clientInfo }: UserFormProp
             const validation = (user?.id) ? UpdateUserSchema.safeParse(updateData) : CreateUserSchema.safeParse(createData);
 
             if (validation.success) {
+                setLoading(true);
                 const response = (user?.id) ? (await updateUser(user.id, validation.data, clientInfo)) : (await createUser(validation.data, clientInfo));
-
-                if (response.status === 201) {
-                    router.push('/data/user');
-                } else if (response.status === 200) {
-                    router.push(`/data/user/${user?.id}`);
-                } else if (response.status === 400) {
-                    setValidationErrors(response.data);
-                } else if (response.status === 409) {
-                    setMessageError(response.data);
-                } else if (response.status === 401) {
-                    router.push('/login?status=401');
-                } else if (response.status === 403) {
-                    router.push('/login?status=403');
-                }
+                setTimeout(() => handleResponse(response), 500);
             } else {
                 setValidationErrors(translate(validation.error.issues, t));
             }
 
 
         } catch (error: any) {
-            if (axios.isAxiosError(error)) {
-                const axiosError = error as AxiosError;
-                if (axiosError.response?.data) {
-                    setMessageError(axiosError.response?.data as MessageError);
-                } else {
-                    setMessageError({ message: axiosError.message });
-                }
-            } else {
-                setMessageError({ message: error.message })
-            }
-
+            handleError(setMessageError, i18n.language, error);
+        } finally {
+            setTimeout(() => setLoading(false), 500);
         }
     };
 
-
+    const handleResponse = (response: AxiosResponse) => {
+        if (response.status === 201) {
+            router.push('/data/user');
+        } else if (response.status === 200) {
+            router.push(`/data/user/${user?.id}`);
+        } else if (response.status === 400) {
+            setValidationErrors(translate(response.data, t));
+        } else if (response.status === 409) {
+            setMessageError(response.data);
+        }
+    }
 
     return (
         <div className='w-full h-full grow flex flex-col justify-start items-center pt-[50px] pb-5'>
@@ -180,7 +174,7 @@ export default function UserForm({ user, authorities, clientInfo }: UserFormProp
 
                         <div className="mb-5">
                             <label className="block mb-1 text-xs ps-1" htmlFor="name">{t('authorities')}</label>
-                            <div className={`flex justify-start flex-wrap gap-5 border p-4 ${validationErrors.authorities ? 'border-red-400' : 'border-stone-300'}`}>
+                            <div className={`flex justify-start flex-wrap gap-4 border p-2 ${validationErrors.authorities ? 'border-red-400' : 'border-stone-300'}`}>
                                 {
                                     authorities.map((authority, _index) => {
                                         return <div
@@ -191,7 +185,7 @@ export default function UserForm({ user, authorities, clientInfo }: UserFormProp
                                                 value={authority.code}
                                                 {...register("authorities")}
                                             />
-                                            <label className="hover:cursor-pointer text-xs min-w-[160px]">
+                                            <label className="hover:cursor-pointer text-xs min-w-[170px]">
                                                 {authority.description}
                                             </label>
                                         </div>

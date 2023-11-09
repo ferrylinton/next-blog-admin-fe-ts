@@ -1,6 +1,8 @@
 import BreadCrumb from '@/components/BreadCrumb';
-import DetailValue from '@/components/detail-value';
+import DetailValue from '@/components/DetailValue';
+import { BASIC } from '@/configs/auth-constant';
 import { getClientInfo } from '@/libs/auth-data-util';
+import { isAuthorize } from '@/libs/auth-util';
 import { getUser } from '@/services/user-service';
 import { withAuth } from '@/services/wrapper-service';
 import { AuthData } from '@/types/auth-type';
@@ -14,7 +16,7 @@ type Props = {
   clientInfo: ClientInfo
 }
 
-export default function ProfilePage({ user: { username, authorities, email }, clientInfo }: Props) {
+export default function ProfilePage({ user: { username, authorities, email } }: Props) {
 
   const profileInfo = { username, email, authorities };
 
@@ -55,8 +57,8 @@ export const getServerSideProps = withAuth(async (context: GetServerSidePropsCon
 
   return {
     props: {
-      namespaces: ['common'],
-      user: data
+      user: data,
+      authorized: isAuthorize(clientInfo, [BASIC])
     }
   }
 })

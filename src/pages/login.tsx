@@ -3,7 +3,6 @@ import ValidationError from '@/components/ValidationError';
 import { COOKIE_AUTH_DATA } from '@/configs/constant';
 import { logger } from '@/configs/winston';
 import { getClientInfo } from '@/libs/auth-data-util';
-import { redirectToPath } from '@/libs/redirect-util';
 import { translate } from '@/libs/validation-util';
 import { checkToken } from '@/services/auth-service';
 import { ClientInfo } from '@/types/common-type';
@@ -28,10 +27,10 @@ const logoFont = Righteous({
 });
 
 type Props = {
-    clientInfo? : ClientInfo
+    clientInfo?: ClientInfo
 }
 
-export default function LoginPage({clientInfo} : Props) {
+export default function LoginPage({ clientInfo }: Props) {
 
     const router = useRouter();
 
@@ -42,15 +41,9 @@ export default function LoginPage({clientInfo} : Props) {
     const formRef = useRef<HTMLFormElement>(null);
 
     useEffect(() => {
-
-        console.log(clientInfo);
-        if(clientInfo){
-            console.log('redirect.....');
+        if (clientInfo) {
             router.push('/');
-        }else{
-            console.log('nooo redirect.....');
         }
-
     }, [clientInfo])
 
     const { register, handleSubmit } = useForm<AuthenticateType>({
@@ -88,7 +81,7 @@ export default function LoginPage({clientInfo} : Props) {
 
             <form
                 ref={formRef}
-                className='w-full sm:w-[350px] flex flex-col gap-4 sm:border border-stone-200 px-6 py-9'
+                className='w-full sm:w-[400px] flex flex-col gap-4 sm:border border-stone-200 px-6 py-9'
                 noValidate
                 autoComplete='off'
                 onSubmit={handleSubmit(onSubmit)}
@@ -103,7 +96,7 @@ export default function LoginPage({clientInfo} : Props) {
                         className={clsx('w-full', validationErrors.code && 'border-red-400')}
                         type="text"
                         placeholder="xxx"
-                        maxLength={100}
+                        maxLength={30}
                         {...register("username")}
                     />
                     <ValidationError message={validationErrors.username} />
@@ -115,7 +108,7 @@ export default function LoginPage({clientInfo} : Props) {
                         className={`w-full`}
                         type="password"
                         placeholder="xxx"
-                        maxLength={100}
+                        maxLength={30}
                         {...register("password")}
                     />
                     <ValidationError message={validationErrors.password} />

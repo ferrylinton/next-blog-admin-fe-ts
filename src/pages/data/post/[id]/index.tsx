@@ -15,7 +15,7 @@ import { useRouter } from "next/router";
 import { useState } from 'react';
 import * as Tabs from '@radix-ui/react-tabs';
 import { useAppContext } from '@/providers/app-context';
-import { errorHandler } from '@/libs/axios-util';
+import { handleError } from '@/libs/axios-util';
 import { MessageError } from '@/types/response-type';
 import { isAuthorize } from '@/libs/auth-util';
 import { BLOG_ADMIN, BLOG_OWNER } from '@/configs/auth-constant';
@@ -48,7 +48,7 @@ export default function PostDetailPage({ post, clientInfo }: Props) {
                 await deletePost(post.id, clientInfo);
                 setTimeout(() => router.push('/data/tag'), 500);
             } catch (error: any) {
-                errorHandler(setMessageError, i18n.language, error);
+                handleError(setMessageError, i18n.language, error);
             } finally {
                 setTimeout(() => setLoading(false), 500);
             }

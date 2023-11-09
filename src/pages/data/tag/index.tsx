@@ -30,7 +30,8 @@ export default function TagListPage({ tags, messageError, clientInfo }: Props) {
 
     const filter = (keyword?: string) => {
         if (keyword) {
-            setFiltered(tags && tags.filter(tag => tag.name.toLowerCase().includes(keyword.toLowerCase())))
+            setFiltered(tags && tags.filter(tag => tag.name.toLowerCase().includes(keyword.toLowerCase()) || 
+            tag.createdBy.toLowerCase().includes(keyword.toLowerCase())))
         } else {
             setFiltered(tags);
         }

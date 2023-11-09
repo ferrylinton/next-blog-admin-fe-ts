@@ -1,4 +1,7 @@
 import ChangePasswordForm from '@/components/user/change-password-form';
+import { BASIC } from '@/configs/auth-constant';
+import { getClientInfo } from '@/libs/auth-data-util';
+import { isAuthorize } from '@/libs/auth-util';
 import { withAuth } from '@/services/wrapper-service';
 import { AuthData } from '@/types/auth-type';
 import { ClientInfo } from '@/types/common-type';
@@ -14,9 +17,11 @@ export default function ChangePasswordPage({ clientInfo }: Props) {
 }
 
 export const getServerSideProps = withAuth(async (context: GetServerSidePropsContext) => {
+    const clientInfo = getClientInfo(context);
+
     return {
         props: {
-            namespaces: ['common']
+            authorized: isAuthorize(clientInfo, [BASIC])
         }
     }
 })

@@ -1,11 +1,13 @@
+import { handleError } from '@/libs/axios-util';
 import { translate } from '@/libs/validation-util';
+import { useAppContext } from '@/providers/app-context';
 import { createAuthority, updateAuthority } from '@/services/authority-service';
 import { Authority, AuthorityFormData } from '@/types/authority-type';
 import { ClientInfo } from '@/types/common-type';
 import { MessageError } from '@/types/response-type';
 import { ErrorValidation } from '@/types/validation-type';
 import { CreateAuthoritySchema, UpdateAuthoritySchema } from '@/validations/authority-schema';
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from "next/router";
@@ -14,8 +16,6 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import BreadCrumb from '../BreadCrumb';
 import MessageErrorBox from '../MessageErrorBox';
 import ValidationError from '../ValidationError';
-import { errorHandler } from '@/libs/axios-util';
-import { useAppContext } from '@/providers/app-context';
 
 type Props = {
     authority: AuthorityFormData,
@@ -51,9 +51,8 @@ export default function AuthorityForm({ authority, clientInfo }: Props) {
                 setValidationErrors(translate(validation.error.issues, t));
             }
 
-
         } catch (error: any) {
-            errorHandler(setMessageError, i18n.language, error);
+            handleError(setMessageError, i18n.language, error);
         } finally {
             setTimeout(() => setLoading(false), 500);
         }

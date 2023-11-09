@@ -52,19 +52,23 @@ export default function PostListPage({ pageable, messageError, clientInfo }: Pro
                         <tr>
                             <th>#</th>
                             <th>{t('title')}</th>
+                            <th className='min-w-[100px]'>{t('createdBy')}</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         {
                             (!pageable.data || pageable.data.length === 0) ?
-                                <td colSpan={3} className='empty'>
-                                    <span>{t('dataIsEmpty')}</span>
-                                </td> :
+                                <tr>
+                                    <td colSpan={4} className='empty'>
+                                        <span>{t('dataIsEmpty')}</span>
+                                    </td>
+                                </tr> :
                                 (pageable.data && pageable.data.map((post, index) => {
                                     return <tr key={post.id}>
                                         <td data-label="#">{((pageable.pagination.page - 1) * pageable.pagination.pageSize) + index + 1}</td>
                                         <td data-label={t('description')}>{post.description[i18n.language as keyof typeof post.description]}</td>
+                                        <td data-label={t('createdBy')}>{post.createdBy}</td>
                                         <td>
                                             <Link href={`/data/post/${post.id}`}>{t('detail')}</Link>
                                         </td>

@@ -1,11 +1,13 @@
+import { handleError } from '@/libs/axios-util';
 import { translate } from '@/libs/validation-util';
+import { useAppContext } from '@/providers/app-context';
 import { createTag, updateTag } from '@/services/tag-service';
-import { Tag, TagFormData } from '@/types/tag-type';
 import { ClientInfo } from '@/types/common-type';
 import { MessageError } from '@/types/response-type';
+import { TagFormData } from '@/types/tag-type';
 import { ErrorValidation } from '@/types/validation-type';
 import { CreateTagSchema, UpdateTagSchema } from '@/validations/tag-schema';
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import clsx from 'clsx';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from "next/router";
@@ -14,8 +16,6 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import BreadCrumb from '../BreadCrumb';
 import MessageErrorBox from '../MessageErrorBox';
 import ValidationError from '../ValidationError';
-import { useAppContext } from '@/providers/app-context';
-import { errorHandler } from '@/libs/axios-util';
 
 type Props = {
     tag: TagFormData,
@@ -30,13 +30,13 @@ export default function TagForm({ tag, clientInfo }: Props) {
 
     const { setLoading } = useAppContext();
 
-    const { register, handleSubmit } = useForm<Tag>({ defaultValues: tag });
+    const { register, handleSubmit } = useForm<TagFormData>({ defaultValues: tag });
 
     const [validationErrors, setValidationErrors] = useState<ErrorValidation>({});
 
     const [messageError, setMessageError] = useState<MessageError | null>(null);
 
-    const onSubmit: SubmitHandler<Tag> = async (data) => {
+    const onSubmit: SubmitHandler<TagFormData> = async (data) => {
         try {
             setValidationErrors({});
             setMessageError(null);
@@ -52,7 +52,7 @@ export default function TagForm({ tag, clientInfo }: Props) {
             }
 
         } catch (error: any) {
-            errorHandler(setMessageError, i18n.language, error);
+            handleError(setMessageError, i18n.language, error);
         } finally {
             setTimeout(() => setLoading(false), 500);
         }

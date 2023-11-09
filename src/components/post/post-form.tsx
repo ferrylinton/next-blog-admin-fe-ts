@@ -1,11 +1,13 @@
+import { handleError } from '@/libs/axios-util';
 import { translate } from '@/libs/validation-util';
+import { useAppContext } from '@/providers/app-context';
 import { createPost, updatePost } from '@/services/post-service';
 import { PostFormProps } from '@/types/post-type';
 import { MessageError } from '@/types/response-type';
 import { ErrorValidation } from '@/types/validation-type';
 import { CreatePostSchema, UpdatePostSchema } from '@/validations/post-schema';
 import * as Tabs from '@radix-ui/react-tabs';
-import axios, { AxiosError } from 'axios';
+import { AxiosResponse } from 'axios';
 import { flatten, unflatten } from 'flat';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from "next/router";
@@ -23,7 +25,9 @@ export default function PostForm({ post, tags, clientInfo }: PostFormProps) {
 
     const router = useRouter();
 
-    const { t } = useTranslation('common');
+    const { t, i18n } = useTranslation('common');
+
+    const { setLoading } = useAppContext();
 
     const { register, handleSubmit } = useForm<FlatPost>({ defaultValues: flatten(post, { safe: true }) });
 
@@ -33,45 +37,38 @@ export default function PostForm({ post, tags, clientInfo }: PostFormProps) {
 
     const onSubmit: SubmitHandler<FlatPost> = async (data) => {
         try {
+            setValidationErrors({});
+            setMessageError(null);
+
             const validation = (post?.id) ? UpdatePostSchema.safeParse(unflatten(data)) : CreatePostSchema.safeParse(unflatten(data));
             
             if (validation.success) {
+                setLoading(true);
                 const response = (post?.id) ? (await updatePost(post.id, validation.data, clientInfo)) : (await createPost(validation.data, clientInfo));
-
-                if (response.status === 201) {
-                    router.push('/data/post');
-                } else if (response.status === 200) {
-                    router.push(`/data/post/${post?.id}`);
-                } else if (response.status === 400) {
-                    setValidationErrors(response.data);
-                } else if (response.status === 409) {
-                    setMessageError(response.data);
-                } else if (response.status === 401) {
-                    router.push('/login?status=401');
-                } else if (response.status === 403) {
-                    router.push('/login?status=403');
-                }
+                setTimeout(() => handleResponse(response), 500);
             } else {
                 setValidationErrors(translate(validation.error.issues, t));
             }
 
 
         } catch (error: any) {
-            if (axios.isAxiosError(error)) {
-                const axiosError = error as AxiosError;
-                if (axiosError.response?.data) {
-                    setMessageError(axiosError.response?.data as MessageError);
-                } else {
-                    setMessageError({ message: axiosError.message });
-                }
-            } else {
-                setMessageError({ message: error.message })
-            }
-
+            handleError(setMessageError, i18n.language, error);
+        } finally {
+            setTimeout(() => setLoading(false), 500);
         }
     };
 
-
+    const handleResponse = (response: AxiosResponse) => {
+        if (response.status === 201) {
+            router.push('/data/post');
+        } else if (response.status === 200) {
+            router.push(`/data/post/${post.id}`);
+        } else if (response.status === 400) {
+            setValidationErrors(translate(response.data, t));
+        } else if (response.status === 409) {
+            setMessageError(response.data);
+        }
+    }
 
     return (
         <div className='w-full h-full grow flex flex-col justify-start items-center pt-[50px] pb-5'>
@@ -116,7 +113,7 @@ export default function PostForm({ post, tags, clientInfo }: PostFormProps) {
                             {
                                 tags.map((tag, _index) => {
                                     return <div
-                                        className="flex gap-1 justify-start items-center"
+                                        className="flex gap-1 justify-start items-center min-w-[140px]"
                                         key={tag.id}>
                                         <input
                                             type="checkbox"

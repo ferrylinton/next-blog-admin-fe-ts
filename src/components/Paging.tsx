@@ -27,7 +27,7 @@ export default function Paging({ pagination }: Props) {
         let FirstButton = (pagination.page && pagination.page > 1) ?
             <Link
                 href={{ pathname, query: { ...query, page: 1 } }}
-                className='w-[60px] h-[40px] border border-slate-300 text-stone-700 flex items-center justify-center hover:text-lime-900 hover:bg-gradient-to-b from-lime-50 via-lime-100 to-lime-200'>
+                className='w-[60px] h-[40px] btn-link border border-stone-300 text-stone-700 flex items-center justify-center'>
                 <div className='h-[20px] w-[4px] bg-stone-700 inline-block'></div>
                 <PreviousIcon className='w-[30px] h-[30px]' />
             </Link> :
@@ -39,7 +39,7 @@ export default function Paging({ pagination }: Props) {
         let PreviousButton = (pagination.page && pagination.page > 1) ?
             <Link
                 href={{ pathname, query: { ...query, page: pagination.page - 1 } }}
-                className='w-[60px] h-[40px] border border-slate-300 flex items-center justify-center hover:text-lime-900 hover:bg-gradient-to-b from-lime-50 via-lime-100 to-lime-200'>
+                className='w-[60px] h-[40px] btn btn-link'>
                 <PreviousIcon className='w-[30px] h-[30px]' />
             </Link> :
             <div className='w-[60px] h-[40px] border border-slate-300 bg-gray-100 text-gray-400 cursor-not-allowed flex items-center justify-center'>
@@ -52,7 +52,7 @@ export default function Paging({ pagination }: Props) {
                     pathname,
                     query: { ...query, page: pagination.page + 1 }
                 }}
-                className='w-[60px] h-[40px] border border-slate-300 flex items-center justify-center hover:text-lime-900 hover:bg-gradient-to-b from-lime-50 via-lime-100 to-lime-200'>
+                className='btn btn-link w-[60px] h-[40px]'>
                 <NextIcon className='w-[30px] h-[30px]' />
             </Link> :
             <div className='w-[60px] h-[40px] border border-slate-300 bg-gray-100 text-gray-400 cursor-not-allowed flex items-center justify-center '>
@@ -65,7 +65,7 @@ export default function Paging({ pagination }: Props) {
                     pathname,
                     query: { ...query, page: pagination.totalPage }
                 }}
-                className='w-[60px] h-[40px] border border-slate-300 text-stone-700 flex items-center justify-center hover:text-lime-900 hover:bg-gradient-to-b from-lime-50 via-lime-100 to-lime-200'>
+                className='w-[60px] h-[40px] btn-link border border-stone-300 text-stone-700 flex items-center justify-center'>
                 <NextIcon className='w-[30px] h-[30px]' />
                 <div className='h-[20px] w-[4px] bg-stone-700 inline-block'></div>
             </Link> :
