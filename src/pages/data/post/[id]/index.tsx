@@ -19,6 +19,8 @@ import { handleError } from '@/libs/axios-util';
 import { MessageError } from '@/types/response-type';
 import { isAuthorize } from '@/libs/auth-util';
 import { BLOG_ADMIN, BLOG_OWNER } from '@/configs/auth-constant';
+import MessageErrorBox from '@/components/MessageErrorBox';
+import NotFound from '@/components/NotFound';
 
 type Props = {
     post: Post,
@@ -46,7 +48,7 @@ export default function PostDetailPage({ post, clientInfo }: Props) {
             try {
                 setLoading(true);
                 await deletePost(post.id, clientInfo);
-                setTimeout(() => router.push('/data/tag'), 500);
+                setTimeout(() => router.push('/data/post'), 500);
             } catch (error: any) {
                 handleError(setMessageError, i18n.language, error);
             } finally {
@@ -65,129 +67,135 @@ export default function PostDetailPage({ post, clientInfo }: Props) {
                         { label: t('detail') }
                     ]} />
             </div>
-            {post && <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col justify-center items-center px-2 py-5'>
-                <div className='detail'>
-                    <div className='detail-item'>
-                        <div>ID</div>
-                        <div>{post.id}</div>
-                    </div>
-                    <div className='detail-item'>
-                        <div>{t('slug')}</div>
-                        <div>{post.slug}</div>
-                    </div>
-                    <div className='detail-item'>
-                        <div>{t('createdBy')}</div>
-                        <div>{post.createdBy}</div>
-                    </div>
-                    <div className='detail-item'>
-                        <div>{t('createdAt')}</div>
-                        <div>{formatToTimestamp(post.createdAt)}</div>
-                    </div>
-                    {post.updatedBy && <div className='detail-item'>
-                        <div>{t('updatedBy')}</div>
-                        <div>{post.updatedBy}</div>
-                    </div>}
-                    {post.updatedAt && <div className='detail-item'>
-                        <div>{t('updatedAt')}</div>
-                        <div>{formatToTimestamp(post.updatedAt)}</div>
-                    </div>}
-                    <Tabs.Root
-                        className='w-full'
-                        defaultValue="Indonesia">
+            <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col items-start px-2'>
+                <MessageErrorBox messageError={messageError} />
+                {!post && <NotFound id={router.query.id} />}
+                {post && <div className='w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl flex flex-col justify-center items-center px-2 py-5'>
+                    <div className='detail'>
+                        <div className='detail-item'>
+                            <div>ID</div>
+                            <div>{post.id}</div>
+                        </div>
+                        <div className='detail-item'>
+                            <div>{t('slug')}</div>
+                            <div>{post.slug}</div>
+                        </div>
+                        <div className='detail-item'>
+                            <div>{t('createdBy')}</div>
+                            <div>{post.createdBy}</div>
+                        </div>
+                        <div className='detail-item'>
+                            <div>{t('createdAt')}</div>
+                            <div>{formatToTimestamp(post.createdAt)}</div>
+                        </div>
+                        {post.updatedBy && <div className='detail-item'>
+                            <div>{t('updatedBy')}</div>
+                            <div>{post.updatedBy}</div>
+                        </div>}
+                        {post.updatedAt && <div className='detail-item'>
+                            <div>{t('updatedAt')}</div>
+                            <div>{formatToTimestamp(post.updatedAt)}</div>
+                        </div>}
+                        <Tabs.Root
+                            className='w-full'
+                            defaultValue="Indonesia">
 
-                        <Tabs.List>
-                            <Tabs.Trigger
+                            <Tabs.List>
+                                <Tabs.Trigger
+                                    value='Indonesia'
+                                    className='py-2 px-4 border border-b-0 border-stone-300 bg-stone-100 data-[state=active]:bg-lime-300 data-[state=active]:font-bold'>
+                                    <span className='uppercase text-xs'>Indonesia</span>
+                                </Tabs.Trigger>
+                                <Tabs.Trigger
+                                    value='English'
+                                    className='py-2 px-4 border  border-b-0 border-stone-300 bg-stone-100 data-[state=active]:bg-lime-300 data-[state=active]:font-bold'>
+                                    <span className='uppercase text-xs'>English</span>
+                                </Tabs.Trigger>
+                            </Tabs.List>
+                            <Tabs.Content
                                 value='Indonesia'
-                                className='py-2 px-4 border border-b-0 border-stone-300 bg-stone-100 data-[state=active]:bg-lime-300 data-[state=active]:font-bold'>
-                                <span className='uppercase text-xs'>Indonesia</span>
-                            </Tabs.Trigger>
-                            <Tabs.Trigger
+                                className='py-4 px-4 border border-stone-300'>
+
+                                <div className='w-full flex flex-col mb-3 gap-1'>
+                                    <div className='font-bold'>{t('title')} :</div>
+                                    <div>{post.title.id}</div>
+                                </div>
+
+                                <div className='w-full flex flex-col mb-3 gap-1'>
+                                    <div className='font-bold'>{t('description')} :</div>
+                                    <div>{post.description.id}</div>
+                                </div>
+
+                                <div className='w-full flex flex-col mb-3 gap-1'>
+                                    <div className='font-bold'>{t('content')} :</div>
+                                    <textarea
+                                        className='border border-stone-300 text-sm'
+                                        readOnly
+                                        rows={20}
+                                        value={post.content.id}></textarea>
+                                </div>
+
+                            </Tabs.Content>
+                            <Tabs.Content
                                 value='English'
-                                className='py-2 px-4 border  border-b-0 border-stone-300 bg-stone-100 data-[state=active]:bg-lime-300 data-[state=active]:font-bold'>
-                                <span className='uppercase text-xs'>English</span>
-                            </Tabs.Trigger>
-                        </Tabs.List>
-                        <Tabs.Content
-                            value='Indonesia'
-                            className='py-4 px-4 border border-stone-300'>
+                                className='py-4 px-4 border border-stone-300'>
 
-                            <div className='w-full flex flex-col mb-3 gap-1'>
-                                <div className='font-bold'>{t('title')} :</div>
-                                <div>{post.title.id}</div>
-                            </div>
+                                <div className='w-full flex flex-col mb-3 gap-1'>
+                                    <div className='font-bold'>{t('title')} :</div>
+                                    <div>{post.title.en}</div>
+                                </div>
 
-                            <div className='w-full flex flex-col mb-3 gap-1'>
-                                <div className='font-bold'>{t('description')} :</div>
-                                <div>{post.description.id}</div>
-                            </div>
+                                <div className='w-full flex flex-col mb-3 gap-1'>
+                                    <div className='font-bold'>{t('description')} :</div>
+                                    <div>{post.description.en}</div>
+                                </div>
 
-                            <div className='w-full flex flex-col mb-3 gap-1'>
-                                <div className='font-bold'>{t('content')} :</div>
-                                <textarea
-                                    className='border border-stone-300 text-sm'
-                                    readOnly
-                                    rows={20}
-                                    value={post.content.id}></textarea>
-                            </div>
+                                <div className='w-full flex flex-col mb-3 gap-1'>
+                                    <div className='font-bold'>{t('content')} :</div>
+                                    <textarea
+                                        className='border border-stone-300 text-sm'
+                                        readOnly
+                                        rows={20}
+                                        value={post.content.en}></textarea>
+                                </div>
 
-                        </Tabs.Content>
-                        <Tabs.Content
-                            value='English'
-                            className='py-4 px-4 border border-stone-300'>
+                            </Tabs.Content>
+                        </Tabs.Root>
 
-                            <div className='w-full flex flex-col mb-3 gap-1'>
-                                <div className='font-bold'>{t('title')} :</div>
-                                <div>{post.title.en}</div>
-                            </div>
-
-                            <div className='w-full flex flex-col mb-3 gap-1'>
-                                <div className='font-bold'>{t('description')} :</div>
-                                <div>{post.description.en}</div>
-                            </div>
-
-                            <div className='w-full flex flex-col mb-3 gap-1'>
-                                <div className='font-bold'>{t('content')} :</div>
-                                <textarea
-                                    className='border border-stone-300 text-sm'
-                                    readOnly
-                                    rows={20}
-                                    value={post.content.en}></textarea>
-                            </div>
-
-                        </Tabs.Content>
-                    </Tabs.Root>
-
-                    <div className="mt-5 flex gap-2">
-                        <button
-                            onClick={() => router.push('/data/post')}
-                            type='button'
-                            className="btn btn-link">
-                            <BackIcon className='w-[20px] h-[20px]' />
-                            <span>{t('back')}</span>
-                        </button>
-                        {(isAuthorize(clientInfo, [BLOG_ADMIN]) || clientInfo.authData?.username === post.createdBy) && <>
+                        <div className="mt-5 flex gap-2">
                             <button
-                                onClick={() => router.push(`/data/post/${post.id}/update`)}
+                                onClick={() => router.push('/data/post')}
                                 type='button'
                                 className="btn btn-link">
-                                <EditIcon className='w-[22px] h-[22px]' />
-                                <span>{t('update')}</span>
+                                <BackIcon className='w-[20px] h-[20px]' />
+                                <span>{t('back')}</span>
                             </button>
-                            <button
-                                onClick={() => showDeleteConfirmation()}
-                                type='button'
-                                className="btn btn-danger">
-                                <DeleteIcon className='w-[20px] h-[20px]' />
-                                <span>{t('delete')}</span>
-                            </button>
-                            <DeleteConfirmDialog
-                                showConfirm={showConfirm}
-                                setShowConfirm={setShowConfirm}
-                                okHandler={okHandler} />
-                        </>}
+                            {(isAuthorize(clientInfo, [BLOG_OWNER]) && clientInfo.authData?.username === post.createdBy) &&
+                                <button
+                                    onClick={() => router.push(`/data/post/${post.id}/update`)}
+                                    type='button'
+                                    className="btn btn-link">
+                                    <EditIcon className='w-[22px] h-[22px]' />
+                                    <span>{t('update')}</span>
+                                </button>}
+
+                            {(isAuthorize(clientInfo, [BLOG_ADMIN]) || clientInfo.authData?.username === post.createdBy) && <>
+                                <button
+                                    onClick={() => showDeleteConfirmation()}
+                                    type='button'
+                                    className="btn btn-danger">
+                                    <DeleteIcon className='w-[20px] h-[20px]' />
+                                    <span>{t('delete')}</span>
+                                </button>
+                                <DeleteConfirmDialog
+                                    showConfirm={showConfirm}
+                                    setShowConfirm={setShowConfirm}
+                                    okHandler={okHandler} />
+                            </>}
+                        </div>
                     </div>
-                </div>
-            </div>}
+                </div>}
+            </div>
         </div>
     )
 }

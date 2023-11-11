@@ -1,5 +1,5 @@
 import PostForm from '@/components/post/post-form';
-import { BLOG_ADMIN } from '@/configs/auth-constant';
+import { BLOG_OWNER } from '@/configs/auth-constant';
 import { getClientInfo } from '@/libs/auth-data-util';
 import { isAuthorize } from '@/libs/auth-util';
 import { getPost } from '@/services/post-service';
@@ -30,7 +30,7 @@ export const getServerSideProps = withAuth(async (context: GetServerSidePropsCon
         props: {
             post,
             tags,
-            authorized: isAuthorize(clientInfo, [BLOG_ADMIN]) || ( post.createdBy === clientInfo.authData?.username)
+            authorized: isAuthorize(clientInfo, [BLOG_OWNER]) && ( post.createdBy === clientInfo.authData?.username)
         }
     }
 })

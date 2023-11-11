@@ -44,7 +44,7 @@ export default function LoginPage({ clientInfo }: Props) {
         if (clientInfo) {
             router.push('/');
         }
-    }, [clientInfo])
+    })
 
     const { register, handleSubmit } = useForm<AuthenticateType>({
         defaultValues: {

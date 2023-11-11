@@ -1,5 +1,5 @@
 import TagForm from '@/components/tag/tag-form';
-import { BLOG_ADMIN } from '@/configs/auth-constant';
+import { BLOG_OWNER } from '@/configs/auth-constant';
 import { getClientInfo } from '@/libs/auth-data-util';
 import { isAuthorize } from '@/libs/auth-util';
 import { getTag } from '@/services/tag-service';
@@ -21,7 +21,7 @@ export const getServerSideProps = withAuth(async (context: GetServerSidePropsCon
     return {
         props: {
             tag: data,
-            authorized: isAuthorize(clientInfo, [BLOG_ADMIN]) || ( data.createdBy === clientInfo.authData?.username)
+            authorized: isAuthorize(clientInfo, [BLOG_OWNER]) || ( data.createdBy === clientInfo.authData?.username)
         }
     }
 })

@@ -89,14 +89,16 @@ export default function TagDetailPage({ tag, clientInfo }: Props) {
                             <BackIcon className='w-[20px] h-[20px]' />
                             <span>{t('back')}</span>
                         </button>
-                        {(isAuthorize(clientInfo, [BLOG_ADMIN]) || clientInfo.authData?.username === tag.createdBy) && <>
+                        {(isAuthorize(clientInfo, [BLOG_OWNER]) || clientInfo.authData?.username === tag.createdBy) &&
                             <button
                                 onClick={() => router.push(`/data/tag/${tag.id}/update`)}
                                 type='button'
                                 className="btn btn-link">
                                 <EditIcon className='w-[22px] h-[22px]' />
                                 <span>{t('update')}</span>
-                            </button>
+                            </button>}
+
+                        {(isAuthorize(clientInfo, [BLOG_ADMIN]) || clientInfo.authData?.username === tag.createdBy) && <>
                             <button
                                 onClick={() => showDeleteConfirmation()}
                                 type='button'

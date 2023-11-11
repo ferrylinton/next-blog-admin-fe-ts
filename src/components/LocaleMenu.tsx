@@ -8,7 +8,7 @@ import { getCookie, setCookie } from 'cookies-next';
 import { OptionsType } from 'cookies-next/lib/types';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
-import React, { useState, useEffect } from 'react'
+import { useEffect } from 'react';
 
 const locales = [
     { "value": "id", "label": "Indonesia", "flag": <IdIcon className='w-[24px] h-auto border border-slate-300 rounded shadow-md' /> },
@@ -37,7 +37,7 @@ const LocaleMenu = () => {
         } else if (locale !== i18n.language) {
             router.push({ pathname, query }, asPath, { locale });
         }
-    }, [])
+    })
 
     const handleSelectLocale = (locale: string) => {
         setCookie(COOKIE_NEXT_LOCALE, locale, option);
