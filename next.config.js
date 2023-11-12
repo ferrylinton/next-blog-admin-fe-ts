@@ -4,16 +4,8 @@ const nextConfig = {
   reactStrictMode: true,
   i18n,
   images: {
-    domains: ["127.0.0.1:5001", "127.0.0.1", "192.168.98.31", "source.unsplash.com"],
-  },
-  async rewrites() {
-    return [
-      {
-        source: '/_next/:path*',
-        destination: '/blogadmin/_next/:path*',
-      },
-    ]
-  },
+    domains: ["127.0.0.1:5001", "127.0.0.1", "192.168.98.31", "source.unsplash.com", "blogapi.marmeam.com"],
+  }
 }
 
 module.exports = nextConfig
