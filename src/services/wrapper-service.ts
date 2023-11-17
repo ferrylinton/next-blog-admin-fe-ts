@@ -1,6 +1,6 @@
 import { logger } from '@/configs/winston';
 import { getClientInfo } from '@/libs/auth-data-util';
-import { redirectTo403, redirectToLogin } from '@/libs/redirect-util';
+import { redirectTo403, redirectTo429, redirectTo503, redirectToLogin } from '@/libs/redirect-util';
 import axios from 'axios';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -44,6 +44,10 @@ export function withAuth(gssp: GetServerSideProps) {
                     return redirectToLogin(context.locale);
                 } else if (response && response.status === 403) {
                     return redirectTo403(context.locale, context.resolvedUrl);
+                } else if (response && response.status === 503) {
+                    return redirectTo503(context.locale);
+                } else if (response && response.status === 429) {
+                    return redirectTo429(context.locale);
                 } else if (response && response.status === 404) {
                     return {
                         props: {

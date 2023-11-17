@@ -25,8 +25,6 @@
     "eslint-config-next": "13.4.19",
     "flat": "^6.0.1",
     "i18next": "^23.5.1",
-    "markdown-it": "^13.0.2",
-    "markdown-it-highlightjs": "^4.0.1",
     "next": "13.4.19",
     "next-i18next": "^14.0.3",
     "postcss": "8.4.29",
@@ -41,8 +39,6 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.10",
-    "@types/markdown-it": "^13.0.2",
     "@types/ua-parser-js": "^0.7.38"
   }
 }

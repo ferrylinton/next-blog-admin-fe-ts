@@ -76,5 +76,9 @@
     "invalidUsernameOrPassword": "Nama pengguna atau kata sandi salah",
     "welcome": "Selamat Datang",
     "information": "Informasi",
-    "post": "Postingan"
+    "post": "Postingan",
+    "internalServerError": "Terjadi kesalahan di server",
+    "tags": "Tag",
+    "serviceUnavailable": "Layanan tidak tersedia",
+    "tooManyRequests": "Terlalu banyak proses"
 }

@@ -99,6 +99,8 @@ export default function TagForm({ tag, clientInfo }: Props) {
                         <div className="form-group">
                             <label className='form-label' htmlFor="name">{t('name')}</label>
                             <input
+                                id='name'
+                                autoComplete='false'
                                 className={clsx('w-full', validationErrors.name && 'border-red-400')}
                                 type="text"
                                 placeholder='xxx'

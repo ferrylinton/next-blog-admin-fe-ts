@@ -6,7 +6,7 @@ export type Tag = {
 } & Audit
 
 export type TagPageProps = {
-    tag: Tag,
+    tag?: Tag,
     clientInfo: ClientInfo
 }
 

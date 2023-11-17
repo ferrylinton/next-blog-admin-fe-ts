@@ -16,8 +16,5 @@ export default {
         slideDownAndFade: 'slideDownAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)'
       }
     },
-  },
-  plugins: [
-    require('@tailwindcss/typography'),
-  ],
+  }
 }

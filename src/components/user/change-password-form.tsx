@@ -101,11 +101,11 @@ export default function ChangePasswordForm({ id, username, clientInfo }: Props) 
                         noValidate
                         autoComplete='off' >
 
-
-
                         <div className="form-group">
                             <label className='form-label' htmlFor="password">{t('password')}</label>
                             <input
+                                id='password'
+                                autoComplete='false'
                                 className={`w-full form-input ${validationErrors['password'] ? 'border-red-400' : 'border-stone-300'}`}
                                 type="text"
                                 placeholder='xxx'
@@ -118,6 +118,8 @@ export default function ChangePasswordForm({ id, username, clientInfo }: Props) 
                         <div className="form-group">
                             <label className='form-label' htmlFor="passwordConfirm">{t('passwordConfirm')}</label>
                             <input
+                                id='passwordConfirm'
+                                autoComplete='false'
                                 className={`w-full form-input ${validationErrors['passwordConfirm'] ? 'border-red-400' : 'border-stone-300'}`}
                                 type="text"
                                 placeholder='xxx'

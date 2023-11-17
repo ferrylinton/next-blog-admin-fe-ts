@@ -18,7 +18,7 @@ const locales = [
 const option: OptionsType = {
     sameSite: 'strict',
     path: "/",
-    maxAge: 1 * 60 * 1000
+    maxAge: 60 * 60 * 24 * 30
 };
 
 const LocaleMenu = () => {

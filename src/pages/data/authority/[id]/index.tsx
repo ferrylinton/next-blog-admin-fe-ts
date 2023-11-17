@@ -1,13 +1,12 @@
 import BreadCrumb from '@/components/BreadCrumb';
 import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
+import DetailValue from '@/components/DetailValue';
 import MessageErrorBox from '@/components/MessageErrorBox';
 import NotFound from '@/components/NotFound';
-import DetailValue from '@/components/DetailValue';
 import { MODIFY_USER_DATA, READ_USER_DATA } from '@/configs/auth-constant';
 import BackIcon from '@/icons/BackIcon';
 import DeleteIcon from '@/icons/DeleteIcon';
 import EditIcon from '@/icons/EditIcon';
-import NotFoundIcon from '@/icons/NotFoundIcon';
 import { getClientInfo } from '@/libs/auth-data-util';
 import { isAuthorize } from '@/libs/auth-util';
 import { handleError } from '@/libs/axios-util';

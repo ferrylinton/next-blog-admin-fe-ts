@@ -19,7 +19,7 @@ import Link from 'next/link';
 
 
 type Props = {
-    pageable: Pageable<Post>,
+    pageable?: Pageable<Post>,
     messageError: MessageError | null,
     clientInfo: ClientInfo
 }
@@ -58,13 +58,13 @@ export default function PostListPage({ pageable, messageError, clientInfo }: Pro
                     </thead>
                     <tbody>
                         {
-                            (!pageable.data || pageable.data.length === 0) ?
+                            (!pageable || !pageable.data || pageable.data.length === 0) ?
                                 <tr>
                                     <td colSpan={4} className='empty'>
                                         <span>{t('dataIsEmpty')}</span>
                                     </td>
                                 </tr> :
-                                (pageable.data && pageable.data.map((post, index) => {
+                                (pageable.data.map((post, index) => {
                                     return <tr key={post.id}>
                                         <td data-label="#">{((pageable.pagination.page - 1) * pageable.pagination.pageSize) + index + 1}</td>
                                         <td data-label={t('description')}>{post.description[i18n.language as keyof typeof post.description]}</td>

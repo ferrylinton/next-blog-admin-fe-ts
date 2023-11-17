@@ -20,14 +20,14 @@ import { useRouter } from 'next/router';
 
 
 type Props = {
-    pageable: Pageable<Image>,
+    pageable?: Pageable<Image>,
     messageError: MessageError | null,
     clientInfo: ClientInfo
 }
 
 export default function ImageListPage({ pageable, messageError, clientInfo }: Props) {
 
-    const { i18n, t } = useTranslation('common');
+    const { t } = useTranslation('common');
 
     const router = useRouter();
 
@@ -52,9 +52,9 @@ export default function ImageListPage({ pageable, messageError, clientInfo }: Pr
                 </div>
                 <div className='w-full flex  flex-wrap justify-start items-start gap-2'>
                     {
-                        (!pageable.data || pageable.data.length === 0) ?
-                            <div>{t('dataIsEmpty')}</div> :
-                            (pageable.data && pageable.data.map((image) => {
+                        (!pageable || !pageable.data || pageable.data.length === 0) ?
+                            <div className='w-full my-2 p-4 text-center border border-stone-400 bg-stone-100'>{t('dataIsEmpty')}</div> :
+                            (pageable.data.map((image) => {
                                 return (<div key={image.id} className='group cursor-pointer flex flex-col justify-start items-center w-full sm:w-[calc(50%-5px)] h-[200px] border border-stone-300 p-2 hover:outline outline-2 outline-lime-300 overflow-hidden relative'
                                     onClick={() => router.push(`/data/image/${image.id}`)}>
                                     <ImageWithDimension image={image} />

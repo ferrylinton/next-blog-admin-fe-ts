@@ -98,6 +98,8 @@ export default function PostForm({ post, tags, clientInfo }: PostFormProps) {
                     <div className="form-group">
                         <label className='form-label' htmlFor="slug">{t('slug')}</label>
                         <input
+                            id='slug'
+                            autoComplete='false'
                             className={`w-full form-input ${validationErrors['slug'] ? 'border-red-400' : 'border-stone-300'}`}
                             type="text"
                             placeholder='xxx'
@@ -107,8 +109,8 @@ export default function PostForm({ post, tags, clientInfo }: PostFormProps) {
                         <ValidationError message={validationErrors.slug} />
                     </div>
 
-                    <div className="mb-5 uppercase">
-                        <label className="block mb-1 text-xs ps-1" htmlFor="name">{t('tags')}</label>
+                    <div className="mb-5">
+                        <label className="block mb-1 text-xs ps-1">{t('tags')}</label>
                         <div className={`flex justify-start flex-wrap gap-5 border p-4 ${validationErrors.tags ? 'border-red-400' : 'border-stone-300'}`}>
                             {
                                 tags.map((tag, _index) => {
@@ -116,12 +118,13 @@ export default function PostForm({ post, tags, clientInfo }: PostFormProps) {
                                         className="flex gap-1 justify-start items-center min-w-[140px]"
                                         key={tag.id}>
                                         <input
+                                            id={tag.name}
                                             type="checkbox"
                                             value={tag.name}
                                             className="h-[1.2rem] w-[1.2rem] border-[0.125rem] border-solid border-stone-300 "
                                             {...register("tags")}
                                         />
-                                        <label className="hover:cursor-pointer text-xs uppercase">
+                                        <label className="hover:cursor-pointer text-xs uppercase" htmlFor={tag.name}>
                                             {tag.name}
                                         </label>
                                     </div>
@@ -151,8 +154,10 @@ export default function PostForm({ post, tags, clientInfo }: PostFormProps) {
                             className='py-4 px-4 border border-stone-300'>
 
                             <div className="form-group">
-                                <label className="form-label" htmlFor="name">{t('title')} - ID</label>
+                                <label className="form-label" htmlFor="title.id">{t('title')} - ID</label>
                                 <textarea
+                                    id='title.id'
+                                    autoComplete='false'
                                     className={`w-full form-input ${validationErrors['title.id'] ? 'border-red-400' : 'border-stone-300'}`}
                                     placeholder='xxx'
                                     maxLength={150}
@@ -162,8 +167,10 @@ export default function PostForm({ post, tags, clientInfo }: PostFormProps) {
                                 <ValidationError message={validationErrors['title.id']} />
                             </div>
                             <div className="form-group">
-                                <label className="form-label" htmlFor="name">{t('description')} - ID</label>
+                                <label className="form-label" htmlFor="description.id">{t('description')} - ID</label>
                                 <textarea
+                                    id='description.id'
+                                    autoComplete='false'
                                     className={`w-full form-input ${validationErrors['description.id'] ? 'border-red-400' : 'border-stone-300'}`}
                                     placeholder='xxx'
                                     maxLength={150}
@@ -173,8 +180,10 @@ export default function PostForm({ post, tags, clientInfo }: PostFormProps) {
                                 <ValidationError message={validationErrors['description.id']} />
                             </div>
                             <div className="form-group">
-                                <label className="form-label" htmlFor="name">{t('content')} - ID</label>
+                                <label className="form-label" htmlFor="content.id">{t('content')} - ID</label>
                                 <textarea
+                                    id='content.id'
+                                    autoComplete='false'
                                     className={`w-full form-input ${validationErrors['content.id'] ? 'border-red-400' : 'border-stone-300'}`}
                                     placeholder='xxx'
                                     rows={20}
@@ -189,8 +198,10 @@ export default function PostForm({ post, tags, clientInfo }: PostFormProps) {
                             className='py-4 px-4 border border-stone-300'>
 
                             <div className="form-group">
-                                <label className="form-label" htmlFor="name">{t('title')} - EN</label>
+                                <label className="form-label" htmlFor="title.en">{t('title')} - EN</label>
                                 <textarea
+                                    id='title.en'
+                                    autoComplete='false'
                                     className={`w-full form-input ${validationErrors['title.en'] ? 'border-red-400' : 'border-stone-300'}`}
                                     placeholder='xxx'
                                     maxLength={150}
@@ -200,8 +211,10 @@ export default function PostForm({ post, tags, clientInfo }: PostFormProps) {
                                 <ValidationError message={validationErrors['title.en']} />
                             </div>
                             <div className="form-group">
-                                <label className="form-label" htmlFor="name">{t('description')} - EN</label>
+                                <label className="form-label" htmlFor="description.en">{t('description')} - EN</label>
                                 <textarea
+                                    id='description.en'
+                                    autoComplete='false'
                                     className={`w-full form-input ${validationErrors['description.en'] ? 'border-red-400' : 'border-stone-300'}`}
                                     placeholder='xxx'
                                     maxLength={150}
@@ -211,8 +224,10 @@ export default function PostForm({ post, tags, clientInfo }: PostFormProps) {
                                 <ValidationError message={validationErrors['description.en']} />
                             </div>
                             <div className="form-group">
-                                <label className="form-label" htmlFor="name">{t('content')} - EN</label>
+                                <label className="form-label" htmlFor="content.en">{t('content')} - EN</label>
                                 <textarea
+                                    id='content.en'
+                                    autoComplete='false'
                                     className={`w-full form-input ${validationErrors['content.en'] ? 'border-red-400' : 'border-stone-300'}`}
                                     placeholder='xxx'
                                     rows={20}
@@ -228,7 +243,7 @@ export default function PostForm({ post, tags, clientInfo }: PostFormProps) {
                         <button
                             onClick={() => router.push(post ? `/data/post/${post.id}` : '/data/post')}
                             type='button'
-                            className="w-full btn">
+                            className="w-full btn btn-secondary">
                             <span>{t('cancel')}</span>
                         </button>
 

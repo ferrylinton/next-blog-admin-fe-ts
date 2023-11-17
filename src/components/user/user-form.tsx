@@ -93,6 +93,8 @@ export default function UserForm({ user, authorities, clientInfo }: UserFormProp
                         <div className="form-group">
                             <label className='form-label' htmlFor="username">{t('username')}</label>
                             <input
+                                id='username'
+                                autoComplete='false'
                                 className={`w-full form-input ${validationErrors['username'] ? 'border-red-400' : 'border-stone-300'}`}
                                 type="text"
                                 placeholder='xxx'
@@ -105,6 +107,8 @@ export default function UserForm({ user, authorities, clientInfo }: UserFormProp
                         <div className="form-group">
                             <label className='form-label' htmlFor="email">{t('email')}</label>
                             <input
+                                id='email'
+                                autoComplete='false'
                                 className={`w-full form-input ${validationErrors['email'] ? 'border-red-400' : 'border-stone-300'}`}
                                 type="text"
                                 placeholder='xxx'
@@ -117,6 +121,8 @@ export default function UserForm({ user, authorities, clientInfo }: UserFormProp
                         {!user.id && <div className="form-group">
                             <label className='form-label' htmlFor="password">{t('password')}</label>
                             <input
+                                id='password'
+                                autoComplete='false'
                                 className={`w-full form-input ${validationErrors['password'] ? 'border-red-400' : 'border-stone-300'}`}
                                 type="text"
                                 placeholder='xxx'
@@ -129,6 +135,8 @@ export default function UserForm({ user, authorities, clientInfo }: UserFormProp
                         {!user.id && <div className="form-group">
                             <label className='form-label' htmlFor="passwordConfirm">{t('passwordConfirm')}</label>
                             <input
+                                id='passwordConfirm'
+                                autoComplete='false'
                                 className={`w-full form-input ${validationErrors['passwordConfirm'] ? 'border-red-400' : 'border-stone-300'}`}
                                 type="text"
                                 placeholder='xxx'
@@ -142,6 +150,8 @@ export default function UserForm({ user, authorities, clientInfo }: UserFormProp
                             <label className='form-label' htmlFor="loginAttempt">{t('loginAttempt')}</label>
                             <div className='w-full bg-stone-200'>
                                 <input
+                                    id='loginAttempt'
+                                    autoComplete='false'
                                     className={clsx('w-[80px]', validationErrors.loginAttempt && 'border-red-400')}
                                     type="number"
                                     placeholder='xxx'
@@ -154,26 +164,28 @@ export default function UserForm({ user, authorities, clientInfo }: UserFormProp
 
                         <div className="form-group flex gap-3 justify-start items-center">
                             <input
+                                id='activated'
                                 type="checkbox"
                                 {...register("activated")}
                             />
-                            <label className="hover:cursor-pointer text-xs">
+                            <label className="hover:cursor-pointer text-xs" htmlFor='activated'>
                                 {t('activated')}
                             </label>
                         </div>
 
                         {user.id && <div className="form-group flex gap-3 justify-start items-center">
                             <input
+                                id='locked'
                                 type="checkbox"
                                 {...register("locked")}
                             />
-                            <label className="hover:cursor-pointer text-xs">
+                            <label className="hover:cursor-pointer text-xs" htmlFor='locked'>
                                 {t('locked')}
                             </label>
                         </div>}
 
                         <div className="mb-5">
-                            <label className="block mb-1 text-xs ps-1" htmlFor="name">{t('authorities')}</label>
+                            <label className="block mb-1 text-xs ps-1">{t('authorities')}</label>
                             <div className={`flex justify-start flex-wrap gap-4 border p-2 ${validationErrors.authorities ? 'border-red-400' : 'border-stone-300'}`}>
                                 {
                                     authorities.map((authority, _index) => {
@@ -181,11 +193,12 @@ export default function UserForm({ user, authorities, clientInfo }: UserFormProp
                                             className="flex gap-1 justify-start items-center"
                                             key={authority.id}>
                                             <input
+                                                id={authority.code}
                                                 type="checkbox"
                                                 value={authority.code}
                                                 {...register("authorities")}
                                             />
-                                            <label className="hover:cursor-pointer text-xs min-w-[170px]">
+                                            <label className="hover:cursor-pointer text-xs min-w-[170px]" htmlFor={authority.code}>
                                                 {authority.description}
                                             </label>
                                         </div>

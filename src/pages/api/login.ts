@@ -25,7 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 secure: process.env.NODE_ENV !== 'development',
                 sameSite: 'strict',
                 path: "/",
-                maxAge: 1 * 60 * 1000
+                maxAge: 60 * 60 * 24
             };
 
             setCookie(COOKIE_AUTH_DATA, response.data, option);

@@ -8,8 +8,6 @@ export const translate = (issues: ZodIssue[], t: TFunction<[DefaultNamespace, ..
     if (issues) {
         issues.forEach(issue => {
             const field = issue.path.join('.');
-            console.log(field);
-            
 
             if (issue.code === 'invalid_type') {
                 errors[field] = t('invalid_type');
@@ -33,6 +31,6 @@ export const translate = (issues: ZodIssue[], t: TFunction<[DefaultNamespace, ..
 
         
     }
-    console.log(errors);
+
     return errors;
 }

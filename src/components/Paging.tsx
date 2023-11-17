@@ -1,9 +1,9 @@
+import LastIcon from '@/icons/LastIcon';
 import NextIcon from '@/icons/NextIcon';
-import PreviousIcon from '@/icons/PreviousIcon';
 import { Pagination } from '@/types/common-type';
+import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
 
 
 type Props = {
@@ -27,23 +27,21 @@ export default function Paging({ pagination }: Props) {
         let FirstButton = (pagination.page && pagination.page > 1) ?
             <Link
                 href={{ pathname, query: { ...query, page: 1 } }}
-                className='w-[60px] h-[40px] btn-link border border-stone-300 text-stone-700 flex items-center justify-center'>
-                <div className='h-[20px] w-[4px] bg-stone-700 inline-block'></div>
-                <PreviousIcon className='w-[30px] h-[30px]' />
+                className='w-[60px] h-[40px] btn btn-link'>
+                <LastIcon className='w-[30px] h-[30px] rotate-180' />
             </Link> :
-            <div className='w-[60px] h-[40px] border border-slate-300 bg-gray-100 text-gray-400 cursor-not-allowed flex items-center justify-center'>
-                <div className='h-[20px] w-[4px] bg-gray-400 inline-block'></div>
-                <PreviousIcon className='w-[30px] h-[30px]' />
+            <div className='w-[60px] h-[40px] btn btn-disabled'>
+                <LastIcon className='w-[30px] h-[30px] rotate-180' />
             </div>
 
         let PreviousButton = (pagination.page && pagination.page > 1) ?
             <Link
                 href={{ pathname, query: { ...query, page: pagination.page - 1 } }}
                 className='w-[60px] h-[40px] btn btn-link'>
-                <PreviousIcon className='w-[30px] h-[30px]' />
+                <NextIcon className='w-[30px] h-[30px] rotate-180' />
             </Link> :
-            <div className='w-[60px] h-[40px] border border-slate-300 bg-gray-100 text-gray-400 cursor-not-allowed flex items-center justify-center'>
-                <PreviousIcon className='w-[30px] h-[30px]' />
+            <div className='w-[60px] h-[40px] btn btn-disabled'>
+                <NextIcon className='w-[30px] h-[30px] rotate-180' />
             </div>
 
         let NextButton = (pagination.page && pagination.page < pagination.totalPage) ?
@@ -52,10 +50,10 @@ export default function Paging({ pagination }: Props) {
                     pathname,
                     query: { ...query, page: pagination.page + 1 }
                 }}
-                className='btn btn-link w-[60px] h-[40px]'>
+                className='w-[60px] h-[40px] btn btn-link'>
                 <NextIcon className='w-[30px] h-[30px]' />
             </Link> :
-            <div className='w-[60px] h-[40px] border border-slate-300 bg-gray-100 text-gray-400 cursor-not-allowed flex items-center justify-center '>
+            <div className='w-[60px] h-[40px] btn btn-disabled'>
                 <NextIcon className='w-[30px] h-[30px]' />
             </div>
 
@@ -65,18 +63,16 @@ export default function Paging({ pagination }: Props) {
                     pathname,
                     query: { ...query, page: pagination.totalPage }
                 }}
-                className='w-[60px] h-[40px] btn-link border border-stone-300 text-stone-700 flex items-center justify-center'>
-                <NextIcon className='w-[30px] h-[30px]' />
-                <div className='h-[20px] w-[4px] bg-stone-700 inline-block'></div>
+                className='w-[60px] h-[40px] btn btn-link'>
+                <LastIcon className='w-[30px] h-[30px]' />
             </Link> :
-            <div className='w-[60px] h-[40px] border border-slate-300 bg-gray-100 text-gray-400 cursor-not-allowed flex items-center justify-center'>
-                <NextIcon className='w-[30px] h-[30px]' />
-                <div className='h-[20px] w-[4px] bg-slate-300 inline-block'></div>
+            <div className='w-[60px] h-[40px] btn btn-disabled'>
+                <LastIcon className='w-[30px] h-[30px]' />
             </div>
 
         return (
             <div className='flex justify-center align-middle gap-1 flex-wrap px-2 py-4'>
-                <div className='h-[40px] px-4 border border-slate-300 flex items-center justify-center'>
+                <div className='h-[40px] px-4 border border-stone-300 text-stone-500 flex items-center justify-center'>
                     {t('pageOf', { page: pagination.page, totalPage: pagination.totalPage })}
                 </div>
                 {FirstButton}{PreviousButton}{NextButton}{LastButton}

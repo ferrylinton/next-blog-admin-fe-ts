@@ -141,7 +141,7 @@ export default function ImageCreatePage({ clientInfo }: ImageProps) {
                             <button
                                 onClick={() => router.push('/data/image')}
                                 type='button'
-                                className="w-full btn">
+                                className="w-full btn btn-secondary">
                                 <span>{t('cancel')}</span>
                             </button>
 

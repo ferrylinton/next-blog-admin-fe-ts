@@ -102,21 +102,23 @@ export default function WhitelistForm({ whitelist, clientInfo }: Props) {
 
                         <div className="form-group">
                             <label className='form-label' htmlFor="ip">{t('ip')}</label>
-                            <div className='w-full bg-stone-200'>
-                                <input
-                                    className={clsx('w-[200px]', validationErrors.ip && 'border-red-400')}
-                                    type="text"
-                                    placeholder='xxx'
-                                    maxLength={20}
-                                    {...register("ip")}
-                                />
-                            </div>
+                            <input
+                                id='ip'
+                                autoComplete='false'
+                                className={clsx('w-full', validationErrors.ip && 'border-red-400')}
+                                type="text"
+                                placeholder='xxx'
+                                maxLength={50}
+                                {...register("ip")}
+                            />
                             <ValidationError message={validationErrors.ip} />
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label" htmlFor="name">{t('description')}</label>
+                            <label className="form-label" htmlFor="description">{t('description')}</label>
                             <input
+                                id='description'
+                                autoComplete='false'
                                 className={clsx('w-full', validationErrors.code && 'border-red-400')}
                                 type="text"
                                 placeholder='xxx'

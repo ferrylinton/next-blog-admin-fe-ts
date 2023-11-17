@@ -12,6 +12,32 @@ export const redirectToLogin = (locale: string | undefined) => {
     }
 }
 
+export const redirectTo503 = (locale: string | undefined) => {
+    if (typeof window === 'undefined') {
+        return {
+            redirect: {
+                destination: locale === 'id' ? '/503' : `/${locale}/503`,
+                permanent: false
+            }
+        }
+    } else {
+        window.location.replace(locale === 'id' ? `/503` : `/${locale}/503`);
+    }
+}
+
+export const redirectTo429 = (locale: string | undefined) => {
+    if (typeof window === 'undefined') {
+        return {
+            redirect: {
+                destination: locale === 'id' ? '/429' : `/${locale}/429`,
+                permanent: false
+            }
+        }
+    } else {
+        window.location.replace(locale === 'id' ? `/429` : `/${locale}/429`);
+    }
+}
+
 export const redirectTo403 = (locale: string | undefined, url: string) => {
     if (typeof window === 'undefined') {
         return {

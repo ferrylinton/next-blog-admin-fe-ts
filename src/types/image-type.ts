@@ -19,7 +19,7 @@ export type Image = {
 
 export type ImageProps = {
     clientInfo: ClientInfo,
-    image: Image
+    image?: Image
 }
 
 export type ImageForm = {

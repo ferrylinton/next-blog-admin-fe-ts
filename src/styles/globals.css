@@ -69,7 +69,7 @@
   }
 
   .nav-dropdown-item{
-    @apply hover:bg-stone-200
+    @apply hover:bg-lime-200
   }
 
   .nav-dropdown-indicator{
@@ -108,6 +108,10 @@
   .btn-danger span, .btn-primary span, .btn-secondary span, .btn-danger svg, .btn-primary svg, .btn-secondary svg{
     @apply text-stone-100 font-semibold;
     @apply hover:text-white;
+  }
+
+  .btn-disabled{
+    @apply cursor-not-allowed bg-stone-200 border-stone-300 text-stone-400 shadow-[0_1px_4px_0_rgba(0,0,0,0.1)];
   }
 
   .filter-form {

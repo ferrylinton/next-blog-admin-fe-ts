@@ -93,6 +93,8 @@ export default function LoginPage({ clientInfo }: Props) {
                 <div className="form-group">
                     <label className="form-label" htmlFor="username">{t('username')}</label>
                     <input
+                        id='username'
+                        autoComplete='false'
                         className={clsx('w-full', validationErrors.code && 'border-red-400')}
                         type="text"
                         placeholder="xxx"
@@ -105,6 +107,8 @@ export default function LoginPage({ clientInfo }: Props) {
                 <div className="form-group">
                     <label className="form-label" htmlFor="password">{t('password')}</label>
                     <input
+                        id='password'
+                        autoComplete='false'
                         className={`w-full`}
                         type="password"
                         placeholder="xxx"

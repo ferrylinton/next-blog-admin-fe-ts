@@ -76,5 +76,9 @@
     "invalidUsernameOrPassword": "Invalid username or password",
     "welcome": "Welcome",
     "information": "Information",
-    "post": "Post"
+    "post": "Post",
+    "internalServerError": "Internal Server Error",
+    "tags": "Tags",
+    "serviceUnavailable": "Service Unavailable",
+    "tooManyRequests": "Too many requests"
 }

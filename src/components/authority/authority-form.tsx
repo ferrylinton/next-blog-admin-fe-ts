@@ -100,6 +100,8 @@ export default function AuthorityForm({ authority, clientInfo }: Props) {
                             <label className='form-label' htmlFor="code">{t('code')}</label>
                             <div className='w-full bg-stone-200'>
                                 <input
+                                    id='code'
+                                    autoComplete='false'
                                     className={clsx('w-[80px]', validationErrors.code && 'border-red-400')}
                                     type="text"
                                     placeholder='xxx'
@@ -111,8 +113,10 @@ export default function AuthorityForm({ authority, clientInfo }: Props) {
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label" htmlFor="name">{t('description')}</label>
+                            <label className="form-label" htmlFor="description">{t('description')}</label>
                             <input
+                                id='description'
+                                autoComplete='false'
                                 className={clsx('w-full', validationErrors.code && 'border-red-400')}
                                 type="text"
                                 placeholder='xxx'

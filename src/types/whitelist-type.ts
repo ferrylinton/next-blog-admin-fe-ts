@@ -7,7 +7,7 @@ export type Whitelist = {
 } & Audit
 
 export type WhitelistPageProps = {
-    whitelist: Whitelist,
+    whitelist?: Whitelist,
     clientInfo: ClientInfo
 }
 
